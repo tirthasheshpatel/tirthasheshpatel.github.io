@@ -28,25 +28,59 @@
         }
     </style>
     <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <div class="tap-head-envelop" id="tap-head-envelop">
             <div class="tap-head-title" id="tap-head-title">
                 <h1>Tirth Patel</h1>
             </div>
             <div class="tap-head-navbar">
                 <ul>
-                    <li><a href="#tap-head-title">Home</a></li>
-                    <li><a href="#tap-body-blogs">Blogs</a></li>
+                    <li><a href="#tap-body-about-me">Home</a></li>
+                    <li><a href="#tap-body-my-blogs">Blogs</a></li>
                     <li><a href="#tap-body-contact">Contact</a></li>
                     <li><a href="#tap-body-resume">Resume</a></li>
                 </ul>
             </div>
         </div>
     </head>
+    <script>
+        // When the user scrolls the page, execute myFunction
+        window.onscroll = function() {myFunction()};
+
+        // Get the header
+        var header = document.getElementById("tap-head-envelop");
+
+        // Get the offset position of the navbar
+        var sticky = header.offsetTop;
+
+        // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+        }
+    </script>
     <style>
         .tap-head-envelop {
             padding: 0px;
             margin: 0px;
-            background-attachment: fixed;
+            width: 100%;
+        }
+
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .content {
+            padding: 16px;
+        }
+
+        .sticky + .content {
+            padding-top: 102px;
         }
 
         .tap-head-title{
@@ -121,7 +155,38 @@
                     in finding out more about my work, see my projects page and if you are looking to read some random stuff
                     about data science, machine learning, artificial Intelligence, deep learning or computer vision, take a
                     look at my blogs page. Anyways, thanks for reading all this non-sense and not skipping directly to the
-                    links on navigation bar ;)
+                    links on navigation bar ;) For the 0.1% who reached this far, I love watching TV series and my favorites include
+                    "The Breaking Bad" and "The Office".
+                </p>
+            </div>
+            <div class="tap-body-my-blogs">
+                <h3>My Blogs</h3>
+                <p>
+                    I have written blogs on Data Science, Machine Learning, Deep Learning and Artificial Intelligence.
+                    I am a writer at "Towards Data Science" and "Analytics Vidhya". I have also contributed some articles
+                    on this website as a standalone and are available at my Blogs page. So, without any further ado, here
+                    is a list of articles I have written on Medium:
+
+                    <ul>
+                        <li><i class="fa fa-code-fork" style="font-size:24px"></i>
+                            HandCrafting an Artificial Neural Network published in Towards Data Science: In
+                            this article, I have implemented a fully vectorized code for ANNs in pure NumPy
+                            with L2 and Dropout regularization. I have also implemented Hyper Parameter tuning
+                            algorithms with parallel processing of multiple ANNs with different hyper parameters.
+                            This work can be found on Medium
+                            <a href="https://towardsdatascience.com/handcrafting-an-artificial-neural-network-e0b663e88a53">here</a>
+                            or you can see my GitHub repository <a href="https://github.com/tirthasheshpatel/Neural-Network">here</a>
+                            containing examples of the implemented code.
+                        </li>
+                        <li><i class="fa fa-code-fork" style="font-size:24px"></i>
+                            Searching in AI published in Analytics Vidhya: I have created several visualizations of search algorithms used in AI
+                            such as DFS, BFS, A*, LRTA*, MA*, IDS, and Bidirectional search. This work was inspired
+                            by the book "Artificial Intelligence: A Modern Approach" by Norvig and Russel. The videos of the
+                            animations are available on YouTube too! <a href="https://medium.com/analytics-vidhya/searching-in-ai-e05973068c8e">Here</a>
+                            is the article on Analytics Vidhya and <a href="https://github.com/tirthasheshpatel/Searching-in-AI">here</a> is my GitHub
+                            repository containing the examples and code used to create animations. Some of the code samples were taken from
+                            the project <a href="https://github.com/aimacode/aima-python">aima-python</a>.
+                        </li>
                 </p>
             </div>
         </div>
@@ -148,6 +213,26 @@
 
         .tap-body-about-me p {
             padding-top: 10px;
+            margin-left: 10px;
+            width: 90%;
+            font-size: 22px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            text-align: justify;
+        }
+
+        .tap-body-my-blogs {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .tap-body-my-blogs ul {
+            padding: 10px;
+            margin: 20px;
+        }
+
+        .tap-body-my-blogs li {
+            list-style-type: none;
+            padding: 10px;
             margin-left: 10px;
             width: 90%;
             font-size: 22px;
