@@ -44,25 +44,27 @@
         </div>
     </head>
     <script>
-        window.onscroll = function() {myFunction()};
+        // window.onscroll = function() {myFunction()};
 
-        var header = document.getElementById("tap-head-envelop");
+        // var header = document.getElementById("tap-head-envelop");
 
-        var sticky = header.offsetHeight;
+        // var sticky = header.offsetHeight;
 
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                header.style.position = "fixed";
-            } else {
-                header.style.position = "relative";
-            }
-        }
+        // function myFunction() {
+        //     if (window.pageYOffset >= sticky) {
+        //         header.style.position = "fixed";
+        //     } else {
+        //         header.style.position = "relative";
+        //     }
+        // }
     </script>
     <style>
         .tap-head-envelop {
             padding: 0px;
             margin: 0px;
             width: 100%;
+            position: fixed;
+            top: 0;
         }
 
         .tap-head-title{
@@ -188,54 +190,69 @@
                         on Coursera and Udacity. The list of the MOOC courses/specailizations I have completed
                         can be found here. Here, I present a short description of every project I have worked on.
                         <ul>
-                            <li><i class="fa fa-code-fork" style="font-size:24px"></i>
-                                <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Facial%20Composites.ipynb">
-                                    Facial Composites
-                                </a>
-                                <p>
-                                    Facial composites are widely used in forensics to generate images of suspects.
-                                    Since victim or witness usually isn’t good at drawing, computer-aided generation
-                                    is applied to reconstruct the face attacker. One of the most commonly used techniques
-                                    is evolutionary systems that compose the final face from many predefined parts.
+                            <li>
+                                <div class="my-projects-core" id="my-projects-core">
+                                    <i class="fa fa-code-fork" style="font-size:24px"></i>
+                                    <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Facial%20Composites.ipynb">
+                                        Facial Composites
+                                    </a>
+                                    <p>
+                                        Facial composites are widely used in forensics to generate images of suspects.
+                                        Since victim or witness usually isn’t good at drawing, computer-aided generation
+                                        is applied to reconstruct the face attacker. One of the most commonly used techniques
+                                        is evolutionary systems that compose the final face from many predefined parts.<br><br>
 
-                                    In this project, I implement an app for creating a facial composite that will be able to
-                                    construct desired faces without explicitly providing databases of templates.
-                                    I apply Variational Autoencoders, Gaussian processes, and Bayesian Optimization for this task.
-                                </p>
+                                        In this project, I implement an app for creating a facial composite that will be able to
+                                        construct desired faces without explicitly providing databases of templates.
+                                        I apply Variational Autoencoders, Gaussian processes, and Bayesian Optimization for this task.
+                                    </p>
+                                </div>
+                                <div class="my-projects-img" id="my-projects-img">
+                                    <img id="facial-composites" src="facial_composites.png">
+                                </div>
                             </li>
-                            <li><i class="fa fa-code-fork" style="font-size:24px"></i>
-                                <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Image%20Captioning.ipynb">
-                                    Image Captioning
-                                </a>
-                                <p>
-                                    I have used TensorFlow's pretrained InceptionNet as a encoder network and dynamic stacked
-                                    LSTM as a decoder network. All the images provided as an input are converted to vectors of a
-                                    fixed length and this vectors are a input to the one-to-many LSTM that outputs a english caption
-                                    for the image. I have used finetuning using Keras for the task for about 30 epochs.
-                                    It produces reasonable captions while testing on internet images.
-                                    You can also test an image by uploading it to the internet and running last couple of cells of the
-                                    notebook.
-                                </p>
+                            <li>
+                                <div class="my-projects-core" id="my-projects-core">
+                                    <i class="fa fa-code-fork" style="font-size:24px"></i>
+                                    <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Image%20Captioning.ipynb">
+                                        Image Captioning
+                                    </a>
+                                    <p>
+                                        I have used TensorFlow's pretrained InceptionNet as a encoder network and dynamic stacked
+                                        LSTM as a decoder network. All the images provided as an input are converted to vectors of a
+                                        fixed length and this vectors are a input to the one-to-many LSTM that outputs a english caption
+                                        for the image. I have used finetuning using Keras for the task for about 30 epochs.
+                                        It produces reasonable captions while testing on internet images.
+                                        You can also test an image by uploading it to the internet and running last couple of cells of the
+                                        notebook.
+                                    </p>
+                                </div>
                             </li>
-                            <li><i class="fa fa-code-fork" style="font-size:24px"></i>
-                                <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Variational%20Auto%20Encoder%20on%20MNIST.ipynb">
-                                    Variational Auto Encoder on MNIST
-                                </a>
-                                <p>
-                                    In this project, I have implemented a Variational Auto Encoder using TensorFlow
-                                    that can generate MNIST like images of hand-written images. This is an excellent
-                                    demonstration of a bayesian generative models.
-                                </p>
+                            <li>
+                                <div class="my-projects-core" id="my-projects-core">
+                                    <i class="fa fa-code-fork" style="font-size:24px"></i>
+                                    <a href="https://github.com/tirthasheshpatel/GSOC/blob/master/My%20Projects/Variational%20Auto%20Encoder%20on%20MNIST.ipynb">
+                                        Variational Auto Encoder on MNIST
+                                    </a>
+                                    <p>
+                                        In this project, I have implemented a Variational Auto Encoder using TensorFlow
+                                        that can generate MNIST like images of hand-written images. This is an excellent
+                                        demonstration of a bayesian generative models.
+                                    </p>
+                                </div>
                             </li>
-                            <li><i class="fa fa-code-fork" style="font-size:24px"></i>
-                                <a href="https://github.com/tirthasheshpatel/swissroll/blob/ebdce72c718ec3dd6cb065e60f4cfd5ff4256df6/swissroll/gmm.py">
-                                    GMM using EM Algorithm
-                                </a>
-                                <p>
-                                    Gaussian Mixture Models have been very well established in unsupervised machine learning tasks.
-                                    In the project, I have implemented an Expectation Maximization algorithm from scratch in pure numpy.
-                                    This algorithm is used to train a GMM and perform clustering tasks on images or other datasets.
-                                </p>
+                            <li>
+                                <div class="my-projects-core" id="my-projects-core">
+                                    <i class="fa fa-code-fork" style="font-size:24px"></i>
+                                    <a href="https://github.com/tirthasheshpatel/swissroll/blob/ebdce72c718ec3dd6cb065e60f4cfd5ff4256df6/swissroll/gmm.py">
+                                        GMM using EM Algorithm
+                                    </a>
+                                    <p>
+                                        Gaussian Mixture Models have been very well established in unsupervised machine learning tasks.
+                                        In the project, I have implemented an Expectation Maximization algorithm from scratch in pure numpy.
+                                        This algorithm is used to train a GMM and perform clustering tasks on images or other datasets.
+                                    </p>
+                                </div>
                             </li>
                         </ul>
                     </p>
@@ -252,6 +269,7 @@
 
         .tap-body-global-envelop {
             padding: 10px;
+            padding-top: 150px;
             margin: 0px;
         }
 
@@ -295,6 +313,7 @@
             font-size: 25px;
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             text-align: justify;
+            display: inline-block;
         }
 
         .tap-body-history-envelop a {
@@ -308,6 +327,25 @@
 
         .tap-body-history-envelop a:active {
             color: darkblue;
+        }
+
+        .my-projects-core {
+            padding: 0px;
+            margin: 0px;
+            float: left;
+            width: 60%;
+        }
+
+        .my-projects-img {
+            padding: 0px;
+            margin: 0px;
+            float: right;
+            width: 30%;
+        }
+
+        #facial-composites {
+            width: 400px;
+            height: 400px;
         }
     </style>
 </html>
