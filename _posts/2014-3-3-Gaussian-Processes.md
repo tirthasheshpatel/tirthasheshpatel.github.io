@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Gaussian Processes for Machine Learning
-category: machine-learning
+category: Machine Learning
 ---
 
 Gaussian Processes are stationary ramdom processes that can be used for spacial as well as temporal predictions. They have been used extensively by diciplines such as astronomy and biology for prediction and meansuring uncertainty in thier data. In this blog, I have collected many different approaches to Gaussian Processes and their variations.
@@ -10,10 +10,7 @@ Gaussian Processes are stationary ramdom processes that can be used for spacial 
 
 The formal definition of Gaussian Processes may be scary for many beginners, so here is a very simple definition by Rasmussen and Williams that I love:
 
-```none
-A Gaussian Process is a collection of random variables,any finite
-number of which have (consistent) joint Gaussian distributions.
-```
+*A Gaussian Process is a collection of random variables,any finite number of which have (consistent) joint Gaussian distributions.*
 
 A Gaussian Process is fully parameterized by its mean function (not a mean vector) \\( m \\) and a covariance function \\( k \\) and can be written as:
 
