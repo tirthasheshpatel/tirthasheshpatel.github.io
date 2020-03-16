@@ -23,7 +23,7 @@ Several processes are kept in memory at the same time while a processor can only
 Process execution begins with a CPU burst.
 That is followed by an I/O burst, which is followed by another CPU burst, then another I/O burst, and so on. The duration of CPU burst has been studied extensivel. Although the time taken by a process to execute may be highly system dependent, a pattern in the frequency curve is observed which is generally caracterisized as a exponential or hyperexponential distributions.
 
-![cpu burst distribution](/images/os-process/cpu-burst-distribution.jpeg)
+![cpu burst distribution](/images/os-process/cpu-burst-distribution.jpg)
 
 An I/O-bound program typically has many short CPU bursts. A CPU-bound program might have a few long CPU bursts. This distribution can be important in the selection of an appropriate CPU-scheduling algorithm.
 
