@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Gaussian Process in PyMC4
+title: Project Proposal - Adding Gaussian Process in PyMC4
 category: GSoC 2020
 tags: [gsoc, gaussian process, machine learning]
 ---
