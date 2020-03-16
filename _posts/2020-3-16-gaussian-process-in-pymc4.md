@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Gaussian Process in PyMC4
-category: Machine Learning
+category: [Machine Learning, GSoC 2020]
 tags: [gaussian process, machine learning, statistics]
 ---
 
