@@ -1,9 +1,9 @@
 ---
 layout: post
-title: You're up and running!
+title: Gaussian Processes for Machine Learning
 ---
 
-Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
+Gaussian Processes are stationary ramdom processes that can be used for spacial as well as temporal predictions. They have been used extensively by diciplines such as astronomy and biology for prediction and meansuring uncertainty in thier data. In this blog, I have collected many different approaches to Gaussian Processes and their variations.
 
 ![_config.yml]({{ site.baseurl }}/images/config.png)
 
