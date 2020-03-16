@@ -132,7 +132,7 @@ A process terminates when it makes a system call ``exit()``.
 
 Some systems do not allow a child to exist if its parent has terminated. In such systems, if a process terminates (either normally or abnormally), then all its children must also be terminated. This phenomenon, referred to as cascading termination, is normally initiated by the operating system.
 
-The ``wait()`` system call is passed a parameter that allows the parent to obtain the exit status of the child. 
+The ``wait()`` system call is passed a parameter that allows the parent to obtain the exit status of the child.
 
 ```c
 pid_t pid;
@@ -141,7 +141,7 @@ int status;
 pis = wait(&status);
 ```
 
-A process that has terminated but whose parent has not yet called ``wait()`` is known as **zombie** process. If the parent terminates without calling ``wait()``, the child process becomes a **orphan** process. Below is an example that creates a zombie process. This zombie is alive for 30 seconds and its entry in the process table can be viewed using ``ps -eal`` command on the terminal.
+A process that has terminated but whose parent has not yet called ``wait()`` is known as **zombie** process. If the parent terminates without calling ``wait()``, the child process becomes a **orphan** process. In linux, the ``init`` process (launced during the bootstrap period) adopts all the orphan processes and periodically calls ``wait()`` until the child terminates. Below is an example that creates a zombie process. This zombie is alive for 30 seconds and its entry in the process table can be viewed using ``ps -eal`` command on the terminal.
 
 ```c
 #include <stdio.h>
@@ -334,3 +334,7 @@ int main(int argc, char **argv)
 ```
 
 Phew! You made it!
+
+### References
+
+[Operating Systems Concepts -- 9th Edition](https://codex.cs.yale.edu/avi/os-book/)
