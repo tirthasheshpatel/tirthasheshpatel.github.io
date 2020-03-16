@@ -11,9 +11,9 @@ Gaussian process are non-parametric models that define a distribution over a fun
 
 $$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$
 
-Given a prior and some new data $X^\prime$, the conditional $P(f(X^\prime) | f(X))$ can be evaluated as
+Given a prior and some new data $X^\prime$, the conditional $P(f(X^\prime); f(X))$ can be evaluated as
 
-$$P(f(X^\prime) | f(X)) = \frac{P(f(X^\prime), f(X))}{P(f(X))}$$
+$$P(f(X^\prime); f(X)) = \frac{P(f(X^\prime), f(X))}{P(f(X))}$$
 
 This conditional can then be used to sample new points from the inferred function.
 
