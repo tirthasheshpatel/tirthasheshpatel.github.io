@@ -18,4 +18,8 @@ A Gaussian Process is fully parameterized by its mean function (not a mean vecto
 
 These functions take a bunch of data points, commonly called "index" points and spit out a mean and covariance function and the underlying (latent) function responsible for the generation of data can then be modelled as a multivariate normal distribution.
 
-\\[ f(X) \sim \mathcal{N}\left(m(X), k(X, X\prime)\right) \\]
+\\[ f(X) \sim \mathcal{N}\left(m(X), k(X, X^\prime)\right) \\]
+
+### Referances
+
+[Gaussian Processes in Machine Learning by Rasmussen et. al.](http://www.gaussianprocess.org/gpml/chapters/RW.pdf)
