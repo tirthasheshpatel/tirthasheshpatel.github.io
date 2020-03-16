@@ -7,13 +7,13 @@ tags: [gaussian process, machine learning, statistics]
 
 ### Theory
 
-Gaussian process are non-parametric models that define a distribution over a function where function itself is a random variable of some inputs \\( .* \\). They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a GP prior can be defined as
+Gaussian process are non-parametric models that define a distribution over a function where function itself is a random variable of some inputs $X$. They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a GP prior can be defined as
 
-\\( .* \\)
+$$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$
 
-Given a prior and some new data \\( .* \\) can be evaluated as
+Given a prior and some new data $X^\prime$, the conditional $P(f(X^\prime) | f(X))$ can be evaluated as
 
-\\( .* \\)
+$$P(f(X^\prime) | f(X)) = \frac{P(f(X^\prime), f(X))}{P(f(X))}$$
 
 This conditional can then be used to sample new points from the inferred function.
 
@@ -59,7 +59,7 @@ class Mean:
         return MeanProd(self, mean2)
 ```
 
-where `feature_ndims` are the rightmost dimentions of the input that will be absorbed during the computation. The `__call__` method is used to evaluate the mean function at some point \\( .* \\) (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean function to yield a new mean function that is an instance of ``MeanAdd`` (or ``MeanProd``). You can create your own mean function just by inheriting the base class and implementing the method ``__call__``.
+where `feature_ndims` are the rightmost dimentions of the input that will be absorbed during the computation. The `__call__` method is used to evaluate the mean function at some point $X$. The $X$ (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean function to yield a new mean function that is an instance of ``MeanAdd`` (or ``MeanProd``). You can create your own mean function just by inheriting the base class and implementing the method ``__call__``.
 
 The most common mean function used in GP models is the zero mean function that returns zero irrespective of the inputs. It can be implemented as
 
@@ -105,9 +105,9 @@ where ``_init_kernel`` is a method used to initialize the covariance function. T
 
 There are many covariance functions that can be used to infer different functions but the most common one is the Radial Basis Function. This function can be implemented using the ``ExpQuad`` covariance function in PyMC4.
 
-\\( .* \\)
+$$k(x, x') = \sigma^2 \mathrm{exp}\left[ -\frac{(x - x')^2}{2 l^2} \right]$$
 
-where \\( .* \\) = ``length_scale`` i.e. the inputs that RBF kernel in PyMC4 takes.
+where $\sigma$ = ``amplitude`` and $l$ = ``length_scale`` i.e. the inputs that RBF kernel in PyMC4 takes.
 
 
 ```python
@@ -116,9 +116,9 @@ cov_fn = pm.gp.cov.ExpQuad(amplitude=1., length_scale=1., feature_ndims=2)
 
 ### Latent Gaussian Process
 
-The `gp.LatentGP` class is a direct implementation of a GP.  No additive noise is assumed.  It is called "Latent" because the underlying function values are treated as latent variables.  It has a `prior` method and a `conditional` method.  Given a mean and covariance function the function \\( .* \\) is modeled as,
+The `gp.LatentGP` class is a direct implementation of a GP.  No additive noise is assumed.  It is called "Latent" because the underlying function values are treated as latent variables.  It has a `prior` method and a `conditional` method.  Given a mean and covariance function the function $f(x)$ is modeled as,
     
-\\( .* \\)
+$$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$
 
 Use the `prior` and `conditional` methods to actually construct random variables representing the unknown, or latent, function whose distribution is the GP prior or GP conditional.  This GP implementation can be used to implement regression on data that is not normally distributed. For more information on the `prior` and `conditional` methods, see their docstrings.
 
@@ -360,7 +360,7 @@ plt.plot(X, y, 'ok', ms=3, alpha=0.5, label="Observed data")
 
 # axis labels and title
 plt.xlabel("X"); plt.ylabel("True f(x)")
-plt.title("Posterior distribution over \\( .* \\) at the observed values"); plt.legend()
+plt.title("Posterior distribution over $f(x)$ at the observed values"); plt.legend()
 ```
 
 
@@ -406,8 +406,8 @@ fig = plt.figure(figsize=(12,5)); ax = fig.gca()
 plot_gp_dist(ax, pred_samples.posterior_predictive["latent_gp_model/f_pred"][0], X_new)
 plt.plot(X, f_true, "dodgerblue", lw=3, label="True f")
 plt.plot(X, y, 'ok', ms=3, alpha=0.5, label="Observed data")
-plt.xlabel("\\( .* \\)")
-plt.title("Conditional distribution of \\( .* \\)"); plt.legend()
+plt.xlabel("$X$"); plt.ylabel("True $f(x)$")
+plt.title("Conditional distribution of $f_*$, given $f$"); plt.legend()
 ```
 
 
