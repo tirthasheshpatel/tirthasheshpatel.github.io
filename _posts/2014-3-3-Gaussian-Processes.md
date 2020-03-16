@@ -24,7 +24,7 @@ These functions take a bunch of data points, commonly called "index" points and 
 
 Let's see different ways of implementing Gaussain Processes in Python.
 
-~~~python
+```python
 
 import tensorflow as tf
 import tensorflow_probability as tfp
@@ -54,7 +54,7 @@ gp = tfp.distributions.GaussianProcesses(index_points=X)
 # underlying function.
 samples = gp.sample((1,)).numpy().ravel()
 
-~~~
+```
 
 ### Referances
 
