@@ -26,35 +26,37 @@ Let's see different ways of implementing Gaussain Processes in Python.
 
 #### TensorFlow
 
-```python
-import tensorflow as tf
-import tensorflow_probability as tfp
-import numpy as np
-import matplotlib.pyplot as plt
+<pre>
+    <code class="python">
+        import tensorflow as tf
+        import tensorflow_probability as tfp
+        import numpy as np
+        import matplotlib.pyplot as plt
 
-# Let's generate some data
-X = np.linspace(-5, 5, num=200).reshape(-1, 1)
-m = tf.zeros(X.shape[0])
-k = tfp.math.psd_kernels.ExponentiatedQuadratic(amplitude=2., length_scale=1.5, feature_ndims=1)(X, X)
-# A noisy latent function
-f_true = np.random.multivariate_normal(loc=m, scale=k, size=1).ravel() + np.random.randn(X.shape[0])
+        # Let's generate some data
+        X = np.linspace(-5, 5, num=200).reshape(-1, 1)
+        m = tf.zeros(X.shape[0])
+        k = tfp.math.psd_kernels.ExponentiatedQuadratic(amplitude=2., length_scale=1.5, feature_ndims=1)(X, X)
+        # A noisy latent function
+        f_true = np.random.multivariate_normal(loc=m, scale=k, size=1).ravel() + np.random.randn(X.shape[0])
 
-# Let's see how the data looks
-plt.scatter(X, f)
-plt.xlabel("data")
-plt.ylabel("latent function")
-plt.title("Synthetic data")
-plt.show()
+        # Let's see how the data looks
+        plt.scatter(X, f)
+        plt.xlabel("data")
+        plt.ylabel("latent function")
+        plt.title("Synthetic data")
+        plt.show()
 
-# Let's see how to implement Gaussian Processes in tensorflow_probability
-kernel = tfp.math.psd_kernels.ExponentiatedQuadratic(amplitude=1., length_scale=1., feature_ndims=1)
-# The line below creates for us a Gaussian Process object
-# which is quvivalent to equation (1) we saw earlier.
-gp = tfp.distributions.GaussianProcesses(index_points=X)
-# Now, we can use the `gp` object to sample from the
-# underlying function.
-samples = gp.sample((1,)).numpy().ravel()
-```
+        # Let's see how to implement Gaussian Processes in tensorflow_probability
+        kernel = tfp.math.psd_kernels.ExponentiatedQuadratic(amplitude=1., length_scale=1., feature_ndims=1)
+        # The line below creates for us a Gaussian Process object
+        # which is quvivalent to equation (1) we saw earlier.
+        gp = tfp.distributions.GaussianProcesses(index_points=X)
+        # Now, we can use the `gp` object to sample from the
+        # underlying function.
+        samples = gp.sample((1,)).numpy().ravel()
+    </code>
+</pre>
 
 ### Referances
 
