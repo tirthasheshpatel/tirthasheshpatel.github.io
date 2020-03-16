@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+I am a undergrad in computer science at Nirma University, Ahmedabad, India. I write articles on machine learning, deep learning, statistics, physics and astronomy. I mostly use Python and C/C++ for all of my work and I hate Java ;). This is a small website with a collection of my articles, projects and some random stuff.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[tirthasheshpatel@gmail.com](mailto:tirthasheshpatel@gmail.com)
