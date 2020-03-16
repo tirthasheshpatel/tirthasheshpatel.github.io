@@ -26,7 +26,9 @@ Let's see different ways of implementing Gaussain Processes in Python.
 
 #### TensorFlow
 
+
 ```python
+
 import tensorflow as tf
 import tensorflow_probability as tfp
 import numpy as np
@@ -54,7 +56,9 @@ gp = tfp.distributions.GaussianProcesses(index_points=X)
 # Now, we can use the `gp` object to sample from the
 # underlying function.
 samples = gp.sample((1,)).numpy().ravel()
+
 ```
+
 
 ### Referances
 
