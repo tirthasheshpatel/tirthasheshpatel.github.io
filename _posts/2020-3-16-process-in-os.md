@@ -71,3 +71,266 @@ It includes the value of the CPU registers, the process state  and memory-manage
 
 ### Operations on Process
 
+#### Process Creation
+
+Every process has a unique process identifier (pid). When a process creates a new process, two possibilities for execution exists:
+
+1. Parent executes concurrently.
+2. Waits until the chile terminates.
+
+There are also two address space possible for the new process:
+
+1. Copies the address space of parent.
+2. Child process has new program loaded in it.
+
+The following C functions are a part of the UNIX API for process creating and termination.
+
+- ``fork()`` -- Creates a new child process
+- ``execlp(), execvp(), ...`` -- Loads a new program into address space of child process (hence destroying the address space of the parent process).
+- ``wait()`` -- waits for any one of the childs (or specified child) to finish execution.
+
+Here's a code for creating a child process and running the `ls` command to print the files in a directory usign C:
+
+```c
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+	pid_t pid, killed_pid;
+	int killed_status;
+
+	/* fork a child process */
+	pid = fork();
+
+	/* parent process will output a non-zero number while child process returns 0 */
+	printf("process with pid: %d has reached this line!\n", pid);
+
+	if(pid < 0) { /* error occured */
+		fprintf(stderr, "Fork failed!\n\n");
+		return 1;
+	}
+	else if ( pid == 0 ) { /* child process */
+		execlp("/bin/ls", "ls");
+	}
+	else { /* parent process */
+		/* The wait() system call is passed a parameter that
+		allows the parent to obtain the exit status of the child */
+		killed_pid = wait(&killed_status);
+		printf("child with pid: %d exited with status: %d\n\n", killed_pid, killed_status);
+	}
+
+	return 0;
+}
+
+```
+
+#### Process Termination
+
+A process terminates when it makes a system call ``exit()``.
+
+Some systems do not allow a child to exist if its parent has terminated. In such systems, if a process terminates (either normally or abnormally), then all its children must also be terminated. This phenomenon, referred to as cascading termination, is normally initiated by the operating system.
+
+The ``wait()`` system call is passed a parameter that allows the parent to obtain the exit status of the child. 
+
+```c
+pid_t pid;
+int status;
+
+pis = wait(&status);
+```
+
+A process that has terminated but whose parent has not yet called ``wait()`` is known as **zombie** process. If the parent terminates without calling ``wait()``, the child process becomes a **orphan** process. Below is an example that creates a zombie process. This zombie is alive for 30 seconds and its entry in the process table can be viewed using ``ps -eal`` command on the terminal.
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int main(int argc, char **argv)
+{
+	pid_t pid;
+
+	/* create a child process */
+	pid = fork();
+
+	if(pid == 0) { /* clild process */
+
+		/* we will let the process run for 30 seconds
+		 * so we can later see its entry in `ps -ael` */
+		sleep(30);
+
+		return 0;
+	}
+	else if(pid > 0){ /* parent process */
+
+		/* don't be like this parent */
+		printf("I am leaving my child to become an orphan!\n Linux please adopt my child! Please!!!\n bye bye daughter...\n");
+		return 0;
+	}
+
+	printf("WARNING: abnormal termination...\n");
+	return 1;
+}
+
+```
+
+### PID Manager
+
+The below program used bitmap to generate and allocate unique ``pid``s. This is somewhat analogous to what linux does to allocate pid to a process.
+
+``pid_manager.h``
+```c
+#ifndef GUARD_PID_MANAGER_H
+#define GUARD_PID_MANAGER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MIN_PID 30
+#define MAX_PID 50
+
+static short *pid_map = NULL;
+static int curr;
+static int stop;
+
+int allocate_map()
+{
+	if(pid_map) {
+		fprintf(stderr, "pid_map has already been initialized.\n");
+		return -1;
+	}
+
+	pid_map = (short *)calloc(MAX_PID - MIN_PID + 1, sizeof(short));
+	
+	if(!pid_map) {
+		fprintf(stderr, "error: memory allocation failed!\n");
+		return -1;
+	}
+
+	curr = 0;
+	stop = (curr + MAX_PID - MIN_PID) % (MAX_PID - MIN_PID + 1);
+
+	return 1;
+}
+
+int allocate_pid()
+{
+	if(!pid_map) {
+		fprintf(stderr, "error: pid_map not initialized!\n");
+		return -1;
+	}
+	
+	while(curr != stop) {
+		if(!pid_map[curr]) {
+			stop = (curr + MAX_PID - MIN_PID) % (MAX_PID - MIN_PID + 1);
+			pid_map[curr] = 1;
+			return curr + MIN_PID;
+		}
+		curr = (curr + 1) % (MAX_PID - MIN_PID + 1);
+	}
+
+	if(!pid_map[curr]) {
+		stop = (curr + MAX_PID - MIN_PID) % (MAX_PID - MIN_PID + 1);
+		pid_map[curr] = 1;
+		return curr + MIN_PID;
+	}
+
+	curr = 0;
+	stop = (curr + MAX_PID - MIN_PID) % (MAX_PID - MIN_PID + 1);
+	fprintf(stderr, "error: pid_map is full. release some processes to assign new pid!\n");
+	return -1;
+}
+
+int release_pid(int pid)
+{
+	pid = pid - MIN_PID;
+	if(!pid_map) {
+		fprintf(stderr, "error: pid_map not initialized!\n");
+		return -1;
+	}
+
+	if(pid_map[pid]) {
+		pid_map[pid] = 0;
+		return 1;
+	}
+
+	fprintf(stderr, "error: tried releasing a non-existent pid!\n");
+	return -1;
+}
+
+void display_pid_map()
+{
+	for(int i = 0;i < MAX_PID - MIN_PID + 1;i++) {
+		printf("%d", pid_map[i]);
+	}
+	printf("\n");
+}
+
+#endif
+```
+
+Using the above header file, new pids can be allocated in \\( \mathcal{O}(n) \\) worst case time where \\( n \\) is the size of the bitmap. A example program is shown below:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "pid_manager.h"
+
+#ifndef MIN_PID
+	#warning "MIN_PID flag not loaded properly"
+#endif
+
+#ifndef MAX_PID
+	#warning "MAX_PID flag not loaded properly"
+#endif
+
+int main(int argc, char **argv)
+{
+	/* status bit of map allocation */
+	int status;
+
+	/* allocate a bit map of pids */
+	status = allocate_map();
+	printf("allocation status: %d\n", status);
+
+	/* try to get a pid,*/
+	int pid;
+	for(int i = MIN_PID;i < MAX_PID + 1;i++){
+		/* allocate a pid */
+		pid = allocate_pid();
+
+		/* check and log abnormal pid allocation*/
+		if(pid < 0) {
+			printf("abnormal pid allocated: %d\n", pid);
+		}
+	}
+	
+	/* release some pids */
+	for(int i = MAX_PID;i >= MIN_PID + 5;i--){
+		status = release_pid(i);
+
+		/* check and log failed attempt */
+		if(status < 0) {
+			printf("abnormal release status: %d\n", status);
+		}
+	}
+	
+	/* allocate the pids again just to test if release works fine! */
+	for(int i = MIN_PID + 5;i < MAX_PID + 1;i++) {
+		pid = allocate_pid();
+		if(pid < 0) {
+			printf("abnormal pid allocated: %d\t", pid);
+			printf("trial: %d\n", i);
+		}
+	}
+
+	display_pid_map();
+
+	return 0;
+}
+
+```
+
+Phew! You made it!
