@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Gaussian Processes for Machine Learning
+title: Processes in Operating Systems -- Notes
 category: Operating Systems Notes
 tags: [process, os]
 ---
@@ -51,4 +51,3 @@ Each process is represented in an operating system by a process control block. I
 NOTE: In linux, job and ready queue are the same. All the new processes are loaded and put in the ready queue.
 
 ![queueing diagram](/images/os-process/queueing-diagram.svg)
-
