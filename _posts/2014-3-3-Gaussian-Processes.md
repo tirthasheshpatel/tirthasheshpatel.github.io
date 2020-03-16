@@ -5,7 +5,7 @@ category: Machine Learning
 tags: [gaussian process, machine learning, statistics]
 ---
 
-Gaussian Processes are stationary ramdom processes that can be used for spacial as well as temporal predictions. They have been used extensively by diciplines such as astronomy and biology for prediction and meansuring uncertainty in thier data. In this blog, I have collected many different approaches to Gaussian Processes and their variations.
+Gaussian Processes are stationary ramdom processes that can be used for spatial as well as temporal predictions. They have been used extensively by diciplines such as astronomy and biology for prediction tasks and meansuring uncertainty in thier data. In this article, I have collected many different approaches to Gaussian Processes and their variations.
 
 ### What are Gaussian Processes
 
