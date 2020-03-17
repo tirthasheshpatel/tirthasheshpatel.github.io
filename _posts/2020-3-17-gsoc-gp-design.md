@@ -367,6 +367,18 @@ New mean and covariance functions can be added easily in the future. One of the 
   - Final work evaluation by mentors
   - Results
 
+### Experience
+
+I have a experience of 2 years in open source projects. I have completed many MOOCs and created several projects in the domain of Machine Learning and AI. All my projects and MOOC certificates can be found at my GitHub profile or a collection of them can be viewed [here](https://github.com/tirthasheshpatel/GSOC/tree/master/My%20Projects).
+
+A technical brief and an overview of my technical experience can be found on [my resume here](https://github.com/tirthasheshpatel/GSOC/tree/master/Resume).
+
+### Why this project?
+
+> My motivation to work with PyMC is driven by my passion for open-source projects and Machine Learning!
+
+I am very excited to do this project with its awesome team as nothing interests me more than Machine Learning and Open Source Projects. I have completed about 20 courses on Machine Learning and related domains from platforms such as coursera, udacity, etc and universities such as Georgia Tech., Stanford, etc. I am quite experienced in machine learning and python libraries like TensorFlow. I am very confident that I would be a great fit for the project as I always am ready to learn new stuff and love programming in Python!
+
 ### Commitments and Conclusion
 
 I aim to work full time for at least 60 to 70 hours a week on my project and write a blog on the work done every week on my website [tirthasheshpatel.github.io](https://tirthasheshpatel.github.io/).
