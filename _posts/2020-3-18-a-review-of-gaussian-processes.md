@@ -28,7 +28,7 @@ This article follows a notation provided below.
 
 There hasn't been a huge interest in exploring the nature of mean functions in Gaussaian Process literature. I present a few mean functions that have been proposed to work well in practice.
 
-1. Zero Mean function: This mean function is a mapping of data to zero vector $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ where $m$ are the number of samples and $n$ are the number of features. This is usually a choice for most of the tasks concerning big data as it is extreamly difficult to encode apriori knowledge in such a function. Following is a code snippet to code a mean function in ``python`` using ``numpy`` library.
+- **Zero Mean function**: This mean function is a mapping of data to zero vector $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ where $m$ are the number of samples and $n$ are the number of features. This is usually a choice for most of the tasks concerning big data as it is extreamly difficult to encode apriori knowledge in such a function. Following is a code snippet to code a mean function in ``python`` using ``numpy`` library.
 
 $$f(X) = \overrightarrow{0}$$
 
@@ -50,7 +50,7 @@ def zero_mean_function(X):
     return np.zeros(X.shape[0])
 ```
 
-2. Constant mean: This mean function is a generalization over zero mean. It maps the input to a vector with a constant value in all its dimensions. Often, a good practicle choice of the constant to map to is the mean of the data at hand. It statistically holds more information that zero mean and hence may lead to a better posterior (though in practice it doesn't make much difference). Zero mean can easily be derieved by setting the coefficient to zero.
+- **Constant mean**: This mean function is a generalization over zero mean. It maps the input to a vector with a constant value in all its dimensions. Often, a good practicle choice of the constant to map to is the mean of the data at hand. It statistically holds more information that zero mean and hence may lead to a better posterior (though in practice it doesn't make much difference). Zero mean can easily be derieved by setting the coefficient to zero.
 
 $$f(X) = c$$
 
@@ -74,7 +74,7 @@ def constant_mean_function(X, coef):
     return coef * np.ones(X.shape[0])
 ```
 
-3. Linear Mean: This mean function is a generalization over constant mean. It is a mapping $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ parametrized by a weight vector $w$ and a bias or intercept $b$. The following equation shows the mapping.
+- **Linear Mean**: This mean function is a generalization over constant mean. It is a mapping $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ parametrized by a weight vector $w$ and a bias or intercept $b$. The following equation shows the mapping.
 
 $$f(X) = Xw + b$$
 
@@ -95,15 +95,14 @@ def linear_mean_function(X, w, b):
     -----
     A vector of shape (n_samples, )
     """
-    w = w.reshape(-1, 1)
     return X @ w + b
 ```
 
 ### Covariance functions
 
-Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I present and implement all these covariance functions.
+Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I implement all the stationary kernels followed by non-statinary kernels.
 
-1. Exponentiated Quadratic Kernel: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
+- **Exponentiated Quadratic Kernel**: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
 
 $$K(X, X^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||X-X^{\prime}||^2}{2l^2}\right)$$
 
@@ -133,11 +132,11 @@ def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
     return amplitude * np.exp( 0.5 * l2 / sigma ** 2 )
 ```
 
-2. Constant Kernel: This kernel is also often used for computationally light modelling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
+- **Constant Kernel**: This kernel is also often used for computationally light modelling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
 
 $$K(X, X^{\prime}) = C$$
 
-where $C$ is a matrix with dimensions $\R^{m \times m}$ with constant entries in all its rows and columns
+where $C$ is a matrix with dimensions $\mathbb{R}^{m \times m}$ with constant entries in all its rows and columns
 
 ```python
 def constant_kernel(X, X_prime, coef):
@@ -160,6 +159,87 @@ def constant_kernel(X, X_prime, coef):
     A covariance matrix of shape (n_samples, n_new_samples)
     """
     return coef * np.ones((X.shape[0], X_prime.shape[0]))
+```
+
+- **Linear Kernel**: This is a stationary kernel function which is parameterized by bias variance ($\sigma_b$), slope variance ($\sigma_w$) and shift ($s$). It is analogous to linear mean function and the equation is given by
+
+$$K(X, X^{\prime}) = \simga_b^2+\sigma_w^2(X-shift)(X^{\prime}-shift)$$
+
+```python
+def linear_kernel(X, X_prime, bias_var, slope_var, shift):
+    """A linear kernel
+
+    Parameteres
+    -----
+    X: array-like
+        Prior Data matrix of shape (n_samples, n_features)
+
+    X_prime: array-like
+        New data matrix of shape (n_new_samples, n_features)
+
+    bias_var: float
+        Bias variance to control the varience from the origin
+
+    slope_var: float
+        Slope variance to control the variance of the slopw of line
+
+    shift: float
+        Offset from available data
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    dot_prod = np.sum((X - shift) * (X_prime - shift), axis=1)
+    return bias_var ** 2 + slope_var ** 2 * dot_prod
+```
+
+- **Polynomial Kernel**: Linear kernel introduced above is a special case of polynomial kernel when the exponent is one. Hence the polynomial function is given by
+
+$$K(X, X^{\prime}) = \simga_b^2+\sigma_w^2{(X-shift)(X^{\prime}-shift)}^{v}$$
+
+where $v$ is the exponent of the dot product term.
+
+```python
+def polynomial_kernel(X, X_prime, bias_var, slope_var, shift, exponent):
+    """A polynomial kernel
+
+    Parameteres
+    -----
+    X: array-like
+        Prior Data matrix of shape (n_samples, n_features)
+
+    X_prime: array-like
+        New data matrix of shape (n_new_samples, n_features)
+
+    bias_var: float
+        Bias variance to control the varience from the origin
+
+    slope_var: float
+        Slope variance to control the variance of the slopw of line
+
+    shift: float
+        Offset from available data
+
+    exponent: float
+        Exponent of the dot product term
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    dot_prod = (X - shift) @ (X_prime - shift).T
+    return bias_var ** 2 + slope_var ** 2 * dot_prod ** exponent
+```
+
+- **Rational Quadratic**: A rational quadratic kernel is a generalization of Exponenetial Quadratic kernel introduced above. It is parameterized by amplitude (\sigma), length_scale ($l$), and scale mixture rate ($\mathcal{M}$). Its functional form can be given by
+
+$$K(X, X^{\prime}) = \sigma^2*\left(1+\frac{||X-X^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
+
+This kernel acts like a Exponentiated Quadratic Kernel when the scale mixture rate parameter $\mathcal{M}$ approaches infinity.
+
+```python
+# to be continued!
 ```
 
 ### References
