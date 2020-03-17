@@ -28,7 +28,7 @@ This article follows a notation provided below.
 
 There hasn't been a huge interest in exploring the nature of mean functions in Gaussaian Process literature. I present a few mean functions that have been proposed to work well in practice.
 
-1. Zero Mean function: This mean function is a mapping of data to zero vector $\R^{m \times n} \to \R^{m}$ where $m$ are the number of samples and $n$ are the number of features. This is usually a choice for most of the tasks concerning big data as it is extreamly difficult to encode apriori knowledge in such a function. Following is a code snippet to code a mean function in ``python`` using ``numpy`` library.
+1. Zero Mean function: This mean function is a mapping of data to zero vector $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ where $m$ are the number of samples and $n$ are the number of features. This is usually a choice for most of the tasks concerning big data as it is extreamly difficult to encode apriori knowledge in such a function. Following is a code snippet to code a mean function in ``python`` using ``numpy`` library.
 
 $$f(X) = \overrightarrow{0}$$
 
@@ -74,7 +74,7 @@ def constant_mean_function(X, coef):
     return coef * np.ones(X.shape[0])
 ```
 
-3. Linear Mean: This mean function is a generalization over constant mean. It is a mapping $\R^{m \times n} \to \R^{m}$ parametrized by a weight vector $w$ and a bias or intercept $b$. The following equation shows the mapping.
+3. Linear Mean: This mean function is a generalization over constant mean. It is a mapping $\mathbb{R}^{m \times n} \to \mathbb{R}^{m}$ parametrized by a weight vector $w$ and a bias or intercept $b$. The following equation shows the mapping.
 
 $$f(X) = Xw + b$$
 
@@ -103,7 +103,7 @@ def linear_mean_function(X, w, b):
 
 Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I present and implement all these covariance functions.
 
-1. Exponentiated Quadratic Kernel: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where $||.||$ is a L2 vector norm. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
+1. Exponentiated Quadratic Kernel: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
 
 $$K(X, X^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||X-X^{\prime}||^2}{2l^2}\right)$$
 
