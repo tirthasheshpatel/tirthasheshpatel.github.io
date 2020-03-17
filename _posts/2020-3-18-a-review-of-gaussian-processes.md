@@ -98,11 +98,11 @@ def linear_mean_function(X, w, b):
     return X @ w + b
 ```
 
-### Covariance functions
+### 3. Covariance functions
 
-Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I implement all the stationary kernels followed by non-statinary kernels.
+Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I implement all the stationary kernels followed by periodic and non-statinary kernels.
 
-- **Exponentiated Quadratic Kernel**: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
+- **Exponentiated Quadratic Kernel**: This stationary kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
 
 $$K(X, X^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||X-X^{\prime}||^2}{2l^2}\right)$$
 
@@ -129,10 +129,10 @@ def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
     A covariance matrix of shape (n_samples, n_new_samples)
     """
     l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X * X_prime.T)
-    return amplitude * np.exp( 0.5 * l2 / sigma ** 2 )
+    return amplitude * np.exp( 0.5 * l2 / length_scale ** 2 )
 ```
 
-- **Constant Kernel**: This kernel is also often used for computationally light modelling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
+- **Constant Kernel**: This stationary kernel is also often used for computationally light modelling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
 
 $$K(X, X^{\prime}) = C$$
 
@@ -161,9 +161,9 @@ def constant_kernel(X, X_prime, coef):
     return coef * np.ones((X.shape[0], X_prime.shape[0]))
 ```
 
-- **Linear Kernel**: This is a stationary kernel function which is parameterized by bias variance ($\sigma_b$), slope variance ($\sigma_w$) and shift ($s$). It is analogous to linear mean function and the equation is given by
+- **Linear Kernel**: This is a stationary kernel which is parameterized by bias variance ($\sigma_b$), slope variance ($\sigma_w$) and shift ($s$). It is analogous to linear mean function and the equation is given by
 
-$$K(X, X^{\prime}) = \simga_b^2+\sigma_w^2(X-shift)(X^{\prime}-shift)$$
+$$K(X, X^{\prime}) = \sigma_b^2+\sigma_w^2(X-s)(X^{\prime}-s)$$
 
 ```python
 def linear_kernel(X, X_prime, bias_var, slope_var, shift):
@@ -190,13 +190,13 @@ def linear_kernel(X, X_prime, bias_var, slope_var, shift):
     -----
     A covariance matrix of shape (n_samples, n_new_samples)
     """
-    dot_prod = np.sum((X - shift) * (X_prime - shift), axis=1)
+    dot_prod = (X - shift) @ (X_prime - shift).T
     return bias_var ** 2 + slope_var ** 2 * dot_prod
 ```
 
-- **Polynomial Kernel**: Linear kernel introduced above is a special case of polynomial kernel when the exponent is one. Hence the polynomial function is given by
+- **Polynomial Kernel**: This is a stationary kernel. Linear kernel introduced above is a special case of polynomial kernel when the exponent is one. Hence the polynomial function is given by
 
-$$K(X, X^{\prime}) = \simga_b^2+\sigma_w^2{(X-shift)(X^{\prime}-shift)}^{v}$$
+$$K(X, X^{\prime}) = \sigma_b^2+\sigma_w^2{(X-s)(X^{\prime}-s)}^{v}$$
 
 where $v$ is the exponent of the dot product term.
 
@@ -232,14 +232,39 @@ def polynomial_kernel(X, X_prime, bias_var, slope_var, shift, exponent):
     return bias_var ** 2 + slope_var ** 2 * dot_prod ** exponent
 ```
 
-- **Rational Quadratic**: A rational quadratic kernel is a generalization of Exponenetial Quadratic kernel introduced above. It is parameterized by amplitude (\sigma), length_scale ($l$), and scale mixture rate ($\mathcal{M}$). Its functional form can be given by
+- **Rational Quadratic**: A Rational Quadratic Kernel is a stationary kernel and a generalization over Exponenetial Quadratic kernel introduced above. It is parameterized by amplitude ($\sigma$), length_scale ($l$), and scale mixture rate ($\mathcal{M}$). Its functional form can be given by
 
-$$K(X, X^{\prime}) = \sigma^2*\left(1+\frac{||X-X^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
+$$K(X, X^{\prime}) = \sigma^2\left(1+\frac{||X-X^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
 
 This kernel acts like a Exponentiated Quadratic Kernel when the scale mixture rate parameter $\mathcal{M}$ approaches infinity.
 
 ```python
-# to be continued!
+def rational_quadratic_kernel(X, X_prime, length_scale, amplitude, scale_mixture_rate):
+    """The rational quadratic kernel
+
+    Parameters
+    -----
+    X: array-like
+        Prior data matrix of shape (n_samples, n_features)
+
+    X_prime: array_like
+        New data matrix of shape (n_new_samples, n_features)
+
+    length_scale: float
+        The `l` parameter in the equation
+
+    amplitude: float
+        The `sigma^2` parameter in the equation
+
+    scale_mixture_rate: float
+        The `M` parameter in the equation
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X * X_prime.T)
+    return amplitude * (1. + 0.5 * l2 / (scale_mixture_rate * length_scale ** 2)) ** (-scale_mixture_rate)
 ```
 
 ### References
