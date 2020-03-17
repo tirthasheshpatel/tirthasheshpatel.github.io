@@ -9,7 +9,7 @@ tags: [gsoc, gaussian process, machine learning]
 
 I have decided to work with PyMC4 on the project statement **Adding Gaussian Process in PyMC4** for *GSoC 2020*. In this article, I present my ideas for development during the community bonding period.
 
-> My goal for GSoC 2020 is to implement, test, and maintain a higher level API for Gaussian Processes in PyMC4 using TensorFlow and TensorFlow Probability and write tutorials/articles and notebooks explaining their usage.
+> My goal for GSoC 2020 is to implement, test, and maintain a higher-level API for Gaussian Processes in PyMC4 using TensorFlow and TensorFlow Probability and write tutorials/articles and notebooks explaining their usage.
 
 I am Tirth Patel, an undergraduate computer science student at Nirma University, Ahmedabad, India. I have previously worked on many Machine Learning projects and particularly on Bayesian Methods for Machine Learning like Facial Composites that use Variational AutoEncoders and Gaussian Processes to generate faces of a suspect! My motivation to work with PyMC is driven by my passion for open-source projects and Machine Learning.
 
@@ -19,7 +19,7 @@ Gaussian Processes are well established in both temporal and spatial interpolati
 
 #### 1. Mean Functions
 
-The choice of mena function is highly dependent on the user and his/her knowledge about the data at hand. This leads to a design choice of the base class that makes it convenient for the user to flexibly create new mean functions of his/her choice. Such a base class is shown below:
+The choice of mean function is highly dependent on the user and his/her knowledge about the data at hand. This leads to a design choice of the base class that makes it convenient for the user to flexibly create new mean functions of his/her choice. Such a base class is shown below:
 
 ```python
 class Mean:
@@ -38,7 +38,7 @@ class Mean:
         return MeanProd(self, mean2)
 ```
 
-The above base class can be easily used to create new mean functions by just overriding the ``__call__`` and optionaly the ``__init__`` method. Moreover, mean functions created using this base are additive and multiplicative and hence provide the user maximum flexibility to create and combine all sorts of mean functions!
+The above base class can be easily used to create new mean functions by just overriding the ``__call__`` and optionally the ``__init__`` method. Moreover, mean functions created using this base are additive and multiplicative and hence provide the user maximum flexibility to create and combine all sorts of mean functions!
 
 The mean functions that I aim to create are:
 
@@ -48,7 +48,7 @@ The mean functions that I aim to create are:
 
 #### 2. Covariance Functions
 
-The computational speed and inference quality is generally very sensitive to the choice of covariance function and hence have to be designed carefully. One more necessity for of the covariance functions is that they must be positive semi-definite. The ``tfp.math.pad_kernels`` module contains a lot of covariance functions to work with. We can wrap these covariance functions in our own base class as shown below
+The computational speed and inference quality are generally very sensitive to the choice of covariance function and hence have to be designed carefully. One more necessity of the covariance functions is that they must be positive semi-definite. The ``tfp.math.pad_kernels`` module contains a lot of covariance functions to work with. We can wrap these covariance functions in our base class as shown below
 
 ```python
 class Covariance:
@@ -95,9 +95,9 @@ class Covariance:
         return self._feature_ndims
 ```
 
-The advantages of this design is that the covariance functions are additive and multiplicative which gives the user high flexibility to experiment with different combinations of covariance functions. Moreover, [ARD (Automatic Relevence Determination)](http://www.gaussianprocess.org/gpml/chapters/RW5.pdf) is possible using ``tfp.math.psd_kernel.FeatureScaled`` kernel and hence user get one more degree of freedom which is to set and infer the ``scale_diag`` parameter during inference using hir/her favorite inference methods like MCMC or ``find_MAP``.
+The advantage of this design is that the covariance functions are additive and multiplicative which gives the user high flexibility to experiment with different combinations of covariance functions. Moreover, [ARD (Automatic Relevance Determination)](http://www.gaussianprocess.org/gpml/chapters/RW5.pdf) is possible using ``tfp.math.psd_kernel.FeatureScaled`` kernel and hence user get one more degree of freedom which is to set and infer the ``scale_diag`` parameter during inference using hir/her favorite inference methods like MCMC or ``find_MAP``.
 
-The only disadvantage of this design is that it is inconvinient for the user to create his/her own covariance function as it requires the ``self._kernel`` to be an instance of ``tfp.math.psd_kernels.PositiveSemidefiniteKernel``. As a result, the user has to first inherit ``tfp.math.psd_kernels.PositiveSemidefiniteKernel`` and then wrap it in ``pm.gp.Covariance`` base.
+The only disadvantage of this design is that it is inconvenient for the user to create his/her covariance function as it requires the ``self._kernel`` to be an instance of ``tfp.math.psd_kernels.PositiveSemidefiniteKernel``. As a result, the user has to first inherit ``tfp.math.psd_kernels.PositiveSemidefiniteKernel`` and then wrap it in ``pm.gp.Covariance`` base.
 
 Following are the covariance functions that I aim to create:
 
@@ -116,7 +116,7 @@ Following are the covariance functions that I aim to create:
 - Other Kernels
   - Kroneker Product Kernel
 
-**Refrences**
+**References**
 
 - [Introduction to Gaussian Processes by David J.C. Mackay](http://www.inference.org.uk/mackay/gpB.pdf)
 - [Random Walk Kernels and Learning Curves for Gaussian Process Regression on Random Graphs](https://arxiv.org/pdf/1211.1328.pdf)
@@ -151,13 +151,13 @@ class BaseGP:
         ...
 ```
 
-The above design can be used to create all sorts of GP models proposed in literature and these models are made additive so the user can experiment with different combinations of GP models of his/her choice and end up with a model most suitable for his/her data.
+The above design can be used to create all sorts of GP models proposed in the literature and these models are made additive so the user can experiment with different combinations of GP models of his/her choice and end up with a model most suitable for his/her data.
 
-I propose to add the following GP models from their respective refrences:
+I propose to add the following GP models from their respective references:
 
 1. ``LatentGP``: Noiseless GP model that can infer the underlying latent function.
     - [PyMC3 Source](https://github.com/pymc-devs/pymc3/blob/6c5254fe8fe7cbcf7fdf775db67191beb1dd7c90/pymc3/gp/gp.py#L65)
-2. ``MarginalGP``: Noisy GP models that can be used for regression, classification and prediction.
+2. ``MarginalGP``: Noisy GP models that can be used for regression, classification, and prediction.
     - [Gaussian Process in Machine Learning by Rasmussen et. al.](https://www.cs.ubc.ca/~hutter/EARG.shtml/earg/papers05/rasmussen_gps_in_ml.pdf)
 3. ``StudentTP``: A alternative to gaussian processes using the t distribution
     - [Student-t Processes as Alternatives to Gaussian Processes](https://www.cs.cmu.edu/~andrewgw/tprocess.pdf)
@@ -175,7 +175,7 @@ I propose to add the following GP models from their respective refrences:
 
 #### Working Prototype
 
-I have created a working prototype of the ``LatentGP`` model that can be used to perform regression and the parameters can be infered using MCMC. This prototype is [available here on my branch](https://github.com/tirthasheshpatel/pymc4/tree/xlpatch/gp) of the project and the [here is the coressponding PR on GitHub](https://github.com/pymc-devs/pymc4/pull/235). The results and the code to reproduce them is shown below.
+I have created a working prototype of the ``LatentGP`` model that can be used to perform regression and the parameters can be inferred using MCMC. This prototype is [available here on my branch](https://github.com/tirthasheshpatel/pymc4/tree/xlpatch/gp) of the project and the [here is the corresponding PR on GitHub](https://github.com/pymc-devs/pymc4/pull/235). The results and the code to reproduce them are shown below.
 
 ```python
 import numpy as np
@@ -229,14 +229,14 @@ def latent_gp_model(X, y, X_new):
     X: np.ndarray, tensor
         The prior data
     y: np.ndarray, tensor
-        The function coressponding to the prior data
+        The function corresponding to the prior data
     X_new: np.ndarray, tensor
         The new data points to evaluate the conditional
 
     Returns
     -------
     y_: tensor
-        Random sample from inferred function and its noise.
+        A random sample from inferred function and its noise.
     """
     # We define length_scale of RBF kernel as a random variable
     l = yield pm.HalfCauchy("l", scale=5.)
@@ -292,11 +292,64 @@ plt.title("Conditional distribution of $f_*$, given $f$"); plt.legend()
 
 ![svg](/images/gaussian_process_files/gaussian_process_24_1.svg)
 
-***Note**:I have not implemented additive models and only implemented the full covariance functions without diagonal approximation. This work is only a prototype of the actual implementation.*
+***Note**: I have not implemented additive models and only implemented the full covariance functions without diagonal approximation. This work is only a prototype of the actual implementation.*
+
+#### Potential for Future work
+
+New mean and covariance functions can be added easily in the future. One of the most interesting projects possible based on my proposed implementation is Bayesian Optimization. Bayesian Optimization is used extensively in tuning hyperparameters in machine learning models and is highly based on Gaussian Processes. It has not been implemented in both PyMC3 and PyMC4 and would make a great future project. I will try to take this up during the community bonding period and look forward to it even after the community bonding period. Below are some reference papers that can be referred to implement Bayesian Optimization Algorithms:
+
+- [Taking the Human Out of the Loop: A Review of Bayesian Optimization](https://www.cs.ox.ac.uk/people/nando.defreitas/publications/BayesOptLoop.pdf)
+- [A Tutorial on Bayesian Optimization of Expensive Cost Functions, with Application to Active User Modeling and Hierarchical Reinforcement Learning](https://arxiv.org/pdf/1012.2599.pdf)
+- [BOA: The Bayesian Optimization Algorithm](http://www.medal-lab.org/hboa/boa.pdf)
+- [Practical Bayesian Optimization of Machine Learning Algorithms](https://papers.nips.cc/paper/4522-practical-bayesian-optimization-of-machine-learning-algorithms.pdf)
 
 ### Project Timeline
 
-``Not decided yet``
+- **May 18 - June 19: Phase 1**
+  - Week 1: May 18 - May 24
+    - Create a few mean and covariance functions with their base classes.
+    - Implement a fully functional Latent Gaussian Process Model and a base for other models.
+  - Week 2: May 25 - May 31
+    - Complete migrating all the covariance functions from PyMC3
+    - Complete migrating all the mean functions from PyMC3.
+  - Week 3: June 1 - June 7
+    - Implement the ``MarginalGP`` model for basic regression and classification tasks.
+    - Add fixtures and tests for all the covariance functions, mean functions, and GP models.
+  - Week 4: June 8 - June 14
+    - Get all the PRs ready for review.
+  - June 15 - June 19
+    - Mentors review the basic functional API and suggest changes
+    - Make the changes and get all the PRs ready to merge.
+- **June 20 - July 17: Phase 2**
+  - Week 1: June 20 - June 26
+    - Implement all the remaining mean and covariance functions mentioned in former sections
+  - Week 2: June 27 - July 3
+    - Implement the Student-t Process model.
+    - Start implementing the sparse models.
+  - Week 3: July 4 - July 10
+    - Complete the implementation of sparse GP models.
+    - Add tests and fixtures for all the new models and functions.
+    - Get all the PRs ready for review.
+  - Week 4: July 11 - July 17
+    - Mentors review the API and suggest changes
+    - Make the changes and get all the PRs ready to merge.
+- **July 18 - August 24: Phase 3**
+  - Week 1: July 18 - July 24
+    - Implement the Variational GP model.
+  - Week 2: July 25 - July 31
+    - Start implementing all the remaining models from PyMC3 and other proposed models
+    - Mentors review the PRs and suggest changes.
+    - Make the changes and get all the PRs ready to merge.
+  - Week 3: August 1 - August 7
+    - Add functionality to all the implemented GP models and mean and covariance functions.
+    - Complete all the test suites.
+    - Get all the PRs ready for review
+  - Final phase: August 7 - August 16
+    - Mentors review the API and suggest changes
+    - Make the changes and get all the PRs ready to merge.
+- **August 17 - August 25: Final Evaluation**
+  - Final work evaluation by mentors
+  - Results
 
 ### Commitments and Conclusion
 
@@ -304,6 +357,6 @@ I aim to work full time for at least 60 to 70 hours a week on my project and wri
 
 I am working on a research paper with my university professor to which I am willing to give not more than 4 to 5 hours a week. It will not affect my performance on the project.
 
-I will notify beforehand if I am not available during some time slot and compensate for the time lost afterwards during the community bonding period. I will maintain and review future code contributions even after the community bonding period.
+I will notify beforehand if I am not available during some time slot and compensate for the time lost afterward during the community bonding period. I will maintain and review future code contributions even after the community bonding period.
 
 ## PyMCheers!
