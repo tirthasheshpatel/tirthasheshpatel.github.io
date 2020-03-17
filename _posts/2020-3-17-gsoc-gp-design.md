@@ -312,7 +312,7 @@ plt.title("Conditional distribution of $f_*$, given $f$"); plt.legend()
 
 #### Potential for Future work
 
-New mean and covariance functions can be added easily in the future. One of the most interesting projects possible based on my proposed implementation is Bayesian Optimization. Bayesian Optimization is used extensively in tuning hyperparameters in machine learning models and is highly based on Gaussian Processes. It has not been implemented in both PyMC3 and PyMC4 and would make a great future project. I will try to take this up during the community bonding period and look forward to it even after the community bonding period. Below are some reference papers that can be referred to implement Bayesian Optimization Algorithms:
+New mean and covariance functions can be added easily in the future. One of the most interesting projects possible based on my proposed implementation is Bayesian Optimization. Bayesian Optimization is used extensively in tuning hyperparameters in machine learning models and in reinforcement learning using the concept of Gaussian Processes. It has not been implemented in both PyMC3 and PyMC4 and would make a great future project. I will try to take this up during the community bonding period and look forward to it even after the community bonding period. Below are some reference papers that can be referred to implement Bayesian Optimization Algorithms:
 
 - [Taking the Human Out of the Loop: A Review of Bayesian Optimization](https://www.cs.ox.ac.uk/people/nando.defreitas/publications/BayesOptLoop.pdf)
 - [A Tutorial on Bayesian Optimization of Expensive Cost Functions, with Application to Active User Modeling and Hierarchical Reinforcement Learning](https://arxiv.org/pdf/1012.2599.pdf)
