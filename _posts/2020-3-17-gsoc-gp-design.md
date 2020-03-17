@@ -5,13 +5,29 @@ category: GSoC 2020
 tags: [gsoc, gaussian process, machine learning]
 ---
 
+### Contact Information
+
+**Name: Tirth Asheshkumar Patel**
+
+#### Contact Details
+
+- GitHub: [tirthasheshpatel](https://www.github.com/tirthasheshpatel/)
+- Discourse: [tirthasheshpatel](https://discourse.pymc.io/u/tirthasheshpatel/summary)
+- LinkedIn: [Tirth Patel](https://www.linkedin.com/in/tirthasheshpatel/)
+- Mail: [tirthasheshpatelgmail.com](mailto:tirthasheshpatel@gmail.com)
+- WhatsApp/Mobile: (+91)6354700696
+- Location: Gujarat, India
+- Timezone: GMT + 5:30 (Indian Standard Time)
+
 ### Introduction
+
+I am Tirth Patel, an undergraduate computer science student at Nirma University, Ahmedabad, India. I have previously worked on many Machine Learning projects and particularly on Bayesian Methods for Machine Learning like Facial Composites that use Variational AutoEncoders and Gaussian Processes to generate faces of a suspect! My motivation to work with PyMC is driven by my passion for open-source projects and Machine Learning.
 
 I have decided to work with PyMC4 on the project statement **Adding Gaussian Process in PyMC4** for *GSoC 2020*. In this article, I present my ideas for development during the community bonding period.
 
-> My goal for GSoC 2020 is to implement, test, and maintain a higher-level API for Gaussian Processes in PyMC4 using TensorFlow and TensorFlow Probability and write tutorials/articles and notebooks explaining their usage.
+### Abstract
 
-I am Tirth Patel, an undergraduate computer science student at Nirma University, Ahmedabad, India. I have previously worked on many Machine Learning projects and particularly on Bayesian Methods for Machine Learning like Facial Composites that use Variational AutoEncoders and Gaussian Processes to generate faces of a suspect! My motivation to work with PyMC is driven by my passion for open-source projects and Machine Learning.
+> My goal for GSoC 2020 is to implement, test, and maintain a higher-level API for Gaussian Processes in PyMC4 using TensorFlow and TensorFlow Probability and write tutorials/articles and notebooks explaining their usage.
 
 ### Project Proposal
 
