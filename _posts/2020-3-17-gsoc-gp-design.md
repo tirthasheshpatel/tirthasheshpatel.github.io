@@ -369,7 +369,7 @@ New mean and covariance functions can be added easily in the future. One of the 
 
 ### Commitments and Conclusion
 
-I aim to work full time for at least 60 to 70 hours a week on my project and write a blog on the work done every week.
+I aim to work full time for at least 60 to 70 hours a week on my project and write a blog on the work done every week on my webiste [tirthasheshpatel.github.io](https://tirthasheshpatel.github.io/).
 
 I am working on a research paper with my university professor to which I am willing to give not more than 4 to 5 hours a week. It will not affect my performance on the project.
 
