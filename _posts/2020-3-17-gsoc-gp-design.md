@@ -5,7 +5,7 @@ category: GSoC 2020
 tags: [gsoc, gaussian process, machine learning]
 ---
 
-### Contact Information
+### Personal Information
 
 **Name: Tirth Asheshkumar Patel**
 
