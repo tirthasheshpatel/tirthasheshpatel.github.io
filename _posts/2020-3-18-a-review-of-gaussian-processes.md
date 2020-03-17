@@ -17,7 +17,7 @@ Gaussian Processes are non-parametric models being used extensively used for spa
 
 Just like a Gaussian Distribution, a Gaussian Process can be parameterized by a mean and a covariance function. The mean function, $m$, is usually assumed to be a zero function but it can be made to reflect the most information of the data known apriori. Literature has esspecially been interested in covariance functions, $k$, due to the positive semi-definite constraint and they have been explored extensively. We review all these mean and covariace functions in the latter sections.
 
-$$f \sim \mathcal{GP}(m, k)$$
+$$f \sim \mathcal{GP}\left(m, k\right)$$
 
 This article follows a notation provided below.
 
@@ -42,7 +42,7 @@ def zero_mean_function(X):
     -----
     X: array-like
         Data matrix of shape (n_samples, n_features)
-    
+
     Returns
     -----
     A zero vector of shape (n_samples, )
@@ -76,12 +76,12 @@ def constant_mean_function(X, coef):
 
 3. Linear Mean: This mean function is a generalization over constant mean. It is a mapping $\R^{m \times n} \to \R^{m}$ parametrized by a weight vector $w$ and a bias or intercept $b$. The following equation shows the mapping.
 
-$$f(X) = w^{T}X + b$$
+$$f(X) = Xw + b$$
 
 ```python
 def linear_mean_function(X, w, b):
     """Linear mean function
-    m(x) = wx + b
+    m(X) = Xw + b
 
     Parameters
     -----
@@ -96,7 +96,70 @@ def linear_mean_function(X, w, b):
     A vector of shape (n_samples, )
     """
     w = w.reshape(-1, 1)
-    return w.T @ X + b
+    return X @ w + b
+```
+
+### Covariance functions
+
+Covariance functions (or positive semi-definite kernels) have been a huge topic of interest for researchers as gaussian processes are known primarily for predicting uncertainty in the data. In fact this property of gaussian processes is key to exploration in Bayesian optimization algorithm [3], [4], [5]. Inference is very sensitive to the choice of covariance functions and hence they have to be designed carefully. Moreover, the positive semi-definite constraint on covariance functions makes them even more difficult to design. Several stationary and non-stationary covariance function have been introduced in [6] and [7]. Here, I present and implement all these covariance functions.
+
+1. Exponentiated Quadratic Kernel: This kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where $||.||$ is a L2 vector norm. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
+
+$$K(X, X^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||X-X^{\prime}||^2}{2l^2}\right)$$
+
+```python
+def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
+    """The exponentiated quadratic kernel
+
+    Parameters
+    -----
+    X: array-like
+        Prior data matrix of shape (n_samples, n_features)
+
+    X_prime: array_like
+        New data matrix of shape (n_new_samples, n_features)
+
+    length_scale: float
+        The `l` parameter in the equation
+
+    amplitude: float
+        The `sigma^2` parameter in the equation
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X * X_prime.T)
+    return amplitude * np.exp( 0.5 * l2 / sigma ** 2 )
+```
+
+2. Constant Kernel: This kernel is also often used for computationally light modelling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
+
+$$K(X, X^{\prime}) = C$$
+
+where $C$ is a matrix with dimensions $\R^{m \times m}$ with constant entries in all its rows and columns
+
+```python
+def constant_kernel(X, X_prime, coef):
+    """The constant kernel
+
+    Parameters
+    -----
+    X: array-like
+        Prior data matrix of shape (n_samples, n_features)
+
+    X_prime: array_like
+        New data matrix of shape (n_new_samples, n_features)
+
+    coef: float
+        The constant in all rows and columns of
+        the covariance function
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    return coef * np.ones((X.shape[0], X_prime.shape[0]))
 ```
 
 ### References
