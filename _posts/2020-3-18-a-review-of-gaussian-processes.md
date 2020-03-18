@@ -316,7 +316,7 @@ def exponentiated_sine_squared(X, X_prime, length_scale, amplitude, period):
 
 - **Matern One-Halves Kernel**: The matern family is a generalization over the Exponential Quadratic kernels. It adds one degree of freedom nu ($\nu$) which controls the smoothness of the kernel. It can take values 0.5 (1/2), 1.5 (3/2) and 2.5 (5/2). For all other values the kernel is not continuous and hence not diffrentiable which make it analytically impossible to tune the heyperparameters. For Matern 1/2 kernel, the value of smoothness paramter ($\nu$) is 1/2. This kenel is also known as Laplacian kernel. It becomes Exponentiated Quadratic kernel when $\nu \to \inf$. Its functional form is shown below.
 
-$$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||}{2l^2})$$
+$$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||}{l})$$
 
 ```python
 def matern_one_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -341,14 +341,16 @@ def matern_one_halves_kernel(X, X_prime, length_scale, amplitude):
     A covariance matrix of shape (n_samples, n_new_samples)
     """
     l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
-    return amplitude * np.exp( 0.5 * l2 ** 0.5 / length_scale ** 2 )
+    return amplitude * np.exp( l2 ** 0.5 / length_scale )
 ```
 
 ![Matern 1/2 Kernel](/images/gaussian_process_files/matern_12_cov_func.svg)
 
 - **Matern Three-Halves kernel**: Another member of Matern family with the value of $\nu=\frac{3}{2}$. Its functional form is given below.
 
-$$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||^3}{2l^2})$$
+$$K(x, x^{\prime}) = \sigma(1+z)\exp(-z)$$
+
+where $$z = \frac{\sqrt{3}||x-x^{\prime}||}{l}$$
 
 ```python
 def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -373,14 +375,17 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
     A covariance matrix of shape (n_samples, n_new_samples)
     """
     l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
-    return amplitude * np.exp( 0.5 * l2 ** 1.5 / length_scale ** 2 )
+    z = (3 * l2) ** 0.5 / length_scale
+    return amplitude * (1 + z) * np.exp(-z)
 ```
 
 ![Matern 3/2 Kernel](/images/gaussian_process_files/matern_32_cov_func.svg)
 
 - **Matern Five-Halves kernel**: Another member of Matern family with the value of $\nu=\frac{5}{2}$. Its functional form is given below.
 
-$$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||^5}{2l^2})$$
+$$K(x, x^{\prime}) = \sigma\left(1+z+\sqrt{z^2}{3}\right)\exp(-z)$$
+
+where $$z = \frac{\sqrt{5}||x-x^{\prime}||}{l}$$
 
 ```python
 def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -405,10 +410,13 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
     A covariance matrix of shape (n_samples, n_new_samples)
     """
     l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
-    return amplitude * np.exp( 0.5 * l2 ** 2.5 / length_scale ** 2 )
+    z = (5 * l2) ** 0.5 / length_scale
+    return amplitude * (1 + z + z ** 2 / 3) * np.exp(-z)
 ```
 
 ![Matern 5/2 Kernel](/images/gaussian_process_files/matern_52_cov_func.svg)
+
+- ****
 
 ### References
 
