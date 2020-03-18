@@ -104,7 +104,7 @@ Covariance functions (or positive semi-definite kernels) have been a huge topic 
 
 - **Exponentiated Quadratic Kernel**: This stationary kernel is widely used and is commonly known as the Radial Basis Function (RBF) kernel. The following equation shows the RBF kernel where. This function is parametrized by an amplitude $\sigma$ and a length scale $l$.
 
-$$K(X, X^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||X-X^{\prime}||^2}{2l^2}\right)$$
+$$K(x, x^{\prime}) = \sigma^2 \mathcal{exp}\left(-\frac{||x-x^{\prime}||^2}{2l^2}\right)$$
 
 ```python
 def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
@@ -128,13 +128,13 @@ def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
     -----
     A covariance matrix of shape (n_samples, n_new_samples)
     """
-    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X * X_prime.T)
+    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
     return amplitude * np.exp( 0.5 * l2 / length_scale ** 2 )
 ```
 
 - **Constant Kernel**: This stationary kernel is also often used for computationally light modeling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
 
-$$K(X, X^{\prime}) = C$$
+$$K(x, x^{\prime}) = C$$
 
 where $C$ is a matrix with dimensions $\mathbb{R}^{m \times m}$ with constant entries in all its rows and columns
 
@@ -163,7 +163,7 @@ def constant_kernel(X, X_prime, coef):
 
 - **Linear Kernel**: This is a stationary kernel which is parameterized by bias variance ($\sigma_b$), slope variance ($\sigma_w$) and shift ($s$). It is analogous to linear mean function and the equation is given by
 
-$$K(X, X^{\prime}) = \sigma_b^2+\sigma_w^2(X-s)(X^{\prime}-s)$$
+$$K(x, x^{\prime}) = \sigma_b^2+\sigma_w^2(x-s)(x^{\prime}-s)$$
 
 ```python
 def linear_kernel(X, X_prime, bias_var, slope_var, shift):
@@ -196,7 +196,7 @@ def linear_kernel(X, X_prime, bias_var, slope_var, shift):
 
 - **Polynomial Kernel**: This is a stationary kernel. The linear kernel introduced above is a special case of polynomial kernel when the exponent is one. Hence the polynomial function is given by
 
-$$K(X, X^{\prime}) = \sigma_b^2+\sigma_w^2{(X-s)(X^{\prime}-s)}^{v}$$
+$$K(x, x^{\prime}) = \sigma_b^2+\sigma_w^2{(x-s)(x^{\prime}-s)}^{v}$$
 
 where $v$ is the exponent of the dot product term.
 
@@ -234,7 +234,7 @@ def polynomial_kernel(X, X_prime, bias_var, slope_var, shift, exponent):
 
 - **Rational Quadratic**: A Rational Quadratic Kernel is a stationary kernel and a generalization over the Exponential Quadratic kernel introduced above. It is parameterized by amplitude ($\sigma$), length_scale ($l$), and scale mixture rate ($\mathcal{M}$). Its functional form can be given by
 
-$$K(X, X^{\prime}) = \sigma^2\left(1+\frac{||X-X^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
+$$K(x, x^{\prime}) = \sigma^2\left(1+\frac{||x-x^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
 
 This kernel acts like an Exponentiated Quadratic Kernel when the scale mixture rate parameter $\mathcal{M}$ approaches infinity.
 
@@ -263,8 +263,43 @@ def rational_quadratic_kernel(X, X_prime, length_scale, amplitude, scale_mixture
     -----
     A covariance matrix of shape (n_samples, n_new_samples)
     """
-    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X * X_prime.T)
+    l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
     return amplitude * (1. + 0.5 * l2 / (scale_mixture_rate * length_scale ** 2)) ** (-scale_mixture_rate)
+```
+
+- **Exponentiated Sine Squared Kernel**: This is a periodic kernel and is known to model periodic data that is often a case for time series tasks. It is paramerized by amplitude ($\sigma$), length scale ($l$), and period ($T$). It functional form can be given as
+
+$$K(x, x^{\prime}) = \sigma^2\exp\left(\frac{-2\sum_{k=0}^{N}\sin\left(\frac{\pi|x_k-x^{\prime}_k|}{T}\right)}{l^2}\right)$$
+
+```python
+def exponentiated_sine_squared(X, X_prime, length_scale, amplitude, period):
+    """The Exponentiated Sine Squared Kernel
+
+    Parameters
+    -----
+    X: array-like
+        Prior data matrix of shape (n_samples, n_features)
+
+    X_prime: array_like
+        New data matrix of shape (n_new_samples, n_features)
+
+    length_scale: float
+        The `l` parameter in the equation
+
+    amplitude: float
+        The `sigma^2` parameter in the equation
+
+    period: float
+        The `T` parameter in the equation
+
+    Returns
+    -----
+    A covariance matrix of shape (n_samples, n_new_samples)
+    """
+    sine_term = np.empty((X.shape[0], X_prime.shape[0]))
+    for i, x_prime in enumerate(X_prime):
+        sine_term[:, i] = np.sin(np.pi * np.sum(np.abs(X - x_prime), axis=1) / period)
+    return amplitude * np.exp( -2 * sine_term / length_scale ** 2 )
 ```
 
 ### References
