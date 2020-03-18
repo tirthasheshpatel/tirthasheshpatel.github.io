@@ -344,6 +344,8 @@ def matern_one_halves_kernel(X, X_prime, length_scale, amplitude):
     return amplitude * np.exp( 0.5 * l2 ** 0.5 / length_scale ** 2 )
 ```
 
+![Matern 1/2 Kernel](/images/gaussian_process_files/matern_12_cov_func.svg)
+
 - **Matern Three-Halves kernel**: Another member of Matern family with the value of $\nu=\frac{3}{2}$. Its functional form is given below.
 
 $$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||^3}{2l^2})$$
@@ -374,6 +376,8 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
     return amplitude * np.exp( 0.5 * l2 ** 1.5 / length_scale ** 2 )
 ```
 
+![Matern 3/2 Kernel](/images/gaussian_process_files/matern_32_cov_func.svg)
+
 - **Matern Five-Halves kernel**: Another member of Matern family with the value of $\nu=\frac{5}{2}$. Its functional form is given below.
 
 $$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||^5}{2l^2})$$
@@ -403,6 +407,8 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
     l2 = np.sum(X ** 2, 1).reshape(-1, 1) + (np.sum(X_prime ** 2, 1).reshape(1, -1) - 2 * X @ X_prime.T)
     return amplitude * np.exp( 0.5 * l2 ** 2.5 / length_scale ** 2 )
 ```
+
+![Matern 5/2 Kernel](/images/gaussian_process_files/matern_52_cov_func.svg)
 
 ### References
 
