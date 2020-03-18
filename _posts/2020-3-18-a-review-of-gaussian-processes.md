@@ -316,7 +316,7 @@ def exponentiated_sine_squared(X, X_prime, length_scale, amplitude, period):
 
 - **Matern One-Halves Kernel**: The matern family is a generalization over the Exponential Quadratic kernels. It adds one degree of freedom nu ($\nu$) which controls the smoothness of the kernel. It can take values 0.5 (1/2), 1.5 (3/2) and 2.5 (5/2). For all other values the kernel is not continuous and hence not diffrentiable which make it analytically impossible to tune the heyperparameters. For Matern 1/2 kernel, the value of smoothness paramter ($\nu$) is 1/2. This kenel is also known as Laplacian kernel. It becomes Exponentiated Quadratic kernel when $\nu \to \inf$. Its functional form is shown below.
 
-$$K(x, x^{\prime}) = \sigma^2\exp(\frac{||x - x^{\prime}||}{l})$$
+$$K(x, x^{\prime}) = \sigma^2\exp\left(\frac{||x - x^{\prime}||}{l}\right)$$
 
 ```python
 def matern_one_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -350,7 +350,9 @@ def matern_one_halves_kernel(X, X_prime, length_scale, amplitude):
 
 $$K(x, x^{\prime}) = \sigma(1+z)\exp(-z)$$
 
-where $$z = \frac{\sqrt{3}||x-x^{\prime}||}{l}$$
+where
+
+$$z = \frac{\sqrt{3}||x-x^{\prime}||}{l}$$
 
 ```python
 def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -385,7 +387,9 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
 
 $$K(x, x^{\prime}) = \sigma\left(1+z+\sqrt{z^2}{3}\right)\exp(-z)$$
 
-where $$z = \frac{\sqrt{5}||x-x^{\prime}||}{l}$$
+where
+
+$$z = \frac{\sqrt{5}||x-x^{\prime}||}{l}$$
 
 ```python
 def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
@@ -416,7 +420,11 @@ def matern_three_halves_kernel(X, X_prime, length_scale, amplitude):
 
 ![Matern 5/2 Kernel](/images/gaussian_process_files/matern_52_cov_func.svg)
 
-- ****
+- **Composite Kernel**: Two or more positive semi-definite kernels can be added, multiplied, or exponentiated to create a new positive semi-definite kernel. This property of kernel functions makes all sorts of different combinations open to model more and more complex data. Below are some plots showing different combinations of kernel functions inreoduced in the former sections.
+
+### 4. Gaussian Processes
+
+``to be continued``
 
 ### References
 
