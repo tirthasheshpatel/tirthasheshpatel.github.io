@@ -132,6 +132,8 @@ def exponentiated_quadratic_kernel(X, X_prime, length_scale, amplitude):
     return amplitude * np.exp( 0.5 * l2 / length_scale ** 2 )
 ```
 
+![Exponential Quadratic Covariance Function](/images/gaussian_process_files/exp_quad_cov_func.svg)
+
 - **Constant Kernel**: This stationary kernel is also often used for computationally light modeling. It just maps the data matrix to a covariance matrix with constant values in all the rows and columns analogous to the constant mean function. It is computationally easy to compute with the disadvantage of poor posterior covariance. It often models the uncertainty very poorly and hence is not suitable for tasks like Bayesian Optimization.
 
 $$K(x, x^{\prime}) = C$$
@@ -160,6 +162,8 @@ def constant_kernel(X, X_prime, coef):
     """
     return coef * np.ones((X.shape[0], X_prime.shape[0]))
 ```
+
+![Constant Kernel](/images/gaussian_process_files/constant_cov_func.svg)
 
 - **Linear Kernel**: This is a stationary kernel which is parameterized by bias variance ($\sigma_b$), slope variance ($\sigma_w$) and shift ($s$). It is analogous to linear mean function and the equation is given by
 
@@ -193,6 +197,8 @@ def linear_kernel(X, X_prime, bias_var, slope_var, shift):
     dot_prod = (X - shift) @ (X_prime - shift).T
     return bias_var ** 2 + slope_var ** 2 * dot_prod
 ```
+
+![Linear kernel](/images/gaussian_process_files/linear_cov_func.svg)
 
 - **Polynomial Kernel**: This is a stationary kernel. The linear kernel introduced above is a special case of polynomial kernel when the exponent is one. Hence the polynomial function is given by
 
@@ -232,6 +238,8 @@ def polynomial_kernel(X, X_prime, bias_var, slope_var, shift, exponent):
     return bias_var ** 2 + slope_var ** 2 * dot_prod ** exponent
 ```
 
+![Polynomial Kernel](/images/gaussian_process_files/poly_cov_func.svg)
+
 - **Rational Quadratic**: A Rational Quadratic Kernel is a stationary kernel and a generalization over the Exponential Quadratic kernel introduced above. It is parameterized by amplitude ($\sigma$), length_scale ($l$), and scale mixture rate ($\mathcal{M}$). Its functional form can be given by
 
 $$K(x, x^{\prime}) = \sigma^2\left(1+\frac{||x-x^{\prime}||^2}{2\mathcal{M}l^2}\right)^{-\mathcal{M}}$$
@@ -267,6 +275,8 @@ def rational_quadratic_kernel(X, X_prime, length_scale, amplitude, scale_mixture
     return amplitude * (1. + 0.5 * l2 / (scale_mixture_rate * length_scale ** 2)) ** (-scale_mixture_rate)
 ```
 
+![Rational Quadratic Kernel](/images/gaussian_process_files/rat_quad_cov_func.svg)
+
 - **Exponentiated Sine Squared Kernel**: This is a periodic kernel and is known to model periodic data that is often a case for time series tasks. It is paramerized by amplitude ($\sigma$), length scale ($l$), and period ($T$). It functional form can be given as
 
 $$K(x, x^{\prime}) = \sigma^2\exp\left(\frac{-2\sum_{k=0}^{N}\sin\left(\frac{\pi|x_k-x^{\prime}_k|}{T}\right)}{l^2}\right)$$
@@ -301,6 +311,8 @@ def exponentiated_sine_squared(X, X_prime, length_scale, amplitude, period):
         sine_term[:, i] = np.sin(np.pi * np.sum(np.abs(X - x_prime), axis=1) / period)
     return amplitude * np.exp( -2 * sine_term / length_scale ** 2 )
 ```
+
+![Exponentiated Sine Squared Kernel](/images/gaussian_process_files/exp_sin_sq_cov_func.svg)
 
 ### References
 
