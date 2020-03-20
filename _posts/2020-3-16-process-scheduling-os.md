@@ -5,8 +5,6 @@ category: Operating Systems Notes
 tags: [process, scheduling, os]
 ---
 
-![bomb cat will blow this bitch up](/images/random/bomb_cat.png)
-
 ### Abstract
 
 In this article, I have collected and reviewed various algorithms present for short term scheduling. The first section introduces the concept of short term scheduling and its importance in efficient CPU utilization. In further sections, I introduce the scheduling algorithms and thier efficiency. This article ends with techniques for searching the values for free parameters present in various scheduling algorithms introduced in former sections. You may want to refer to my previous article on process creation to get a idea of the concept of processes in operation systems.
@@ -21,8 +19,11 @@ Several processes are kept in memory at the same time while a processor can only
 
 #### CPU-I/O burst cycles
 
-Process execution begins with a CPU burst.
-That is followed by an I/O burst, which is followed by another CPU burst, then another I/O burst, and so on. The duration of CPU burst has been studied extensivel. Although the time taken by a process to execute may be highly system dependent, a pattern in the frequency curve is observed which is generally caracterisized as a exponential or hyperexponential distributions.
+Burst!!! Let the bomb cat handle this!
+
+![bomb cat will blow this bitch up](/images/random/bomb_cat.png)
+
+Process execution begins with a CPU burst. That is followed by an I/O burst, which is followed by another CPU burst, then another I/O burst, and so on. The duration of CPU burst has been studied extensivel. Although the time taken by a process to execute may be highly system dependent, a pattern in the frequency curve is observed which is generally caracterisized as a exponential or hyperexponential distributions.
 
 ![cpu burst distribution](/images/os-process/cpu-burst-distribution.jpg)
 
