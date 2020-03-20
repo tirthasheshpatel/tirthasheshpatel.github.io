@@ -176,11 +176,162 @@ int main(int argc, char **argv)
 
 ```
 
+### Interprocess Communication (IPC)
+
+A process is *independent* if it cannot affect or be affected by other processes executing in the system.
+
+A process is *co-operating* if it can affect or be affected by other processes running in the system.
+
+Reasons for providing an environment for process co-operation:
+
+1. Information sharing
+2. Computational Speedup
+3. Modularity
+4. Convenience
+
+Cooperating processes require an **interprocess communication** mechanism that allows them to exchange data and infeormation.
+
+Two fundamental models of IPC are:
+
+1. Shared Memory
+2. Message passing
+
+#### Shred Memory Systems
+
+Shared memory region resides inside the address space of the process creating the shared memory segment. Any Other process which wish to communicate must first attach it to its address sapce.
+
+Following program solves the classic producer consumer problem using shared memory. The producer produces ``"Hello World"`` message and places it in the shared memory space from where the consumer consumes and prints it on the terminal.
+
+```c
+/**
+ * The producer process
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/shm.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+
+int main(int argc, char** argv)
+{
+    const int SIZE = 4096;
+    const char *name = "OS";
+
+    const char *message_0 = "Hello, ";
+    const char *message_1 = "World!\n";
+
+    int shm_fd;
+    void *ptr;
+
+    shm_fd = shm_open(name, O_CREAT|O_RDWR, 0666);
+    ftruncate(shm_fd, SIZE);
+
+    ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    sprintf(ptr, "%s", message_0);
+    ptr += strlen(message_0);
+    sprintf(ptr, "%s", message_1);
+    ptr += strlen(message_1);
+
+    return 0;
+}
+```
+
+```c
+/**
+ * The consumer process
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <sys/shm.h>
+
+int main(int argc, char** argv)
+{
+    const int SIZE = 4096;
+    const char *name = "OS";
+    int shm_fd;
+    void *ptr;
+
+    shm_fd = shm_open(name, O_RDONLY, 0666);
+    ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
+    printf("%s", (char *)ptr);
+    shm_unlink(name);
+
+    return 0;
+}
+```
+
+```c
+/**
+ * The manager process that launches
+ * the producer and consumer
+ */
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+    pid_t producerp, consumerp;
+
+    producerp = fork();
+    if(producerp == 0) {
+        printf("starting producer...\n");
+        execlp("./producer", NULL);
+    }
+
+    consumerp = fork();
+    if(consumerp == 0) {
+        printf("starting consumer...\n");
+        execlp("./consumer", NULL);
+    }
+
+    if(consumerp > 0 && producerp > 0) {
+        wait(NULL);
+        wait(NULL);
+        printf("exiting...\n");
+    }
+
+    return 0;
+}
+```
+
+#### Message Passing Systems
+
+If processes `P` and `Q` want to communicate, they must send messages to and recienve messages from each other: a communication link must exist between them. Methods for implementing a link between processes are shown below:
+
+1. **Direct Communication**: Under direct communication, each process that wants to communicate must explicitly name the recipient or sender of the communication.
+    - ``send(P, message)``: Send a message to P.
+    - ``recienve(Q, message)``: Recienve a message from Q.
+    - Disadvantage: Limited modularity
+
+2. **Indirect Communication**: With indirect communication, the messages are sent to and received from mailboxes, or ports.
+    - ``send(A, message)``: Send a message to mailbox A.
+    - ``receive(A, message)``: Receive a message from mailbox A.
+
+3. **Synchronization**: Message passing may be either blocking or nonblocking: also known as synchronous and asynchronous.
+    - Blocking send. The sending process is blocked until the message is received by the receiving process or by the mailbox.
+    - Nonblocking send. The sending process sends the message and resumes operation.
+    - Blocking receive. The receiver blocks until a message is available.
+    - Nonblocking receive. The receiver retrieves either a valid message or a null.
+
+4. **Buffering**: Whether communication is direct or indirect, messages exchanged by communicating processes reside in a temporary queue. Basically, such queues can be implemented in three ways:
+    - Zero Capacity
+    - Bounded Capacity
+    - Unbounded Capacity
+
 ### PID Manager
 
 The below program used bitmap to generate and allocate unique ``PID``s. This is somewhat analogous to what Linux does to allocate PID to a process.
 
 ``pid_manager.h``
+
 ```c
 #ifndef GUARD_PID_MANAGER_H
 #define GUARD_PID_MANAGER_H
@@ -203,7 +354,7 @@ int allocate_map()
     }
 
     pid_map = (short *)calloc(MAX_PID - MIN_PID + 1, sizeof(short));
-    
+
     if(!pid_map) {
         fprintf(stderr, "error: memory allocation failed!\n");
         return -1;
@@ -221,7 +372,7 @@ int allocate_pid()
         fprintf(stderr, "error: pid_map not initialized!\n");
         return -1;
     }
-    
+
     while(curr != stop) {
         if(!pid_map[curr]) {
             stop = (curr + MAX_PID - MIN_PID) % (MAX_PID - MIN_PID + 1);
@@ -306,7 +457,7 @@ int main(int argc, char **argv)
             printf("abnormal pid allocated: %d\n", pid);
         }
     }
-    
+
     /* release some pids */
     for(int i = MAX_PID;i >= MIN_PID + 5;i--){
         status = release_pid(i);
@@ -316,7 +467,7 @@ int main(int argc, char **argv)
             printf("abnormal release status: %d\n", status);
         }
     }
-    
+
     /* allocate the pids again just to test if release works fine! */
     for(int i = MIN_PID + 5;i < MAX_PID + 1;i++) {
         pid = allocate_pid();
