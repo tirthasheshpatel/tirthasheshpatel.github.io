@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Processes in Operating Systems -- Notes
+title: Chaper 3 - Processes in Operating Systems
 category: Operating Systems Notes
 tags: [process, os]
 ---
