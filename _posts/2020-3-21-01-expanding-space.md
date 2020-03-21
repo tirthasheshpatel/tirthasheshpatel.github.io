@@ -144,8 +144,31 @@ Let's answer these final questions in the following sections!
 
 ### Hubble's Law
 
-The question of us being in a special place was answered by none other that Edwin Hubble. 
+![mah man smokin' a pipe](https://upload.wikimedia.org/wikipedia/commons/1/15/Studio_portrait_photograph_of_Edwin_Powell_Hubble_%28cropped%29.JPG)
+
+The question of us being in a special place was answered by none other that Edwin Hubble. Edwin Hubble has th eaccess to the largest telescope back then in 1915-1920. He observed the slipher's nebulae and saw that it was composed of stars. So Hubble realized that the nebulae were galaxies as we appreciate them today.
+
+Hubble has this idea to compare how bright stars would be in one galaxy and compare how big stars are in another galaxy under the assumption that the brightest star in each galaxy would be about the same brightness. So if the brightest stars in each galaxy had the same brightness, then we can measure the distance between them using the **inverse square law** ($\phi \propto r^{-2}$). So, Hubble did this for a bunch of Slipher's galaxies and in 1929 he showed the world his results.
+
+![hubble's law aka amazing!](/images/astronomy_files/hubble_law.jpg)
+
+This is arguably the most important result in the history of cosmology! What the plot shows is distance along the X-axis and velocity along the Y-axis. It seems that the objects are moving faster and faster as we move farther and farther away from the earth. This, rather fuzzy, relationship is quite interesting even though it doesn't entirely fit on the graph. It because of the assumptions that Hubble made which makes the relatioanship look waek. Let's see what the modern graphs have to say.
+
+![modern hubble's graph](/images/astronomy_files/modern_hubble.jpg)
+
+As you can see, this graph explores the velocities as great as $4 \time 10^{4}km/s$ of astronomical objects as far as $700 Mpc$ or $2.170 \times 10^{22}km$ relative to us. You can see the relationship very clearly in this graph.
+
+What this means is that everything around us is moving away from us and it gets faster as we move farther away into the depths of the universe. What this is telling us is that every other galaxy in the universe, pretty much, is moving away from us, and their speeds can be absolutely staggering. But how fast they're going away doesn't depend upon what sort of galaxy, it doesn't matter if you're a big galaxy or a small galaxy. **All it seems to depend on is how far it is away from us**.
+
+> This means that we are, indeed, in a special place of the universe!
+
+Suck it, Copernicus!
+
+Let's analyse some more plausible explanations of this phenomenon.
 
 ### Refrences
 
-[The Solar-Stellar Spectrograph](http://www2.lowell.edu/users/jch/sss/article.php?r=t_datared_d_spectrum)
+1. [Astrophysics on EdX](https://www.edx.org/xseries/astrophysics)
+2. [The Solar-Stellar Spectrograph](http://www2.lowell.edu/users/jch/sss/article.php?r=t_datared_d_spectrum)
+3. [A relation between distance and radial velocity among extra-galactic nebulae](https://www.pnas.org/content/15/3/168)
+4. [Hubble's diagram and cosmic expansion](https://www.pnas.org/content/101/1/8)
