@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The curious case of Expanding space
+title: The Curious Case of the Expanding Universe
 category: Astronomy
 tags: [hubble, redshifts, astronomy, physics]
 ---
@@ -58,7 +58,7 @@ $$P = \frac{LA}{4 \pi r^2}$$
 
 where $A$ is the area of the lens of the telescope. This area can vary highly from telescope to telescope and hence we use **flux** which is the apparent brightness per unit area as a universal measure.
 
-$$\phi = \fracP{L}{4 \pi r^2}$$
+$$\phi = \frac{L}{4 \pi r^2}$$
 
 $$\phi \propto \frac{1}{r^2}$$
 
