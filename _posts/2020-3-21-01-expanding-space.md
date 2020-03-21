@@ -72,7 +72,7 @@ $$\frac{\phi_1}{\phi_2} = \frac{r_2^2}{r_1^2}$$
 
 ![spectra of all the elements](/images/astronomy_files/spectra.jpg)
 
-In astronomy, the spectra is about $70$ to $90%$ of all the observations. It is of utmost importance because of the following properties:
+In astronomy, the spectra is about $70$ to $90\%$ of all the observations. It is of utmost importance because of the following properties:
 
 1. Every element on the periodic table has unique spectral emission lines and hence we can detect presence of a particular element using the spectra of an astronomical object.
 2. Spectral lines are very accurate and don't leave any windows for errors.
@@ -122,6 +122,14 @@ $$z = \sqrt{\frac{1+\frac{v}{c}}{1-\frac{v}{c}}}+1$$
 
 $$z \approx \frac{v}{c}$$
 
+So, Vesto Slipher went through and used a telescope to be the first person to take spectra of these galaxies or nebulae as he knew them. He obseved a graph similar to what is shown below
+
+![sliphers observation](/images/astronomy_files/sliphers_observation.png)
+
+You can see from the image clearly that the wavelengths have been redshifted and that the galaxy is moving away from us. Slipher knew this and he tried to calculate the velocity at which the galaxy was moving away from us by manually calculating the redshifts from the image. What he observed was astounishing! The galaxy was moving at a velocity 1000's of kilometers per **seconds** (not hour). We can travel around the earth in seconds at such a huge speed. This is a super sonic baby!!
+
+![super sonic baby!](/images/random/sonic_running.png)
+
 That is beautiful! We can get the relative velocity of an astronomical object by measuring the shift in wavelenght caused due to doppler effect. It is experimentally observed that most of the galaxies are redshifted, meaning, moving away from us. This could mean that the universe is expanding! Mystery solved!!! But just when you thought we are done...
 
 ![bomb cat](/images/random/bomb_cat.png)
@@ -130,11 +138,13 @@ There is one more question before we say for final that the universe is expandin
 
 > Are we in some special place in the universe? Are we at the center and everything around us is expanding?
 
+Well, copernicus said that we shouldn't think of ourselves as a special place in the universe but just a perfectly average place in the universe but our observations seems contrary!
+
 Let's answer these final questions in the following sections!
 
 ### Hubble's Law
 
-
+The question of us being in a special place was answered by none other that Edwin Hubble. 
 
 ### Refrences
 
