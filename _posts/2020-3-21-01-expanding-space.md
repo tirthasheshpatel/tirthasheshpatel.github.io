@@ -92,7 +92,49 @@ Using such a spectrograph, we can make out what a star, galaxy, or nebulae is ma
 
 ### Doppler Effect
 
-``to be continued``
+![train example](https://upload.wikimedia.org/wikipedia/commons/9/90/Dopplerfrequenz.gif)
+
+You may have encountered a train engine passing from right besides you while you are cursing why god sent in such a huge train while you were getting late to work. Well then, you must also have heard the pattern of sound that hits your ears from when the engine appears in sight moving towards you until when it goes out of the sight moving away... There is steep increase in the sound while it is moving towards you which reaches its peak when its just besides your ear and then a steep decreases until it moves away out of you sight. This effect is called **doppler effect**. It is seen in all the phenomenon where waves are involved (for instance, here, the sound waves). Light can also take the form of a wave, meaning, doppler effect is observed in case of light too! Let's see what is the reason behind the effect and how does it relate to astronomy!
+
+Let's look at the formal definition from wikipedia.
+
+> ***Definition: The Doppler effect (or the Doppler shift) is the change in frequency of a wave in relation to an observer who is moving relative to the wave source.[1] It is named after the Austrian physicist Christian Doppler, who described the phenomenon in 1842***
+
+Below is a gif that shows the difference between the emmision of waves by a stationary and a non-stationary source.
+
+![stationary](https://upload.wikimedia.org/wikipedia/commons/e/e3/Dopplereffectstationary.gif)
+
+![not stationary](https://upload.wikimedia.org/wikipedia/commons/c/c9/Dopplereffectsourcemovingrightatmach0.7.gif)
+
+How does it relate to astronomy? Read the title of this article again! If we show that the there is some shift (*doppler shipt*) in the spectrograph we observe, than we can say that the astronomical objects around us are moving relative to us. This is our first step towards claiming that the universe expands.
+
+Let's say we have observed a spectograph but found a absorption line that doesn't match any of the elements or the result we expected. This means that there is a shift in the wavelenghth and hence the object is moving relative to us.
+
+![redshift example](/images/astronomy_files/redshift.png)
+
+Suppose a absorption line was expected at $\lambda_l$ and a absorption line is observed at $\lambda_o$. Then we can give the relative shift as
+
+$$z = \frac{\lambda_o-\lambda_l}{\lambda_l}$$
+
+If the value of $z$ is positive, it means that the object is moving away from us and the shift is known as **redshift**. If the value of $z$ is negative, it means that the object is moving towards us (very rare) and the shift is known as **blueshift**. We can also calculate the relative velocity of the object using the theorem of relativity!
+
+$$z = \sqrt{\frac{1+\frac{v}{c}}{1-\frac{v}{c}}}+1$$
+
+$$z \approx \frac{v}{c}$$
+
+That is beautiful! We can get the relative velocity of an astronomical object by measuring the shift in wavelenght caused due to doppler effect. It is experimentally observed that most of the galaxies are redshifted, meaning, moving away from us. This could mean that the universe is expanding! Mystery solved!!! But just when you thought we are done...
+
+![bomb cat](/images/random/bomb_cat.png)
+
+There is one more question before we say for final that the universe is expanding.
+
+> Are we in some special place in the universe? Are we at the center and everything around us is expanding?
+
+Let's answer these final questions in the following sections!
+
+### Hubble's Law
+
+
 
 ### Refrences
 
