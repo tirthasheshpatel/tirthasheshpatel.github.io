@@ -102,7 +102,7 @@ $$\tau_{n+1} = \alpha t_n + (1-\alpha)\tau_{n}$$
 
 where $\tau_{n+1}$ is the predicted CPU burst, $\tau_{n}$ is a moving average of the predicted CPU bursts, $t_{n}$ is actual length of $n$'th CPU burst and $\alpha$ is a weight factor that controls the smoothness of the curve. A good value of this parameter is generally $0.5$ or $0.9$. One more degree of freedom is $\tau_0$ which is the initial predicted CPU burst which is normally set to $10ms$.
 
-$$\tau_{n+1} = \alpha t_{n}+(1-\alpha)\alpha t_{n-1}+\dot\dot\dot+(1-\alpha)^{j}\alpha t_{n-j}+\dot\dot\dot+(1-\alpha)^{n+1}\alpha \tau_0$$
+$$\tau_{n+1} = \alpha t_{n}+(1-\alpha)\alpha t_{n-1}+...+(1-\alpha)^{j}\alpha t_{n-j}+...+(1-\alpha)^{n+1}\alpha \tau_0$$
 
 The ``SJF`` algorithm can be either preemptive or non-preemptive. The preemptive ``SJF`` algorithm is sometimes called the **shortest-remaining-time-first scheduling**.
 
