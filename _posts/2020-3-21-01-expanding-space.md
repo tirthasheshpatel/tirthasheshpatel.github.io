@@ -5,7 +5,8 @@ category: Astronomy
 tags: [hubble, redshifts, astronomy, physics]
 ---
 
-![cool image](/images/astronomy_files/header_img_1.png)
+<!-- ![cool image](/images/astronomy_files/header_img_1.png) -->
+![cool image](https://cdn.discordapp.com/attachments/277329934949679104/277330843653898240/99.jpg)
 
 ### Introduction
 
@@ -38,3 +39,61 @@ $$\frac{\theta_1}{\theta_2} = \frac{r_2}{r_1}$$
 where $r_2=30$, $r_1=10$. Hence, the astronomer far away from the camera appears to be 3 times smaller than the astronomer who is close to the camera. Let's match these results with the experiment.
 
 ![perspective effect observation](/images/astronomy_files/perspective_effect_obs.png)
+
+Aha! The experimental ratio of sizes of astronomers is approximately $3.03$ which is very close to our expected result $3$.
+
+### Distances from Brightness
+
+The universe is full of stars like our sun and galaxies like our milky way. They all share a common property of brightness => releasing energy in the form of light. If we can find the distance of a galaxy or star based on how bright it appears here on earth then we would have a universal way of measuring distance.
+
+Can you think of a way to measure the distances from the apparent brightness of an object? I have an idea!
+
+![bulb is the idea representing my idea! Puns intended](https://i2.wp.com/business-ethics.com/wp-content/uploads/2011/09/EarthTalkBULB.jpg?zoom=1.25&resize=948%2C572&ssl=1)
+
+Imagine we have a light bulb and it releases some energy per second which we call **lunimosity**. The luminosity of a typical light bulb might be around $100W$ while it is around $3.86 \times 10^26W$ which is much much higher. Also notice that the light released by the light bulb spreads around it in a sphere (in the image it looks like a circle because its 2D).
+
+Say, we have a telescope that collects light coming from an object at a distance $r$ from it. If the luminosity of the object is $L$ then we can give the equation for the apparent brightness as follows
+
+$$P = \frac{LA}{4 \pi r^2}$$
+
+where $A$ is the area of the lens of the telescope. This area can vary highly from telescope to telescope and hence we use **flux** which is the apparent brightness per unit area as a universal measure.
+
+$$\phi = \fracP{L}{4 \pi r^2}$$
+
+$$\phi \propto \frac{1}{r^2}$$
+
+where $\phi$ is our flux. The equation above clearly shows that the apparent brightness of an object is inversely propotional to the square of its distance from the telescope. Meaning, if we know the brightness of the object, we can easily get its distance! That is amazing! Also, we can easily measure relative distance between objects by the following equation.
+
+$$\frac{\phi_1}{\phi_2} = \frac{r_2^2}{r_1^2}$$
+
+![worked out example](/images/astronomy_files/distance_using_brightness.png)
+
+### Spectra
+
+![spectra of all the elements](/images/astronomy_files/spectra.jpg)
+
+In astronomy, the spectra is about $70$ to $90%$ of all the observations. It is of utmost importance because of the following properties:
+
+1. Every element on the periodic table has unique spectral emission lines and hence we can detect presence of a particular element using the spectra of an astronomical object.
+2. Spectral lines are very accurate and don't leave any windows for errors.
+3. Easy to measure with current technology.
+
+The telescope first collects light from the image plane which is fed into a **spectograph**. The light collected this way has many wavelengths present in it. This spectograph has a device like a prism (usually a diffraction grading) which splits light into its individual wavelengths and these wavelengths are recorded to form a graph which is typically showing the wavelength on the x-axis and the energy per unit wavelength on the y-axis. This is known as the **spectrograph**.
+
+For a normal star, galaxy or nebulae, the graph first goes up and then down to roughly form a bell shaped curve like the one shown below. If it peaks at the beginning than its a hot star, at the middle than its a medium hot star and if it peaks at the end of the spectrograph than its a cold star.
+
+![expected spectra](/images/astronomy_files/expected_spectra.svg)
+
+It turns out that we normally observe some dips in between this bell at certain wavelengths called **absorption lines**. This means that the light coressponding to that wavemength was absorbed showing the presence of an element coressponding to that wavelength.
+
+![reduce_spectrum_extract](/images/astronomy_files/reduce_spectrum_extract.jpg)
+
+Using such a spectrograph, we can make out what a star, galaxy, or nebulae is made up of.
+
+### Doppler Effect
+
+``to be continued``
+
+### Refrences
+
+[The Solar-Stellar Spectrograph](http://www2.lowell.edu/users/jch/sss/article.php?r=t_datared_d_spectrum)
