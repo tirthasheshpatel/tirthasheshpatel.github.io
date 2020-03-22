@@ -156,15 +156,15 @@ This is arguably the most important result in the history of cosmology! What the
 
 ![modern hubble's graph](/images/astronomy_files/modern_hubble.jpg)
 
-As you can see, this graph explores the velocities as great as $4 \time 10^{4}km/s$ of astronomical objects as far as $700 Mpc$ or $2.170 \times 10^{22}km$ relative to us. You can see the relationship very clearly in this graph.
+As you can see, this graph explores the velocities as great as $4 \times 10^{4}km/s$ of astronomical objects as far as $700 Mpc$ or $2.170 \times 10^{22}km$ relative to us. You can see the relationship very clearly in this graph.
 
 What this means is that everything around us is moving away from us and it gets faster as we move farther away into the depths of the universe. What this is telling us is that every other galaxy in the universe, pretty much, is moving away from us, and their speeds can be absolutely staggering. But how fast they're going away doesn't depend upon what sort of galaxy, it doesn't matter if you're a big galaxy or a small galaxy. **All it seems to depend on is how far it is away from us**.
 
-> This means that we are, indeed, in a special place of the universe!
+> This means that we are, indeed, in a special place of the universe, or are we \>:)
 
-Suck it, Copernicus!
+Let's keep that question for sometime later...
 
-Let's analyse some more plausible explanations of this phenomenon.
+![hubble deep field](/images/astronomy_files/hubble_deep_field.gif)
 
 ### Refrences
 
@@ -172,3 +172,6 @@ Let's analyse some more plausible explanations of this phenomenon.
 2. [The Solar-Stellar Spectrograph](http://www2.lowell.edu/users/jch/sss/article.php?r=t_datared_d_spectrum)
 3. [A relation between distance and radial velocity among extra-galactic nebulae](https://www.pnas.org/content/15/3/168)
 4. [Hubble's diagram and cosmic expansion](https://www.pnas.org/content/101/1/8)
+5. [Doppler Effect](https://en.wikipedia.org/wiki/Doppler_effect)
+6. [Vesto Slipher](https://en.wikipedia.org/wiki/Vesto_Slipher)
+7. [Edwin Hubble](https://en.wikipedia.org/wiki/Edwin_Hubble)
