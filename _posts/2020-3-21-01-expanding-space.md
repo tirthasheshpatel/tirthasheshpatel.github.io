@@ -5,6 +5,9 @@ category: Astronomy
 tags: [hubble, redshifts, astronomy, physics]
 ---
 
+<!-- ![cool image](/images/astronomy_files/header_img_1.png) -->
+![cool image](https://cdn.discordapp.com/attachments/277329934949679104/277330843653898240/99.jpg)
+
 ### Table of Contents
 
 - [Introduction](#introduction)
@@ -14,9 +17,6 @@ tags: [hubble, redshifts, astronomy, physics]
 - [Doppler Effect](#doppler-effect)
 - [Hubble's Law](#hubbles-law)
 - [Refrences](#refrences)
-
-<!-- ![cool image](/images/astronomy_files/header_img_1.png) -->
-![cool image](https://cdn.discordapp.com/attachments/277329934949679104/277330843653898240/99.jpg)
 
 ### Introduction
 
