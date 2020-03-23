@@ -37,7 +37,15 @@
 		  
 		  {% if include.type == "post" %}
       <span class="post-meta">Posted on {{ page.date | date: site.date_format }}</span>
-      <span class="post-meta">{% include read_time.html %}</span>
+      <span class="post-meta">
+        {% assign words = content | number_of_words %}
+        {% if words < 360 %}
+          1 min read
+        {% else %}
+          {{ words | divided_by:180 }} mins read
+        {% endif %}
+        <!-- {% include read_time.html %} -->
+      </span>
 		  {% endif %}
         </div>
       </div>
