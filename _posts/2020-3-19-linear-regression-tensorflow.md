@@ -2,7 +2,7 @@
 type: post
 title: Linear Regression in TensorFlow 2.x
 subtitle: TensorFlow is one of the most successful tool in deep learning. Let's get started with TensorFlow in this article series.
-tags: [Tensorflow 2.x, Machine Learning]
+tags: [Tensorflow 2.x, Machine Learning, Python]
 ---
 
 ### Workflow of TensorFlow Models
