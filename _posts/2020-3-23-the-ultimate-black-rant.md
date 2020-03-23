@@ -5,11 +5,13 @@ category: Python
 tags: [python]
 ---
 
+![black](https://raw.githubusercontent.com/psf/black/master/docs/_static/logo2-readme.png)
+
 ### Why
 
 Supoose you are, like me, working on a scientific Python project and want your code to look beautiful. A natural choice would be using some auto-formatter which will help you follow the same convention throughout the project without worrying about the format while writing the code. While this seems easy, you mostly would end up with a filthy mess that looks more like vomit than "beautiful" code. OTOH, I also believe that following a common convention helps and its almost impossible to keep track of it while writing code. Well, then why do I hate it so much?
 
-Let's say you have a function to canculte the rotation matrix from Euler's angles like follows:
+Let's say you have a function to calculate the rotation matrix from Euler's angles like follows:
 
 ```python
 def get_rotation_matrix(rotation_angles):
