@@ -20,9 +20,9 @@ permalink: /gsoc2020/
 {%- endcapture -%}
 {%- assign tags_list = site_tags | split:',' | sort -%}
 
-{% if tags_list contains "GSoC 2020" %}
 <div id="full-tags-list">
 {%- for tag in tags_list -%}
+    {% if tag == "GSoC 2020" %}
     <h2 id="{{- tag -}}" class="linked-section">
         <i class="fas fa-tag" aria-hidden="true"></i>
         &nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})
@@ -37,9 +37,9 @@ permalink: /gsoc2020/
             </div>
         {%- endfor -%}
     </div>
+    {% endif %}
 {%- endfor -%}
 </div>
-{% endif %}
 
 <!-- <div class="posts-list">
   {% for post in paginator.posts %}
