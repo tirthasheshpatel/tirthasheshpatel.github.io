@@ -9,3 +9,12 @@ Gemfile.lock
 node_modules
 package.json
 .jekyll-cache/
+# project
+_site
+.sass-cache
+.vagrant
+
+# general
+.DS_Store
+Thumbs.db
+ehthumbs.db
