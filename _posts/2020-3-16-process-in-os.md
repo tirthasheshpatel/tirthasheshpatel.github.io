@@ -2,8 +2,7 @@
 layout: post
 title: Chaper 3 - Processes in Operating Systems
 subtitle: From Process creation to termination
-category: Operating Systems Notes
-tags: [process, os]
+tags: [Operating Systems]
 ---
 
 ### Process VS Program

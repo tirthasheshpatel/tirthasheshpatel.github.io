@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Chapter 6 - Process Scheduling in Operating Systems
-category: Operating Systems Notes
-tags: [process, scheduling, os]
+subtitle: How are processes scheduled in operating systems as complex as Linux and Windows?
+tags: [Operating Systems]
 ---
 
 ### Abstract

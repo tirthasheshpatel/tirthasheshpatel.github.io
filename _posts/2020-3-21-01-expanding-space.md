@@ -1,7 +1,8 @@
 ---
 layout: post
 title: The Curious Case of the Expanding Universe
-category: Astronomy
+subtitle: Astronomy is full of interesting and mysterious questions and here I try to answer one such question that asks if our universe is expanding!
+tags: [Astronomy, Physics, Astrophysics]
 tags: [hubble, redshifts, astronomy, physics]
 ---
 

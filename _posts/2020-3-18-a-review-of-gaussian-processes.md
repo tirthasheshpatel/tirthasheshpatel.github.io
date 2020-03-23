@@ -1,8 +1,8 @@
 ---
 type: post
 title: A review of Gaussian Processes
-category: [Machine Learning, GSoC 2020]
-tags: [gsoc, machine learning]
+subtitle: A theoritical introduction to Gaussian Processes and implementation from scratch using python!
+tags: [Machine Learning, GSoC 2020]
 ---
 
 ### Abstract

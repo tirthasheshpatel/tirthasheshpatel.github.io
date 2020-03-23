@@ -1,8 +1,11 @@
 ---
 layout: post
 title: Gaussian Process in PyMC4
-category: [Machine Learning, GSoC 2020]
-tags: [gaussian process, machine learning, statistics]
+subtitle: A tutorial on creating GP models in python using PyMC4 scientific package and using them for temporal and spatial predictions
+gh-repo: tirthasheshpatel/pymc4
+gh-badge: [star, fork, follow]
+tags: [Machine Learning, GSoC 2020]
+comments: true
 ---
 
 ### Theory
