@@ -2,7 +2,7 @@
 type: post
 title: Why I hate Python's auto-formating tools like Black
 subtitle: Do auto-formaters really make your code beautiful?
-bigimg: https://raw.githubusercontent.com/psf/black/master/docs/_static/logo2-readme.png
+# bigimg: https://raw.githubusercontent.com/psf/black/master/docs/_static/logo2-readme.png
 category: Python
 tags: [Python]
 ---
