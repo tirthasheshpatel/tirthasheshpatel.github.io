@@ -1,6 +1,6 @@
 ---
 type: post
-title: Why I hate Python code auto-formating tools like Black
+title: Why I hate Python's auto-formating tools like Black
 category: Python
 tags: [python]
 ---
