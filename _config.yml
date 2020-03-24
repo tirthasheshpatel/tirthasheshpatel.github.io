@@ -29,14 +29,14 @@ google_analytics: UA-161186729-1
 # version: v1.2.0
 
 # # Jekyll 3 now only supports Kramdown for Markdown
-# # kramdown:
-# #   # Use GitHub flavored markdown, including triple backtick fenced code blocks
-# #   input: GFM
-# #   # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
-# #   syntax_highlighter: rouge
-# #   syntax_highlighter_opts:
-# #     # Use existing pygments syntax highlighting css
-# #     css_class: 'highlight'
+kramdown:
+  # Use GitHub flavored markdown, including triple backtick fenced code blocks
+  input: GFM
+  # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    # Use existing pygments syntax highlighting css
+    css_class: 'highlight'
 
 # # Set the Sass partials directory, as we're using @imports
 # sass:
@@ -97,7 +97,7 @@ footer-link-col: "#404040"
 
 # navbar-img: "/img/bgimage.png"
 # footer-img: "/img/bgimage.png"
-# page-img: "/img/bgimage.png"
+page-img: "/image/logo_sq.png"
 
 # --- Footer options --- #
 
@@ -188,8 +188,8 @@ date_format: "%B %-d, %Y"
 
 # Output options (more information on Jekyll's site)
 timezone: "America/Vancouver"
-markdown: kramdown
-highlighter: rouge
+# markdown: kramdown
+# highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
 
