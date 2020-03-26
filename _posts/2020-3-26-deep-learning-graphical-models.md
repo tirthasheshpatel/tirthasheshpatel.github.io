@@ -72,21 +72,21 @@ $$P(X_1, Y) \stackrel{?}{=} P(X)P(Y)$$
 
 The joint distributions can in turn be used to ask how high or low the temperature ($X_4$) is at some location given we found oil there. In general,
 
-> The joit distribution is an encylopedia containing all the possible information about a system.
+> The joint distribution is an encyclopedia containing all the possible information about a system.
 
 ### How to represent Joint Distributions
 
-To determine a joint distributions, with say $n$ number of variables $X_1, X_2, X_3, ..., X_n$, we have to get the all the explicit probabilities of all the combinations of RVs. This means that we need to specify $\mid X_1 \mid \times \mid X_2 \mid \times \mid X_3 \mid ... \times \mid X_n \mid - 1$. This means for $n$ binary variables, we need $2_n-1$ such values.
+To determine a joint distributions, with say $n$ number of variables $X_1, X_2, X_3, ..., X_n$, we have to get the all the explicit probabilities of all the combinations of RVs. This means that we need to specify $\mid X_1 \mid \times \mid X_2 \mid \times \mid X_3 \mid \times ... \times \mid X_n \mid - 1$. This means for $n$ binary variables, we need $2^n-1$ such values.
 
 #### Challenges of explicit representation
 
 The number of parameters required to represent the joint distribution increases exponentially and hence becomes intractable even with a very small number of parameters. Formally writing
 
-- Computational: It is $\mathcal{O}(2_n-1)$ in both space and time. We are quickly going to run out of computational resources to calculate and store the joint.
+- **Computational**: It is $\mathcal{O}(2^n-1)$ in both space and time. We are quickly going to run out of computational resources to calculate and store the joint.
 
-- Cognitive: Impossible to aquire so many numbers from a human or even a expert.
+- **Cognitive**: Impossible to aquire so many numbers from a human or even a expert.
 
-- Statistical: Need huge amount of prior data to calculate the joint.
+- **Statistical**: Need huge amount of prior data to calculate the joint.
 
 ### Can we use a Graph to represent a Joint Distribution
 
