@@ -2,9 +2,11 @@
 type: post
 title: Graphical Models for Deep Learning
 subtitle: Deep Learning Course - Part 2
-bigimg: /images/graphical_models/logo_graph.jpg
+image: /images/graphical_models/logo_graph.jpg
 tags: [Machine Learning, Deep Learning]
 ---
+
+![Cool Graph](/images/graphical_models/logo_graph.jpg)
 
 ### Table of Contents
 
@@ -103,19 +105,39 @@ These assumptions are modelling choice and once chosen cannot be changed. This c
 
 Let's see the implications of the independence assumption we made in previous discussion. Suppose, $I$ and $S$ are binary variables and $G$ can take upto 3 values. Under no assumption, we would have $2 \times 2 \times 3 - 1 = 11$ parameters. Under our assumption, the joint distribution factorizes as follows
 
-$$P(S, I, G) = P(G \mid I)P(S \mid I)P(I)$$ which needs only $7$ parameters to be represented. This means, we can reduce the number of parameters required to represent the joint distribution by assuming independence between our RVs.
+$$P(S, I, G) = P(G \mid I)P(S \mid I)P(I)$$
+
+which needs only $7$ parameters to be represented. This means, we can reduce the number of parameters required to represent the joint distribution by assuming independence between our RVs.
 
 #### Advantages of assuming the conditional independencies
 
-1. **Natural**: The alternate parameterization is more natural than that of the joint distribution
+1. **Natural**: The alternate parameterization is more natural than that of the joint distribution.
 
-2. **Compact**: Needs fewer parameters to be represented
+2. **Compact**: Needs fewer parameters to be represented.
 
 3. **Modular**: If we want to introduce a new RV, it will mostly not affect the variables assumed to be independent of the newly introduced RV.
 
 ### Can we use a Graph to represent a Joint Distribution
 
+![Student Graph](/images/graphical_models/student_graph.svg)
+
+The graph shown above represents intelligence as $I$, grade as $G$, difficulty (of exams) as $D$, letter (of recommendation) as $L$ and the SAT score as $S$. The graph clearly shows all the conditional independencies made to make the joint distribution more compact. Such graphs are called **Bayesian Graphs**. Properties of Bayesian Graphs are:
+
+1. Contains a node for each random variable
+
+2. The edges denote dependencies between random variables.
+
+3. Each variable depends directly on the parents in the network.
+
+Each node is located with a local probability distribution which is a conditional or a marginal depending on weather the node has a parent or not. Such a graph that has coupled with each node, its local probability distribution, is called a **Bayesian Network**.
+
+Bayesain Networks provide a very simple data structure to represent all the RVs in a system and store all the conditional dependencies using which a joint distribution can be calculated. Baysian Networks store all the factors needed to evaluate the joint distribution.
+
 ### Different types of Reasoning encoded in a Bayesian Network
+
+#### 1. Causal Reasoning
+
+Here, we try to predict the downstream effects of various factors. 
 
 ### Independencies encoded by Bayesian Networks
 
