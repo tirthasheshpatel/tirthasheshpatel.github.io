@@ -2,15 +2,16 @@
 type: post
 title: Graphical Models for Deep Learning
 subtitle: Deep Learning Course - Part 2
-bgimg: /images/graphical_models/logo_graph.jpg
+bigimg: /images/graphical_models/logo_graph.jpg
 tags: [Machine Learning, Deep Learning]
 ---
 
 ### Table of Contents
 
-- [Recap of Probability Thoery](#recap-of-probability-theory)
-- [Why are we interested in Joint Distributions](#why-are-we-interested-in-joit-distributions)
+- [Recap of Probability Theory](#recap-of-probability-theory)
+- [Why are we interested in Joint Distributions](#why-are-we-interested-in-joint-distributions)
 - [How to represent Joint Distributions](#how-to-represent-joint-distributions)
+- [Can we represent joint distribution more compactly](#can-we-represent-joint-distribution-more-compactly)
 - [Can we use a Graph to represent a Joint Distribution](#can-we-use-a-graph-to-represent-a-joint-distribution)
 - [Different types of Reasoning encoded in a Bayesian Network](#different-types-of-reasoning-encoded-in-a-bayesian-network)
 - [Independencies encoded by Bayesian Networks](#independencies-encoded-by-bayesian-networks)
@@ -54,19 +55,19 @@ Now, suppose that we have $n$ number of random variables $X_1, X_2, ..., X_n$. W
 
 A Joint distribution encodes in it all the required information of a system to fully describe it and answer all sorts of different questions that could arise.
 
-***Example***: Assume you are running a oil company and you want to determine the locations that have the maximum probability of finding oil. You can use one of the systems below to describe your setting.
+***Example***: Assume you are running a oil company and you want to determine the locations that have the maximum probability of finding oil. You can use one of the systems shown below to describe your setting.
 
 ![Oil Graph](/images/graphical_models/oil_graph.svg)
 
-$Y$ is the binary random variable describing the availibility of oil in a particular location. Other parameters $X_1, X_2, ..., X_6$ are the factors on which it depends. Now, we are primarily interested in $P(Y \mid X_1, X_2, ..., X_6)$ which can be determined using the joint probability over all the rvs in the system.
+$Y$ is the binary random variable describing the availibility of oil in a particular location. Other parameters $X_1, X_2, ..., X_6$ are the factors on which it depends. We are primarily interested in $P(Y \mid X_1, X_2, ..., X_6)$ which can be determined using the joint probability over all the rvs in the system.
 
 $$P(Y \mid X_1, X_2, ..., X_6) = \frac{P(Y, X_1, X_2, ..., X_6)}{\sum_{X_1, X_2, .., X_6}P(Y, X_1, X_2, ..., X_6)}$$
 
-Now, using the joint distribution, we cna find the marginal
+Using the joint distribution, we can find the marginal as
 
 $$P(Y) = \sum_{X_1, X_2, ..., X_6}P(Y, X_1, X_2, ..., X_6)$$
 
-We can also determine conditional independies
+We can also determine conditional independies as
 
 $$P(X_1, Y) \stackrel{?}{=} P(X)P(Y)$$
 
@@ -88,9 +89,23 @@ The number of parameters required to represent the joint distribution increases 
 
 - **Statistical**: Need huge amount of prior data to calculate the joint.
 
+### Can we represent joint distribution more compactly
+
+Suppose, we have SAT scores and Intelligence and we want to determine the joint distributions over these two RVs. We can write it as either $P(S, I) = P(S \mid I)P(I)$ or $P(S, I) = P(I \mid S)P(S)$. The former seems to be a more natural way of writing the joint distribution as, naturally, intelligence of a student determines his/her SAT scores. Hence, it makes sense to ask what is the SAT score given the student's intelligence. Keep this notion of ***assumptions*** in mind!
+
+Now consider one more RV Grade ($G$) of a student. Notice that none of the three variables are independent of each other. Grade and SAT scores are clearly corelated with the Intelligence, in the sense that, student's performance in SAT and his grade affect our belief of his intellignce. We can make a ***assumption*** that the grade of a student doesn't depend on his SAT score, given his intelligence. We essentially are saying
+
+$$P(G \mid I, S) = P(G \mid I)$$
+
+which can be represented as $$G \perp S \mid I$$.
+
+These assumptions are modelling choice and once chosen cannot be changed. This choice of assumptions is made such that it agrees the most with the observed data out of all modelling choices.
+
+Let's see the implications of the independence assumption we made in previous discussion. Suppose, $I$ and $S$ are binary variables and $G$ can take upto 3 values. Under no assumption, we would have $2 \times 2 \times 3 - 1 = 11$ parameters. Under our assumption, the joint distribution factorizes as follows
+
+$$P(S, I, G) = P(G \mid I)P(S \mid I)P(I)$$ which needs only $7$ parameters to be represented. This means, we can reduce the number of parameters required to represent the joint distribution by assuming independence between our RVs.
+
 ### Can we use a Graph to represent a Joint Distribution
-
-
 
 ### Different types of Reasoning encoded in a Bayesian Network
 
