@@ -105,6 +105,14 @@ Let's see the implications of the independence assumption we made in previous di
 
 $$P(S, I, G) = P(G \mid I)P(S \mid I)P(I)$$ which needs only $7$ parameters to be represented. This means, we can reduce the number of parameters required to represent the joint distribution by assuming independence between our RVs.
 
+#### Advantages of assuming the conditional independencies
+
+1. **Natural**: The alternate parameterization is more natural than that of the joint distribution
+
+2. **Compact**: Needs fewer parameters to be represented
+
+3. **Modular**: If we want to introduce a new RV, it will mostly not affect the variables assumed to be independent of the newly introduced RV.
+
 ### Can we use a Graph to represent a Joint Distribution
 
 ### Different types of Reasoning encoded in a Bayesian Network
