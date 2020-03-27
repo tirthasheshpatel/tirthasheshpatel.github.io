@@ -168,13 +168,13 @@ We care about independencies as they simplify the factors of the joint distribut
 
 For our graph, we have the following dependencies according to the rule mentioned above
 
-$$L \not\perp G$$
-$$G \not\perp I$$
-$$G \not\perp D$$
-$$S \nit\perp I$$
-$$G \not\perp D, I \mid \{S, L\}$$
-$$S \not\perp I \mid \{D, G, L\}$$
-$$L \not\perp G \mid \{D, I, S\}$$
+1. $$L \not\perp G$$
+2. $$G \not\perp I$$
+3. $$G \not\perp D$$
+4. $$S \not\perp I$$
+5. $$G \not\perp D, I \mid \{S, L\}$$
+6. $$S \not\perp I \mid \{D, G, L\}$$
+7. $$L \not\perp G \mid \{D, I, S\}$$
 
 #### Case 2: Node and its non-parents
 
