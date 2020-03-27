@@ -151,9 +151,6 @@ url-pretty: "tirthasheshpatel.github.io"  # eg. "deanattali.com/beautiful-jekyll
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
 # disqus: ""
 
-# If you want to use JustComments fill with the API Key
-#just-comments: "ABCD-EFGH-IJKL"
-
 # To use Facebook Comments, fill in a Facebook App ID
 # fb_comment_id: ""
 
