@@ -211,14 +211,74 @@ This rule concludes our discussion on independence encoded by Bayesian Networks.
 
 ### Bayesian Networks
 
-**A Bayesian Network structure G is a directed acyclic graph where nodes represent random variables $X_1, X_2, ..., X_n$. Let $Pa_{X_i}^{G}$ denote the parents of $X_i$ in $G$ and $\mathcal{ND}^G\left(X_i\right)$ denote all the variables that are non-decendents on $X_i$ in $G$. Then $G$ encodes the following set of conditional independence assumptions called the local independencies denoted by $I_i^G$ for each variable $X_i$.**
+*Definition: A Bayesian Network structure G is a directed acyclic graph where nodes represent random variables $X_1, X_2, ..., X_n$. Let $Pa_{X_i}^{G}$ denote the parents of $X_i$ in $G$ and $\mathcal{ND}^G\left(X_i\right)$ denote all the variables that are non-decendents on $X_i$ in $G$. Then $G$ encodes the following set of conditional independence assumptions called the local independencies denoted by $I_i^G$ for each variable $X_i$.*
 
 $$X_i \perp \mathcal{ND}^G\left(X_i\right) \mid Pa_{X_i}^G$$
 
 ### I Maps
 
+*Let $G$ be a BN over a set of RVs $X$ and let P be a joint distribution over this variables. If $G$ is an I-Map of $P$, then $P$ factorizes according to $G$. Conversely, if $P$ factorized according to $G$, then $G$ is an I-Map of $P$.*
+
 ### Markov Networks
+
+Suppose, there are four students $A, B, C$ and $D$. Now, $A$ and $B$ like to study together. Also, $B$ and $C$, $C$ and $D$, and $A$ and $D$ like to study together. But $A$ and $C$ and $B$ and $D$ don't get along together very well. This information can be represented as a graph shown below.
+
+![Undirected Student Graph](/images/graphical_models/student_undirected.svg)
+
+Suppose that there is a misconception in the last lecture taken by the university professor. Each student either has the misconception or has solved the misconception. We are interested in knowing everything about weather a student has a misconception or not, given a lot of past data of such misconception. We need to evaluate the joint probability to determine the answers to all such questions:
+
+$$P(A, B, C, D) = ?$$
+
+We also have our independencies given by:
+    - $A \perp C \mid \{B, D\}$
+    - $B \perp D \mid \{A, C\}$
+
+Let's try to achieve this using Bayesian Networks.
+
+![Baye to Markov](/images/graphical_models/baye_to_markov.svg)
+
+The graph (A) encodes the independencies $A \perp C \mid \{B, D\}$ and $B \perp D \mid A$ but it fails to capture the independency $B \perp D \mid \{A, C\}$ because, given $C$ and $D$, our belief about $B$ is affected and vice versa.
+
+The graph (B) captures the independencies $A \perp C \mid \{B, D\}$ and $B \perp D$ but not $B \perp D \mid \{A, C\}$.
+
+In fact, we can never encode these independencies in a bayesian network, no matter how hard we try!
+
+A sound reader would have also noticed that a directed model doesn't make sense in such a situation. There in no direction in context of two students studing together to solve a misconception. Both the students contribute equally to the discussion. So we can't really say that one student depends on the other. Moreover, we are interested in how strong the connections is between two or more students who choose to study together which will finally influence how the misconception flows among students.
+
+The undirected form of a Bayesian Network is called a **Markov Network** and they capture exactly the independencies we desire.
 
 ### Factors in Markov Networks
 
+We parametrize a Markov Network with some weight (or strenght) associated with each edge which we call **factors** in the network opposed to considering a distribution over all the variable which is what we did in Bayesian Network. We can move from these weights to a probability distribution by simply normalizing the product of all the factors. The factors of a Markov Network capture ***affinity*** between connected RVs.
+
+For our example, we can have factors $\phi_1(A, B), \phi_2(B, C), \phi_3(C, D) and \phi_4(A, D)$ that capture the affinity between coressponding nodes in our graph. A factor such as $\phi(A, B)$ cats like the joint distribution over A and B $P(A, B)$.
+
+![student markov network](/images/graphical_models/student_markov.png)
+
+As shown in the above figure, we will have to learn a value (strength/weight) for each combination of the connected RVs in the graph. Once, we have such values, we can write the joint distribution as
+
+$$P(A, B, C, D) = \frac{1}{Z}\phi_1(A, B)\phi_2(B, C)\phi_3(C, D)\phi_4(A, D)$$
+
+where $Z$ is the normalization constant. We can write the normalization contant as
+
+$$Z = \sum_{A}\sum_{B}\sum_{C}\sum_{D}\phi_1(A, B)\phi_2(B, C)\phi_3(C, D)\phi_4(A, D)$$
+
+![student markov network](/images/graphical_models/student_markov_2.png)
+
+Let's explore one more Markov Network.
+
+![student extended graph](/images/graphical_models/student_ext.svg)
+
+We can see that there are some subgraphs that are fully connected like $ADE$ and $ABF$ components. We can use a single factor to represent the connections between all the combinations of the RVs instead of using 3 different one of them. Meaning, we replace $\phi(A, D)$, $\phi(A, E)$ and $\phi(D, E)$ with $\phi(A, E, D)$. We can do this for more that 3 variables also.
+
 ### Local Independencies in a Markov Network
+
+Let $U$ be a set of all the random variables in our joint distribution. Let $X, Y$ and $Z$ be some district subsets of $U$. The distribution $P$ over these variables would imply $X \perp Y \mid Z$ iff it factorizes as
+
+$$P(X, Y, Z) = \frac{1}{Z}\phi_1(X, Z)\phi_2(Y, Z)$$
+
+*Definition: For a given markov network $H$, we define a markov blanket $\mathcal{M}$ to be the neighborhood of a RV $X$ in $H$. We can further define the local dependencies associated with $H$ to be*
+
+$$X \perp U - X - \mathcal{M} \mid \mathcal{M}$$
+
+![THE END](/images/graphical_models/the_end.gif)
