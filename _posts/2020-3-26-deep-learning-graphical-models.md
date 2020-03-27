@@ -23,7 +23,7 @@ tags: [Machine Learning, Deep Learning]
 - [Factors in Markov Networks](#factors-in-markov-networks)
 - [Local Independencies in a Markov Network](#local-independencies-in-a-markov-network)
 
-### Recap of Probability Thoery
+### Recap of Probability Theory
 
 **Marginal distribution** is a Probability distribution over a single Random Variable represented by $P(X)$.
 
@@ -217,7 +217,7 @@ $$X_i \perp \mathcal{ND}^G\left(X_i\right) \mid Pa_{X_i}^G$$
 
 ### I Maps
 
-*Let $G$ be a BN over a set of RVs $X$ and let P be a joint distribution over this variables. If $G$ is an I-Map of $P$, then $P$ factorizes according to $G$. Conversely, if $P$ factorized according to $G$, then $G$ is an I-Map of $P$.*
+*Definition: Let $G$ be a BN over a set of RVs $X$ and let P be a joint distribution over this variables. If $G$ is an I-Map of $P$, then $P$ factorizes according to $G$. Conversely, if $P$ factorized according to $G$, then $G$ is an I-Map of $P$.*
 
 ### Markov Networks
 
@@ -229,9 +229,10 @@ Suppose that there is a misconception in the last lecture taken by the universit
 
 $$P(A, B, C, D) = ?$$
 
-We also have our independencies given by:
-    - $A \perp C \mid \{B, D\}$
-    - $B \perp D \mid \{A, C\}$
+Our independencies are given by:
+
+- $A \perp C \mid \{B, D\}$
+- $B \perp D \mid \{A, C\}$
 
 Let's try to achieve this using Bayesian Networks.
 
