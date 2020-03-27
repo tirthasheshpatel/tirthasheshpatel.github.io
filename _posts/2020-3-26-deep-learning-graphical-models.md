@@ -191,11 +191,23 @@ This means that the node is independent of all other variables given the value o
 
 NOTE: parent**s**, not parent.
 
-For now, we will stick to graph (A).
+For now, we will stick to graph (A). Other independencies in our graph are:
+
+1. $$G \perp $$
 
 #### Case 3: Node and its decendents
 
+If you look closely, I have sneaked in a ***seems to be*** in the previous rule which we have to give away now and hence discard that rule!
+
 > **Rule 3: A node is independent of all the non-decendent variables, given its parents.**
+
+The previous rule says that $G \perp L \mid \{D, I\}$. But what if the student got a bad recommendation letter? Is that going to change our belief about the grade of the student? Yes! Hence, the previous rule fails to capture these dependencies. If observed closely, we can come up with a new rule that, a node is independent of all the non-decendent variables, given its parents. This rule leads to the following independencies:
+
+1. $$S \perp G \mid I$$
+2. $$L \perp D, I, S \mid G$$
+3. $$G \not\perp L \mid \{D, I\}$$
+
+This rule concludes our discussion on independence encoded by Bayesian Networks.
 
 ### Bayesian Networks
 
