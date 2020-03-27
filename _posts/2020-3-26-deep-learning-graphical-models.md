@@ -172,13 +172,13 @@ We care about independencies as they simplify the factors of the joint distribut
 
 For our graph, we have the following dependencies according to the rule mentioned above
 
-$$L \not\perp G$$
-$$G \not\perp I$$
-$$G \not\perp D$$
-$$S \not\perp I$$
-$$G \not\perp D, I \mid \{S, L\}$$
-$$S \not\perp I \mid \{D, G, L\}$$
-$$L \not\perp G \mid \{D, I, S\}$$
+- $$L \not\perp G$$
+- $$G \not\perp I$$
+- $$G \not\perp D$$
+- $$S \not\perp I$$
+- $$G \not\perp D, I \mid \{S, L\}$$
+- $$S \not\perp I \mid \{D, G, L\}$$
+- $$L \not\perp G \mid \{D, I, S\}$$
 
 #### Case 2: Node and its non-parents
 
@@ -205,11 +205,9 @@ If you look closely, I have sneaked in a ***seems to be*** in the previous rule 
 
 The previous rule says that $G \perp L \mid \{D, I\}$. But what if the student got a bad recommendation letter? Is that going to change our belief about the grade of the student? Yes! Hence, the previous rule fails to capture these dependencies. If observed closely, we can come up with a new rule that, a node is independent of all the non-descendent variables, given its parents. This rule leads to the following independencies:
 
-$$S \perp G \mid I$$
-
-$$L \perp D, I, S \mid G$$
-
-$$G \not\perp L \mid \{D, I\}$$
+- $$S \perp G \mid I$$
+- $$L \perp D, I, S \mid G$$
+- $$G \not\perp L \mid \{D, I\}$$
 
 This rule concludes our discussion on independence encoded by Bayesian Networks.
 
