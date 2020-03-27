@@ -2,7 +2,8 @@
 layout: post
 title: The Curious Case of the Expanding Universe
 subtitle: Astronomy is full of interesting and mysterious questions and here I try to answer one such question that asks if our universe is expanding!
-image: https://cdn.discordapp.com/attachments/277329934949679104/277330843653898240/99.jpg
+overlay_image: https://cdn.discordapp.com/attachments/277329934949679104/277330843653898240/99.jpg
+overlay_filter: 0.5
 tags: [Astronomy, Physics]
 ---
 
