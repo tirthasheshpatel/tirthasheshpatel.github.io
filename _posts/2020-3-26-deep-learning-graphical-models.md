@@ -2,8 +2,7 @@
 type: post
 title: Graphical Models for Deep Learning
 subtitle: Deep Learning Course - Part 2
-overlay_image: /images/graphical_models/logo_graph.jpg
-overlay_filter: 0.5
+image: /images/graphical_models/logo_graph.jpg
 tags: [Machine Learning, Deep Learning]
 ---
 
