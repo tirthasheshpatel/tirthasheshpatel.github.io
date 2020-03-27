@@ -137,7 +137,7 @@ Bayesain Networks provide a very simple data structure to represent all the RVs 
 
 #### 1. Causal Reasoning
 
-Here, we try to predict the downstream effects of various factors. 
+Here, we try to predict the downstream effects of various factors. We ask questions like what is the 
 
 ### Independencies encoded by Bayesian Networks
 
