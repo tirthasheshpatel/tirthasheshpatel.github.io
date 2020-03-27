@@ -137,9 +137,65 @@ Bayesain Networks provide a very simple data structure to represent all the RVs 
 
 #### 1. Causal Reasoning
 
-Here, we try to predict the downstream effects of various factors. We ask questions like what is the 
+Here, we try to predict the downstream effects of various factors. We ask questions like what is the probability that the student will get a good recommendation letter ($P(L=good)$)? What is the probability that the student gets a good recommendation letter given he is highly intelligent ($P(L=good \mid I=high)$)?
+
+This means we ask questions about the outcomes given the base knowledge.
+
+#### 2. Evidential Reasoning
+
+> Here we reason about the causes by looking at their effects.
+
+This means that we want to update our belief of other variables based on the observations of some other variable. We ask questions like what is the probability of a student being intelligent ($P(I=high)$)? What is the probability of the course being difficult ($P(D=high)$)? What is the probability of the sudent being intelligent given his SAT score or given that he got a C grade ($P(I=high \mid S=low)$ or $P(I=high \mid G=C)$)?
+
+#### 3. Explaining Away
+
+> Here we see how different causes of the same effect can interact
+
+It is possible that, given a low grade, the probability of the student being intelligent reduces. But what if it is also given that the exams were diffucult? Would our belief about student's intelligence improve? Yes! We call this effect "***explaining away***" as exams being difficult explains why the student got a grade he got!
 
 ### Independencies encoded by Bayesian Networks
+
+We care about independencies as they simplify the factors of the joint distributions and hence reduce the computational time. In general, given $n$ RVs, we are interested in knowing if:
+
+1. $X_i \perp X_j$
+2. $X_i \perp X_j \mid Z, Z \subseteq \{X_1, X_2, ..., X_n\} - \{X_i, X_j\}$
+
+#### Case 1: Node and it's parents
+
+> **Rule 1: A node is not independent of its parents even when the values of other variables are given.**
+
+![Student graph](/images/graphical_models/student_graph.svg)
+
+For our graph, we have the following dependencies according to the rule mentioned above
+
+$$L \not\perp G$$
+$$G \not\perp I$$
+$$G \not\perp D$$
+$$S \nit\perp I$$
+$$G \not\perp D, I \mid \{S, L\}$$
+$$S \not\perp I \mid \{D, G, L\}$$
+$$L \not\perp G \mid \{D, I, S\}$$
+
+#### Case 2: Node and its non-parents
+
+> **Rule 2: A node seems to be independent of other variables given the value of its parents.**
+
+![Modified Student Graph](/images/graphical_models/student_graph_mod.svg)
+
+In the graph (A), can we say that the SAT score is independent of weather the student will recieve a recommendation letter or not, given the grade? Yes! It is because the grade provides full knowledge of weather the student will recieve a recommendation letter or not irrespective of his performance in the SAT exams. But what if the instructor also asks for his SAT score and doesn't solely depend on his grade? In that case, we will end up at graph (B) and the independence will no longer hold. We can say that
+
+1. For graph (A), $L \perp S \mid G$
+2. For graph (B), $L \not\perp S \mid G$
+
+This means that the node is independent of all other variables given the value of its parents.
+
+NOTE: parent**s**, not parent.
+
+For now, we will stick to graph (A).
+
+#### Case 3: Node and its decendents
+
+> **Rule 3: A node is independent of all the non-decendent variables, given its parents.**
 
 ### Bayesian Networks
 
