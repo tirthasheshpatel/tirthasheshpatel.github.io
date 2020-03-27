@@ -18,6 +18,14 @@ use-site-title: true
 	  {% endif %}
     </a>
 
+    {% if post.image %}
+      <div class="post-image">
+        <a href="{{ post.url | relative_url }}">
+          <img src="{{ post.image | relative_url }}">
+        </a>
+      </div>
+    {% endif %}
+
     <p class="post-meta">
       Posted on {{ post.date | date: site.date_format }}
     </p>
@@ -31,14 +39,6 @@ use-site-title: true
         {% endif %}
       </div>
     </div>
-
-    {% if post.image %}
-      <div class="post-image">
-        <a href="{{ post.url | relative_url }}">
-          <img src="{{ post.image | relative_url }}">
-        </a>
-      </div>
-    {% endif %}
 
     {% if post.tags.size > 0 %}
     <div class="blog-tags">
