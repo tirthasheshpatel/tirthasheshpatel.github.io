@@ -211,7 +211,7 @@ This rule concludes our discussion on independence encoded by Bayesian Networks.
 
 ### Bayesian Networks
 
-**A Bayesian Network structure G is a directed acyclic graph where nodes represent random variables $X_1, X_2, ..., X_n$. Let $Pa_{X_i}^{G}$ denote the parents of $X_i$ in $G$ and $\mathcal{ND}(X_i)^G$ denote all the variables that are non-decendents on $X_i$ in $G$. Then $G$ encodes the following set of conditional independence assumptions called the local independencies denoted by $I_i^G$ for each variable $X_i$.**
+**A Bayesian Network structure G is a directed acyclic graph where nodes represent random variables $X_1, X_2, ..., X_n$. Let $Pa_{X_i}^{G}$ denote the parents of $X_i$ in $G$ and $\mathcal{ND}^G\left(X_i\right)$ denote all the variables that are non-decendents on $X_i$ in $G$. Then $G$ encodes the following set of conditional independence assumptions called the local independencies denoted by $I_i^G$ for each variable $X_i$.**
 
 $$X_i \perp \mathcal{ND}^G\left(X_i\right) \mid Pa_{X_i}^G$$
 
