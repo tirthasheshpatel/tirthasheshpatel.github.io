@@ -363,7 +363,6 @@ footer .theme-by {
 .post-image {
   height: 100%;
   width: 100%;
-  margin-top: -35px;
   filter: grayscale(90%);
 }
 .post-image:hover {
