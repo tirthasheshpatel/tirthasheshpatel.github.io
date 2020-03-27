@@ -370,9 +370,8 @@ footer .theme-by {
   filter: grayscale(0%);
 }
 .post-image img {
-  border-radius: 100px;
-  height: 192px;
-  width: 192px;
+  height: 100%;
+  width: 100%;
 }
 .post-preview .post-read-more {
   font-weight: 800;
