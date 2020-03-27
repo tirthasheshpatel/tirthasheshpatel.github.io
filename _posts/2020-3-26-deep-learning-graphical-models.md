@@ -168,13 +168,13 @@ We care about independencies as they simplify the factors of the joint distribut
 
 For our graph, we have the following dependencies according to the rule mentioned above
 
-1. $$L \not\perp G$$
-2. $$G \not\perp I$$
-3. $$G \not\perp D$$
-4. $$S \not\perp I$$
-5. $$G \not\perp D, I \mid \{S, L\}$$
-6. $$S \not\perp I \mid \{D, G, L\}$$
-7. $$L \not\perp G \mid \{D, I, S\}$$
+$$L \not\perp G$$
+$$G \not\perp I$$
+$$G \not\perp D$$
+$$S \not\perp I$$
+$$G \not\perp D, I \mid \{S, L\}$$
+$$S \not\perp I \mid \{D, G, L\}$$
+$$L \not\perp G \mid \{D, I, S\}$$
 
 #### Case 2: Node and its non-parents
 
@@ -191,9 +191,7 @@ This means that the node is independent of all other variables given the value o
 
 NOTE: parent**s**, not parent.
 
-For now, we will stick to graph (A). Other independencies in our graph are:
-
-1. $$G \perp $$
+For now, we will stick to graph (A).
 
 #### Case 3: Node and its decendents
 
@@ -203,13 +201,19 @@ If you look closely, I have sneaked in a ***seems to be*** in the previous rule 
 
 The previous rule says that $G \perp L \mid \{D, I\}$. But what if the student got a bad recommendation letter? Is that going to change our belief about the grade of the student? Yes! Hence, the previous rule fails to capture these dependencies. If observed closely, we can come up with a new rule that, a node is independent of all the non-decendent variables, given its parents. This rule leads to the following independencies:
 
-1. $$S \perp G \mid I$$
-2. $$L \perp D, I, S \mid G$$
-3. $$G \not\perp L \mid \{D, I\}$$
+$$S \perp G \mid I$$
+
+$$L \perp D, I, S \mid G$$
+
+$$G \not\perp L \mid \{D, I\}$$
 
 This rule concludes our discussion on independence encoded by Bayesian Networks.
 
 ### Bayesian Networks
+
+**A Bayesian Network structure G is a directed acyclic graph where nodes represent random variables $X_1, X_2, ..., X_n$. Let $Pa_{X_i}^{G}$ denote the parents of $X_i$ in $G$ and $\mathcal{ND}(X_i)^G denote all the variables that are non-decendents on $X_i$$ in $G$. Then $G$ encodes the following set of conditional independence assumptions denoted by $I_i^G$ for each variable $X_i$.**
+
+$$X_i \perp \mathcal{ND}^G\left(X_i\right) \mid Pa_{X_i}^G$$
 
 ### I Maps
 
