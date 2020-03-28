@@ -159,16 +159,16 @@ This particular choice of parameters leads to a joint distribution of the follow
 
 $$
 \begin{align*}
-P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}(\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j))\\
-        &= \frac{1}{Z}\Pi_{i}\Pi_{j}(\exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j))\\
-        &= \frac{1}{Z}\exp \sum_{i}\sum_{j} W_{ij}v_ih_j + \sum_{i} b_iv_i + \sum_{j} c_jh_j \\
-        &= \frac{1}{Z}\exp\left( - E(H, V) \right)\\
+P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
+        &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
+        &= \frac{1}{Z}\exp \left[ \sum_{i}\sum_{j} W_{ij}v_ih_j + \sum_{i} b_iv_i + \sum_{j} c_jh_j \right]\\
+        &= \frac{1}{Z}\exp\left[ - E(V, H) \right]\\
 \end{align*}
 $$
 
-where $E(H, V)$  is the energy function and is given by
+where $E(V, H)$  is the energy function and is given by
 
-$$ E(H, V) = - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j $$
+$$ E(V, H) = - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j $$
 
 The resulting joint distribution $P(V, H)$ is called a ***Boltzmann distribution*** or ***Gibb's Distribution***. We have further restricted our connections only between visible and hidden variables. Hence, this models are called **Restriced Boltzmann Machines**.
 
