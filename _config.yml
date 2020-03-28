@@ -67,12 +67,12 @@ baseurl: ""
 
 # List of links in the navigation bar
 navbar-links:
+  Author's home: "http://tirthasheshpatel.github.io"
   About Me: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
   #   - Learn markdown: "http://www.markdowntutorial.com/"
   GSoC 2020: "http://tirthasheshpatel.github.io/gsoc2020"
-  Author's home: "http://tirthasheshpatel.github.io"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
@@ -172,7 +172,7 @@ staticman:
 
 # Excerpt Word Length
 # Truncates the excerpt to the specified number of words on the index page
-excerpt_length: 50
+excerpt_length: 60
 
 # Character used to separate site title and description in HTML document title
 # and RSS feed title
@@ -188,7 +188,7 @@ timezone: "America/Vancouver"
 # markdown: kramdown
 # highlighter: rouge
 permalink: /:year-:month-:day-:title/
-paginate: 5
+paginate: 10
 
 kramdown:
   input: GFM
@@ -201,7 +201,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      comments: true  # add comments to all blog posts
+      comments: false  # add comments to all blog posts
       social-share: true # add social media sharing buttons to all blog posts
   -
     scope:
