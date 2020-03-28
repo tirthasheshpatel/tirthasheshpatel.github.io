@@ -256,17 +256,20 @@ $$
 \end{align}
 $$
 
+### Computing the gradient of the log likelihood
+
 Let's pretend for a second that $\theta$ is a collection of all the paramters and we want to maximize the above function wrt them. Let's start by evaluating the gradient first.
 
 $$
 \begin{align*}
 \frac{\partial\mathcal{L}(\theta)}{\partial\theta} &= \frac{\partial}{\partial\theta}\left(\log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H))\right) \\
                                                    &= \frac{1}{\sum_{H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H} \exp(-E(V, H)) \right) - \frac{1}{\sum_{V, H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H, V} \exp(-E(V, H)) \right) \\
-                                                   &= -\frac{1}{\sum_{H}\exp(-E(V, H))}\left( \sum_{H} \exp(-E(V, H)) \frac{\partial E(V, H)}{\partial \theta} \right) + \frac{1}{\sum_{V, H} \exp(-E(V, H))}\left(\sum_{V, H} \exp()\frac{\partial E(V, H)}{\partial \theta}\right) \\
+                                                   &= -\frac{1}{\sum_{H}\exp(-E(V, H))}\left( \sum_{H} \exp(-E(V, H)) \frac{\partial E(V, H)}{\partial \theta} \right) + \frac{1}{\sum_{V, H} \exp(-E(V, H))}\left(\sum_{V, H} \exp(\exp(-E(V, H))\frac{\partial E(V, H)}{\partial \theta}\right) \\
+                                                   &= - \sum_{H}\left( \frac{\exp(-E(V, H))}{\sum_{H} \exp(-E(V, H))}\frac{\partial E(V, H)}{\partial \theta} \right) + \sum_{V, H}\left( \frac{\exp(-E(V, H))}{\sum_{V, H} \exp(-E(V, H))}\frac{\partial E(V, H)}{\partial \theta} \right) \\
+                                                   &= - \sum_{H}\left( P(H \mid V) \frac{\partial E(V, H)}{\partial \theta} \right) + \sum_{V, H}\left( P(H, V) \frac{\partial E(V, H)}{\partial \theta} \right)
+                                                   &= - \mathbb{E}_{P(H \mid V)}\left( \frac{\partial E(V, H)}{\partial \theta} \right) + \mathbb{E}_{P(V, H)}\left( \frac{\partial E(V, H)}{\partial \theta} \right)
 \end{align*}
 $$
-
-### Computing the gradient of the log likelihood
 
 ### Sampling
 
