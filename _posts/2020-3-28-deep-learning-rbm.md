@@ -101,7 +101,7 @@ Suppose we are given some ${1024} \times {1024}$ images of different bedrooms li
 
 Using the above graph, we can factorize the joint as
 
-$$P(X_1, X_2, ..., X_{1024}) = \frac{1}{Z}\Pi_i\phi_1(D_i)$$
+$$P(X_1, X_2, ..., X_{1024}) = \frac{1}{Z}\prod_i\phi_1(D_i)$$
 
 where $D_i$ is a set of variables that form a maximum clique (groups of neighboring pixels).
 
@@ -135,15 +135,15 @@ According to our previous discussion, we have the following Markov Network
 
 There are connections between each visible and hidden variable but no connections between two visible or two hidden variables. So, we can write the joint distirbution as the product of the following factors
 
-$$P(V, H) = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)$$
+$$P(V, H) = \frac{1}{Z}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)$$
 
 We can also introduce factors tied to each visible and hidden unit until we normalize the whole expression appropriately.
 
-$$P(V, H) = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
+$$P(V, H) = \frac{1}{Z}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
 Normalization contant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take upto $2^m$ and $2^n$ unique values respectively.
 
-$$Z = \sum_V\sum_H\Pi_{i}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
+$$Z = \sum_V\sum_H\prod_{i}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
 In our case, the visible varibles in $V$ and hidden variables in $H$ can take on only binary values and partition function $Z$ is a sum over $2^{m+n}$ values.
 
@@ -159,8 +159,8 @@ This particular choice of parameters leads to a joint distribution of the follow
 
 $$
 \begin{align*}
-P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
-        &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
+P(V, H) &= \frac{1}{Z}\prod_{i}\prod_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
+        &= \frac{1}{Z}\prod_{i}\prod_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
         &= \frac{1}{Z}\exp \left[ \sum_{i}\sum_{j} W_{ij}v_ih_j + \sum_{i} b_iv_i + \sum_{j} c_jh_j \right]\\
         &= \frac{1}{Z}\exp\left[ - E(V, H) \right]\\
 \end{align*}
