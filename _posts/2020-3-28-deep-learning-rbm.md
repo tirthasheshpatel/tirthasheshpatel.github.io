@@ -247,13 +247,13 @@ We have derived all the formulas we need to show that the model can be thought o
 Just like in any other probabilistic framework, we want to maximize the ***likelihood*** which is the probability of observing the data. As $\log(.)$ function is a concave function, we can maximize the log likelihood instead.
 
 $$
-\begin{align*}
-\arg,\max_{W, b, c} \log P(V) \\
-\arg,\max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
-\arg,\max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
-\arg,\max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
-\arg,\max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
-\end{align*}
+\begin{align}
+arg\,max_{W, b, c} \log P(V) \\
+arg\,max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
+arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
+arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
+arg\,max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
+\end{align}
 $$
 
 Let's pretend for a second that $\theta$ is a collection of all the paramters and we want to maximize the above function wrt them. Let's start by evaluating the gradient first.
