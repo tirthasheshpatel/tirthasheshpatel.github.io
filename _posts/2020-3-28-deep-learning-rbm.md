@@ -95,13 +95,13 @@ The above code generates following reviews:
 
 ![The bedroom](/images/graphical_models/bedroom.jpg)
 
-Suppose we are given some $1024 \times 1024$ images of different bedrooms like the one above and want to train the machine to generate new bedroom images. This task is very similar to the reviews example except that there is no sense of direction in case of images, unlike reviews. Assuming the pixels as our RVs, we need a Markov Network to represent the connections between the neighboring pixels instead of a Bayesian Network.
+Suppose we are given some ${1024} \times {1024}$ images of different bedrooms like the one above and want to train the machine to generate new bedroom images. This task is very similar to the reviews example except that there is no sense of direction in case of images, unlike reviews. Assuming the pixels as our RVs, we need a Markov Network to represent the connections between the neighboring pixels instead of a Bayesian Network.
 
 ![Bedroom Network](/images/graphical_models/bedroom_network.png)
 
 Using the above graph, we can factorize the joint as
 
-$$P(X_1, X_2, ..., X_1024) = \frac{1}{Z}\Pi_i\phi_1(D_i)$$
+$$P(X_1, X_2, ..., X_{1024}) = \frac{1}{Z}\Pi_i\phi_1(D_i)$$
 
 where $D_i$ is a set of variables that form a maximum clique (groups of neighboring pixels).
 
@@ -115,13 +115,17 @@ Such variables have no special meaning whatsoever. We can't predeict that the hi
 
 Such variables can also be used to ***generate*** an observation by tweaking their values a little.
 
-Suppose, we have $32 \times 32$ images of a beach and we assume there are $n$ latent variables responsible for the generation of those images. More formally, we have a set $V$ of $\{V_1, V_2, ..., V_1024\}$ visible variables and a set $H$ of $\{H_1 H_2, ..., H_n\}$ latent variables. Can you now think of a Markov Network that has the joint distribution $P(V, H)$?
+Suppose, we have $32 \times 32$ images of a beach and we assume there are $n$ latent variables responsible for the generation of those images. More formally, we have a set $V$ of $\{V_1, V_2, ..., V_{1024}\}$ visible variables and a set $H$ of $\{H_1 H_2, ..., H_n\}$ latent variables. Can you now think of a Markov Network that has the joint distribution $P(V, H)$?
 
 Our original Markov Network assumed we had connections between the neighboring pixels of an image. We can now assume connections between all the visible variables $V$ with all the hidden variables $H$, eliminating the original connections between neighboring pixels. This means that we try to capture the relations between neighboring pixels through the latent variables rather than directly connection them. This gives us the advantage of ***abstraction*** which is not possible to achieve by directly assuming connections between pixles. An intuition behisd this is that images may vary differently on per pizel basis while being similar to each other in terms of what they represent. This behaviour can be captured by the latent variables and not by assuming direct connections between pixles.
 
 This concept is very similar to PCA and auto encoders.
 
-For our case, we assume these visible and hidden variables to only take up binary values $\{0, 1\}$. In general, if we have $m$ visible variables and $n$ hidden variables then $V$ and $H$ can take up $2^m$ and $2_n$ unique values respectively and there are $2^{n+m}$ unique configurations possible.
+For our case, we assume these visible and hidden variables to only take up binary values $\{0, 1\}$. In general, if we have $m$ visible variables and $n$ hidden variables then $V$ and $H$ can take up $2^m$ and $2^n$ unique values respectively and there are $2^{n+m}$ unique configurations possible.
+
+$$V \belongsto \{0, 1\}^{m}$$
+
+$$H \belongsto \{0, 1\}^{n}$$
 
 ### Restricted Boltzmann Machines
 
@@ -137,9 +141,28 @@ We can also introduce factors tied to each visible and hidden unit until we norm
 
 $$P(V, H) = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
-Normalization contant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take upto $2^m$ and $2_n$ unique values respectively.
+Normalization contant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take upto $2^m$ and $2^n$ unique values respectively.
 
-$Z = \sum_V\sum_H\Pi_{i}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$
+$$Z = \sum_V\sum_H\Pi_{i}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
+
+Now, we need a representation that can be learned by a machine. And we know that machine learns... parameters. Hence, we have to introduce paramters so that the machine can learn this joint distribution.
+
+$$\phi_{ij}(v_i, h_j) = \exp(W_{ij}v_ih_j)$$
+
+$$\psi_{i}(v_i) = \exp(b_iv_i)$$
+
+$$\xi_{j}{h_j} = \exp(c_jh_j)$$
+
+This particular choice of parameters leads to a joint distribution of the following form
+
+\begin{align}
+P(V, H) & = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)
+        & = \frac{1}{Z}\Pi_{i}\Pi_{j}\exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j)
+        & = \frac{1}{Z}\exp\left( \sum_{i}\sum_{j} W_{ij}v_ih_j + b_iv_i + c_jh_j \right)
+        & = \frac{1}{Z}\exp\left( - E(H, V) \right)
+\end{align}
+
+where $E(H, V) = \sum_{i}\sum_{j} - W_{ij}v_ih_j - b_iv_i - c_jh_j$
 
 ### RBMs as Stochastic Neural Networks
 
