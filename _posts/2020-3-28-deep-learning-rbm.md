@@ -145,7 +145,9 @@ Normalization contant $Z$ is a partition function which is a sum of products ove
 
 $$Z = \sum_V\sum_H\Pi_{i}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
-Now, we need a representation that can be learned by a machine. And we know that machine learns... parameters. Hence, we have to introduce paramters so that the machine can learn this joint distribution.
+In our case, the visible varibles in $V$ and hidden variables in $H$ can take on only binary values and partition function $Z$ is a sum over $2^{m+n}$ values.
+
+Now, we need a representation that can be learned by a machine. And we know that machine learns... **parameters**. Hence, we have to introduce paramters in order to make the machine learn this joint distribution.
 
 $$\phi_{ij}(v_i, h_j) = \exp(W_{ij}v_ih_j)$$
 
@@ -157,14 +159,18 @@ This particular choice of parameters leads to a joint distribution of the follow
 
 $$
 \begin{align*}
-P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
-        &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
-        &= \frac{1}{Z}\exp\left[ \sum_{i}\sum_{j} \left(W_{ij}v_ih_j + b_iv_i + c_jh_j \right)\right]\\
+P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}(\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j))\\
+        &= \frac{1}{Z}\Pi_{i}\Pi_{j}(\exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j))\\
+        &= \frac{1}{Z}\exp \sum_{i}\sum_{j} W_{ij}v_ih_j + \sum_{i} b_iv_i + \sum_{j} c_jh_j \\
         &= \frac{1}{Z}\exp\left( - E(H, V) \right)\\
 \end{align*}
 $$
 
-where $E(H, V) = \sum_{i}\sum_{j} \left(- W_{ij}v_ih_j - b_iv_i - c_jh_j \right)$
+where $E(H, V)$  is the energy function and is given by
+
+$$ E(H, V) = - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j $$
+
+The resulting joint distribution $P(V, H)$ is called a ***Boltzmann distribution*** or ***Gibb's Distribution***. We have further restricted our connections only between visible and hidden variables. Hence, this models are called **Restriced Boltzmann Machines**.
 
 ### RBMs as Stochastic Neural Networks
 
