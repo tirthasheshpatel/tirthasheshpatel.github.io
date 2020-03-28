@@ -248,11 +248,11 @@ Just like in any other probabilistic framework, we want to maximize the ***likel
 
 $$
 \begin{align}
-arg\,max_{W, b, c} \log P(V) \\
-arg\,max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
-arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
-arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
-arg\,max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
+& arg\,max_{W, b, c} \log P(V) \\
+& arg\,max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
+& arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
+& arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
+& arg\,max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
 \end{align}
 $$
 
