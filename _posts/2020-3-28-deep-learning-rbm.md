@@ -2,7 +2,7 @@
 type: post
 title: Restricted  Boltzmann Machines in Deep Learning
 subtitle: Deep Learning Course - Part 2
-image: on
+image: /images/graphical_models/logo_rbm.jpeg
 tags: [Deep Learning, Machine Learning]
 ---
 
@@ -44,7 +44,7 @@ We create a Bayesian Network assuming that each word is a random variable and ea
 
 Now, we can write the joint distribution as
 
-$$P(X_1, X_2, X_3, X_4, X_5)=P(X_1)P(X_2\midX_1)P(X_3\midX_2,X_1)P(X_4\midX_3,X_2)P(X_5\midX_4,X_3)$$
+$$P(X_1, X_2, X_3, X_4, X_5) = P(X_1)P(X_2 \mid X_1)P(X_3 \mid X_2, X_1)P(X_4 \mid X_3, X_2)P(X_5 \mid X_4, X_3)$$
 
 Using this distribution, we can sample new reviews, we can complete the incomplete reviews and also determine if the review comes from the same author! The example of determining weather the review came from the same author is shown below.
 
@@ -95,11 +95,51 @@ The above code generates following reviews:
 
 ![The bedroom](/images/graphical_models/bedroom.jpg)
 
-Suppose we are given some $1024\times1024$ images of different bedrooms like the one above and want to train the machine to generate new bedroom images. This task is very similar to the reviews example except that there is no sense of direction in case of images, unlike reviews. Hence, we have to use a Markov Network to represent the connections between the neighboring pixels instead of a Bayesian Netowrk.
+Suppose we are given some $1024 \times 1024$ images of different bedrooms like the one above and want to train the machine to generate new bedroom images. This task is very similar to the reviews example except that there is no sense of direction in case of images, unlike reviews. Assuming the pixels as our RVs, we need a Markov Network to represent the connections between the neighboring pixels instead of a Bayesian Network.
+
+![Bedroom Network](/images/graphical_models/bedroom_network.png)
+
+Using the above graph, we can factorize the joint as
+
+$$P(X_1, X_2, ..., X_1024) = \frac{1}{Z}\Pi_i\phi_1(D_i)$$
+
+where $D_i$ is a set of variables that form a maximum clique (groups of neighboring pixels).
+
+Using the joint distributions, again, we can generate images of a bedroom, denoise given images and even inpute the values of missing pixels in the image. Such models are called Generative Models and we are going to look at one such generative model called **Restricted Boltzmann Machines**.
 
 ### The concept of Latent Variables
 
+> **Latent variables are hidden variables in a model which are responsible for the generation of the observed data.**
+
+Such variables have no special meaning whatsoever. We can't predeict that the hidden variable $h_1$ represents sunny day, $h_2$ represents trees, etc. We can just think of them as some variables that provide an ***abstract*** representation of the data we observe.
+
+Such variables can also be used to ***generate*** an observation by tweaking their values a little.
+
+Suppose, we have $32 \times 32$ images of a beach and we assume there are $n$ latent variables responsible for the generation of those images. More formally, we have a set $V$ of $\{V_1, V_2, ..., V_1024\}$ visible variables and a set $H$ of $\{H_1 H_2, ..., H_n\}$ latent variables. Can you now think of a Markov Network that has the joint distribution $P(V, H)$?
+
+Our original Markov Network assumed we had connections between the neighboring pixels of an image. We can now assume connections between all the visible variables $V$ with all the hidden variables $H$, eliminating the original connections between neighboring pixels. This means that we try to capture the relations between neighboring pixels through the latent variables rather than directly connection them. This gives us the advantage of ***abstraction*** which is not possible to achieve by directly assuming connections between pixles. An intuition behisd this is that images may vary differently on per pizel basis while being similar to each other in terms of what they represent. This behaviour can be captured by the latent variables and not by assuming direct connections between pixles.
+
+This concept is very similar to PCA and auto encoders.
+
+For our case, we assume these visible and hidden variables to only take up binary values $\{0, 1\}$. In general, if we have $m$ visible variables and $n$ hidden variables then $V$ and $H$ can take up $2^m$ and $2_n$ unique values respectively and there are $2^{n+m}$ unique configurations possible.
+
 ### Restricted Boltzmann Machines
+
+According to our previous discussion, we have the following Markov Network
+
+![Markov Network](/images/graphical_models/markov_rbm.png)
+
+There are connections between each visible and hidden variable but no connections between two visible or two hidden variables. So, we can write the joint distirbution as the product of the following factors
+
+$$P(V, H) = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)$$
+
+We can also introduce factors tied to each visible and hidden unit until we normalize the whole expression appropriately.
+
+$$P(V, H) = \frac{1}{Z}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
+
+Normalization contant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take upto $2^m$ and $2_n$ unique values respectively.
+
+$Z = \sum_V\sum_H\Pi_{i}\Pi_{i}\Pi_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$
 
 ### RBMs as Stochastic Neural Networks
 
