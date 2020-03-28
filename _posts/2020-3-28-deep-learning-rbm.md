@@ -174,6 +174,72 @@ The resulting joint distribution $P(V, H)$ is called a ***Boltzmann distribution
 
 ### RBMs as Stochastic Neural Networks
 
+Let's derive some formulas that show that these RBMs are just plain old neural networks
+
+The energy function is given by
+
+$$
+\begin{align*}
+E(V, H) &=  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j
+\end{align*}
+$$
+
+Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th varaible. Then
+
+$$\alpha_l(H) = - \sum_{j=1}^{n} W_{lj}h_j - b_l$$
+
+$$\beta(V_{-l}, H) = - \sum_{i=1, i \neq l}^{m} \sum_{j=1}^{n} W_{ij}v_ih_j - \sum_{i=1, i \neq l}^{m} b_iv_i - \sum_{j=1}^{n} c_jh_j$$
+
+$$E(V, H) = \alpha_l(H)v_l + \beta(V_{-l}, H)$$
+
+$$
+\begin{align*}
+P(v_l=1 \mid H) &= P(v_l=1 \mid V_{-l}, H) \\
+                &= \frac{P(v_l=1, V_{-l}, H)}{P(v_l=0, V_{-l}, H) + P(v_l=1, V_{-l}, H)} \\
+                &= \frac{e^{\alpha_l(H)1 + \beta(V_{-l}, H)}}{e^{\alpha_l(H)1 + \beta(V_{-l}, H)} + e^{\alpha_l(H)0 + \beta(V_{-l}, H)}} \\
+                &= \frac{1}{1 + e^{ - \alpha_l(H) }} \\
+                &= \sigma(\alpha_l(H)) \\
+                &= \sigma(- \sum_{j=1}^{n} W_{lj}h_j - b_l) \\
+\end{align*}
+$$
+
+Similarly, we have
+
+$$
+\begin{align*}
+P(v_l=0 \mid H) &= \sigma(-\alpha_l(H)) \\
+                &= \sigma(\sum_{j=1}^{n} W_{lj}h_j + b_l) \\
+\end{align*}
+$$
+
+We can similarly calculate the P(h_l=1 \mid V, H_{-l}).
+
+$$\alpha_l(V) = - \sum_{i=1}^{m} W_{il}v_i - c_l$$
+
+$$\beta(V, H_{-l}) = - \sum_{i=1}^{m} \sum_{j=1, j \neq l}^{n} W_{ij}v_ih_j - \sum_{i=1}^{m} b_iv_i - \sum_{j=1, \neq l}^{n} c_jh_j$$
+
+$$E(V, H) = \alpha_l(V)h_l + \beta(V, H_{-l})$$
+
+$$
+\begin{align*}
+P(h_l=1 \mid H) &= P(h_l=1 \mid V, H_{-l}) \\
+                &= \frac{P(h_l=1, V, H_{-l})}{P(h_l=0, V, H_{-l}) + P(h_l=1, V, H_{-l})} \\
+                &= \frac{e^{\alpha_l(V)1 + \beta(V, H_{-l})}}{e^{\alpha_l(V)1 + \beta(V, H_{-l})} + e^{\alpha_l(V)0 + \beta(V, H_{-l})}} \\
+                &= \frac{1}{1 + e^{ - \alpha_l(V) }} \\
+                &= \sigma(\alpha_l(V)) \\
+                &= \sigma(- \sum_{i=1}^{m} W_{il}v_i - c_l) \\
+\end{align*}
+$$
+
+Similarly, we have
+
+$$
+\begin{align*}
+P(h_l=0 \mid H) &= \sigma(-\alpha_l(V)) \\
+                &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
+\end{align*}
+$$
+
 ### Unsupervised Learning with RBMs
 
 ### Computing the gradient of the log likelihood
