@@ -266,10 +266,18 @@ $$
                                                    &= \frac{1}{\sum_{H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H} \exp(-E(V, H)) \right) - \frac{1}{\sum_{V, H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H, V} \exp(-E(V, H)) \right) \\
                                                    &= -\frac{1}{\sum_{H}\exp(-E(V, H))}\left( \sum_{H} \exp(-E(V, H)) \frac{\partial E(V, H)}{\partial \theta} \right) + \frac{1}{\sum_{V, H} \exp(-E(V, H))}\left(\sum_{V, H} \exp(\exp(-E(V, H))\frac{\partial E(V, H)}{\partial \theta}\right) \\
                                                    &= - \sum_{H}\left( \frac{\exp(-E(V, H))}{\sum_{H} \exp(-E(V, H))}\frac{\partial E(V, H)}{\partial \theta} \right) + \sum_{V, H}\left( \frac{\exp(-E(V, H))}{\sum_{V, H} \exp(-E(V, H))}\frac{\partial E(V, H)}{\partial \theta} \right) \\
-                                                   &= - \sum_{H}\left( P(H \mid V) \frac{\partial E(V, H)}{\partial \theta} \right) + \sum_{V, H}\left( P(H, V) \frac{\partial E(V, H)}{\partial \theta} \right)
-                                                   &= - \mathbb{E}_{P(H \mid V)}\left( \frac{\partial E(V, H)}{\partial \theta} \right) + \mathbb{E}_{P(V, H)}\left( \frac{\partial E(V, H)}{\partial \theta} \right)
+                                                   &= - \sum_{H}\left( P(H \mid V) \frac{\partial E(V, H)}{\partial \theta} \right) + \sum_{V, H}\left( P(V, H) \frac{\partial E(V, H)}{\partial \theta} \right) \\
+                                                   &= - \mathbb{E}_{P(H \mid V)}\left( \frac{\partial E(V, H)}{\partial \theta} \right) + \mathbb{E}_{P(V, H)}\left( \frac{\partial E(V, H)}{\partial \theta} \right) \\
 \end{align*}
 $$
+
+Now we can calculate the gradients with respect to our original parameters $W$, $b$, and $c$.
+
+$$\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right)$$
+
+$$\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = \mathbb{E}_{P(H \mid V)}\left( v_i \right) - \mathbb{E}_{P(V, H)}\left( v_i \right)$$
+
+$$\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \mathbb{E}_{P(H \mid V)}\left( h_j \right) - \mathbb{E}_{P(V, H)}\left( h_j \right)$$
 
 ### Sampling
 
