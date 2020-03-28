@@ -222,7 +222,7 @@ $$E(V, H) = \alpha_l(V)h_l + \beta(V, H_{-l})$$
 
 $$
 \begin{align*}
-P(h_l=1 \mid H) &= P(h_l=1 \mid V, H_{-l}) \\
+P(h_l=1 \mid V) &= P(h_l=1 \mid V, H_{-l}) \\
                 &= \frac{P(h_l=1, V, H_{-l})}{P(h_l=0, V, H_{-l}) + P(h_l=1, V, H_{-l})} \\
                 &= \frac{e^{\alpha_l(V)1 + \beta(V, H_{-l})}}{e^{\alpha_l(V)1 + \beta(V, H_{-l})} + e^{\alpha_l(V)0 + \beta(V, H_{-l})}} \\
                 &= \frac{1}{1 + e^{ - \alpha_l(V) }} \\
@@ -235,12 +235,36 @@ Similarly, we have
 
 $$
 \begin{align*}
-P(h_l=0 \mid H) &= \sigma(-\alpha_l(V)) \\
+P(h_l=0 \mid V) &= \sigma(-\alpha_l(V)) \\
                 &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
 \end{align*}
 $$
 
+We have derived all the formulas we need to show that the model can be thought of as a neural network with each variables being a neuron! Let's go ahead to the last step of completely transforming this model into a neural network by deriveing a loss function...
+
 ### Unsupervised Learning with RBMs
+
+Just like in any other probabilistic framework, we want to maximize the ***likelihood*** which is the probability of observing the data. As $\log(.)$ function is a concave function, we can maximize the log likelihood instead.
+
+$$
+\begin{align*}
+\arg,\max_{W, b, c} \log P(V) \\
+\arg,\max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
+\arg,\max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
+\arg,\max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
+\arg,\max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
+\end{align*}
+$$
+
+Let's pretend for a second that $\theta$ is a collection of all the paramters and we want to maximize the above function wrt them. Let's start by evaluating the gradient first.
+
+$$
+\begin{align*}
+\frac{\partial\mathcal{L}(\theta)}{\partial\theta} &= \frac{\partial}{\partial\theta}\left(\log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H))\right) \\
+                                                   &= \frac{1}{\sum_{H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H} \exp(-E(V, H)) \right) - \frac{1}{\sum_{V, H}\exp(-E(V, H))}\frac{\partial}{\partial\theta}\left( \sum_{H, V} \exp(-E(V, H)) \right) \\
+                                                   &= -\frac{1}{\sum_{H}\exp(-E(V, H))}\left( \sum_{H} \exp(-E(V, H)) \frac{\partial E(V, H)}{\partial \theta} \right) + \frac{1}{\sum_{V, H} \exp(-E(V, H))}\left(\sum_{V, H} \exp()\frac{\partial E(V, H)}{\partial \theta}\right) \\
+\end{align*}
+$$
 
 ### Computing the gradient of the log likelihood
 
