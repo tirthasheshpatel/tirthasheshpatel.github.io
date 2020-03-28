@@ -151,16 +151,16 @@ $$\phi_{ij}(v_i, h_j) = \exp(W_{ij}v_ih_j)$$
 
 $$\psi_{i}(v_i) = \exp(b_iv_i)$$
 
-$$\xi_{j}{h_j} = \exp(c_jh_j)$$
+$$\xi_{j}(h_j) = \exp(c_jh_j)$$
 
 This particular choice of parameters leads to a joint distribution of the following form
 
-\begin{align}
-P(V, H) & = \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
-        & = \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
-        & = \frac{1}{Z}\exp\left( \sum_{i}\sum_{j} \left(W_{ij}v_ih_j + b_iv_i + c_jh_j \right)\right)\\
-        & = \frac{1}{Z}\exp\left( - E(H, V) \right)\\
-\end{align}
+\begin{align*}
+P(V, H) &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j) \right]\\
+        &= \frac{1}{Z}\Pi_{i}\Pi_{j}\left[ \exp(W_{ij}v_ih_j)\exp(b_iv_i)\exp(c_jh_j) \right]\\
+        &= \frac{1}{Z}\exp\left[ \sum_{i}\sum_{j} \left(W_{ij}v_ih_j + b_iv_i + c_jh_j \right)\right]\\
+        &= \frac{1}{Z}\exp\left( - E(H, V) \right)\\
+\end{align*}
 
 where $E(H, V) = \sum_{i}\sum_{j} \left(- W_{ij}v_ih_j - b_iv_i - c_jh_j \right)$
 
