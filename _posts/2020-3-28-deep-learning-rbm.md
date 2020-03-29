@@ -180,11 +180,7 @@ Let's derive some formulas that show that these RBMs are just plain old neural n
 
 The energy function is given by
 
-$$
-\begin{align*}
-E(V, H) &=  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j
-\end{align*}
-$$
+$$E(V, H) &=  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j$$
 
 Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th variable. Then
 
@@ -326,7 +322,61 @@ P(X_1=b) &= \sum_{a} P(X_0=a)P(X_1=b \mid X_0=a) \\
 \end{align*}
 $$
 
+We can nicely represent the distribution as a matrix multiplication shown below.
+
+$$
+\mu^{1} = P(X_1) = \mu^{0}\mathbb{T}
+$$
+
+Let's move on to $P(X_2=b)$
+
+$$
+\begin{align*}
+P(X_2=b) &= \sum_{a} P(X_1=a)P(X_2=b \mid X_1=a) \\
+         &= \sum_{a} \mu^{1}_{a} \mathbb{T}_{ab} \\
+\end{align*}
+$$
+
+$$
+\begin{align*}
+P(X_2) &= \mu^{1}\mathbb{T} \\
+       &= (\mu^{0}\mathbb{T})\mathbb{T} \\
+       &= \mu^{0}\mahbb{T}^2
+\end{align*}
+$$
+
+Similarly, for $k$'th time step
+
+$$P(X_k) = \mu^{0}\mahbb{T}^k$$
+
+Now, the above equation has exponential number of terms ($\mu^{k} \in \mathbb{R}^{2^n}$ and $\mathbb{T} \in \mathbb{R}^{2^n \times 2^n}$) and hence intractable to store or calculate. Let's keep that at the back of our minds and we will revisit it later.
+
+If at certain time step $t$, $\mu^{t}$ reashes distribution $\pi$ such that $\pi \mathbb{T} = \pi$, then for all subsequent time steps
+
+$$P(X_j) = \mu^{j} = \pi, \forall j \geq t$$
+
+Such a distribution $\pi$ is called the stationary distribution of the Markov Chain. Now if we continue the chainby sampling $X_{t+1} = x_{t+1}, X_{t+1}=x_{t+1}, ...$ then we can think of $x_{t+1}, x_{t+2}$ as samples drawn from the same distribution $\pi$.
+
+***Conclusion: If we run our chain from any initial distribution $\mu^{0}$ for large number of time steps then after some arbitary point $t$, we start getting samples $x_{t+1}, x_{t+2}, ...$ which come from the stationary distribution of the Markov chain.***
+
 ### Why do we care about Markov Chains
+
+#### Our Goal
+
+1. Sample from $P(X)$
+2. Compute the expectation $\mathbb{E}_{P(X)}(f(X))$
+
+Now suppose we have a Markov Chain whose stationary distribution $\pi$ is our desired probability distribution $P(X)$ then
+  - we can sample from the stationary distribution easily.
+  - we can use those samples to calculate the emperical estimate for our expectation
+    $$\mathbb{E}(f(X)) \approx \frac{1}{n} \sum_{k}^{k+n} f(X_i) $$
+    where $X_i$ is drawn from the stationary distribution $\pi$ of the markov chain.
+
+*Theorem 1: If $X_1, X_2, ..., X_n$ is a **irreducible** time homogeneous markov chain with stationary distribution $\pi$, then*
+
+$$\frac{1}{t}\sum_{i=1}^{t} f(X_i) \to^{t \to \infty} \mathbb{E}_{P(X)}(f(X)) \text{where} X \in \mathbb{X} \text{and} X \sim \pi$$
+
+*Further, if the Markov Chain is non-periodic then $P(X_t=x_t \mid X_{0}=x_{0}) \to \pi \text{as} t \to \infty, \forall x_{t}, x_{0} \in \mathbb{X}$.*
 
 ### Setting up a Markov Chain for RBMs
 
