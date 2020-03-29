@@ -34,11 +34,11 @@ We have collected reviews of a movie that are $5$ words long and these words com
 - An unexpected and necessary masterpiece
 - delightfully merged information and comedy
 - Directors first true masterpiece movie
-- Sci-fi perfection, tryly mesmerizing film
+- Sci-fi perfection, truly mesmerizing film
 - Waste of time and money
 - Best lame historical movie ever
 
-We create a Bayesian Network assuming that each word is a random variable and each word depends only on previous two words in the review. One such graph is shown below.
+We create a Bayesian Network assuming that each word is a random variable and each word depends only on the previous two words in the review. One such graph is shown below.
 
 ![review graph](/images/graphical_models/reviews.svg)
 
@@ -46,7 +46,7 @@ Now, we can write the joint distribution as
 
 $$P(X_1, X_2, X_3, X_4, X_5) = P(X_1)P(X_2 \mid X_1)P(X_3 \mid X_2, X_1)P(X_4 \mid X_3, X_2)P(X_5 \mid X_4, X_3)$$
 
-Using this distribution, we can sample new reviews, we can complete the incomplete reviews and also determine if the review comes from the same author! The example of determining weather the review came from the same author is shown below.
+Using this distribution, we can sample new reviews, we can complete the incomplete reviews and also determine if the review comes from the same author! The example of determining whether the review came from the same author is shown below.
 
 ![Review Example](/images/graphical_models/review_example.png)
 
@@ -85,7 +85,7 @@ for _ in range(5):
 print(''.join(review[2:]))
 ```
 
-The above code generates following reviews:
+The above code generates the following reviews:
 
 1. I liked the amazing movie
 2. The movie is a masterpiece
@@ -105,27 +105,27 @@ $$P(X_1, X_2, ..., X_{1024}) = \frac{1}{Z}\prod_i\phi_1(D_i)$$
 
 where $D_i$ is a set of variables that form a maximum clique (groups of neighboring pixels).
 
-Using the joint distributions, again, we can generate images of a bedroom, denoise given images and even inpute the values of missing pixels in the image. Such models are called Generative Models and we are going to look at one such generative model called **Restricted Boltzmann Machines**.
+Using the joint distributions, again, we can generate images of a bedroom, denoise images and even impute the values of missing pixels in the image. Such models are called Generative Models and we are going to look at one such generative model called **Restricted Boltzmann Machines**.
 
 ### The concept of Latent Variables
 
 > **Latent variables are hidden variables in a model which are responsible for the generation of the observed data.**
 
-Such variables have no special meaning whatsoever. We can't predeict that the hidden variable $h_1$ represents sunny day, $h_2$ represents trees, etc. We can just think of them as some variables that provide an ***abstract*** representation of the data we observe.
+Such variables have no special meaning whatsoever. We can't predict that the hidden variable $h_1$ represents "sunny day", $h_2$ represents "trees", etc. We can just think of them as some variables that provide an ***abstract*** representation of the data we observe.
 
 Such variables can also be used to ***generate*** an observation by tweaking their values a little.
 
 Suppose, we have $32 \times 32$ images of a beach and we assume there are $n$ latent variables responsible for the generation of those images. More formally, we have a set $V$ of $\{V_1, V_2, ..., V_{1024}\}$ visible variables and a set $H$ of $\{H_1 H_2, ..., H_n\}$ latent variables. Can you now think of a Markov Network that has the joint distribution $P(V, H)$?
 
-Our original Markov Network assumed we had connections between the neighboring pixels of an image. We can now assume connections between all the visible variables $V$ with all the hidden variables $H$, eliminating the original connections between neighboring pixels. This means that we try to capture the relations between neighboring pixels through the latent variables rather than directly connection them. This gives us the advantage of ***abstraction*** which is not possible to achieve by directly assuming connections between pixles. An intuition behisd this is that images may vary differently on per pizel basis while being similar to each other in terms of what they represent. This behaviour can be captured by the latent variables and not by assuming direct connections between pixles.
+Our original Markov Network assumed we had connections between the neighboring pixels of an image. We can now assume connections between all the visible variables $V$ with all the hidden variables $H$, eliminating the original connections between neighboring pixels. This means that we try to capture the relations between neighboring pixels through the latent variables rather than direct connection them. This gives us the advantage of ***abstraction*** which is not possible to achieve by directly assuming connections between pixels. The intuition behind this is that images may vary differently on a per-pixel basis while being similar to each other in terms of what they represent. This behavior can be captured by the latent variables and not by assuming direct connections between pixels.
 
-This concept is very similar to PCA and auto encoders.
+This concept is very similar to PCA and autoencoders.
 
 For our case, we assume these visible and hidden variables to only take up binary values $\{0, 1\}$. In general, if we have $m$ visible variables and $n$ hidden variables then $V$ and $H$ can take up $2^m$ and $2^n$ unique values respectively and there are $2^{n+m}$ unique configurations possible.
 
-$$V \belongsto \{0, 1\}^{m}$$
+$$V \in \{0, 1\}^{m}$$
 
-$$H \belongsto \{0, 1\}^{n}$$
+$$H \in \{0, 1\}^{n}$$
 
 ### Restricted Boltzmann Machines
 
@@ -133,7 +133,7 @@ According to our previous discussion, we have the following Markov Network
 
 ![Markov Network](/images/graphical_models/markov_rbm.png)
 
-There are connections between each visible and hidden variable but no connections between two visible or two hidden variables. So, we can write the joint distirbution as the product of the following factors
+There are connections between each visible and hidden variable but no connections between two visible or two hidden variables. So, we can write the joint distribution as the product of the following factors
 
 $$P(V, H) = \frac{1}{Z}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)$$
 
@@ -141,19 +141,21 @@ We can also introduce factors tied to each visible and hidden unit until we norm
 
 $$P(V, H) = \frac{1}{Z}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
-Normalization contant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take upto $2^m$ and $2^n$ unique values respectively.
+The normalization constant $Z$ is a partition function which is a sum of products over $2^{m+n}$ values as $V$ and $H$ can take up to $2^m$ and $2^n$ unique values respectively.
 
 $$Z = \sum_V\sum_H\prod_{i}\prod_{i}\prod_{j}\phi_{ij}(v_i, h_j)\psi_i(v_i)\xi_j(h_j)$$
 
-In our case, the visible varibles in $V$ and hidden variables in $H$ can take on only binary values and partition function $Z$ is a sum over $2^{m+n}$ values.
+In our case, the visible variables in $V$ and hidden variables in $H$ can take on only binary values and partition function $Z$ is a sum over $2^{m+n}$ values.
 
-Now, we need a representation that can be learned by a machine. And we know that machine learns... **parameters**. Hence, we have to introduce paramters in order to make the machine learn this joint distribution.
+Now, we need a representation that can be learned by a machine. And we know that machine learns... **parameters**. Hence, we have to introduce parameters to make the machine learn this joint distribution.
 
-$$\phi_{ij}(v_i, h_j) = \exp(W_{ij}v_ih_j)$$
-
-$$\psi_{i}(v_i) = \exp(b_iv_i)$$
-
-$$\xi_{j}(h_j) = \exp(c_jh_j)$$
+$$
+\begin{gather*}
+\phi_{ij}(v_i, h_j) = \exp(W_{ij}v_ih_j) \\
+\psi_{i}(v_i) = \exp(b_iv_i) \\
+\xi_{j}(h_j) = \exp(c_jh_j) \\
+\end{gather*}
+$$
 
 This particular choice of parameters leads to a joint distribution of the following form
 
@@ -170,7 +172,7 @@ where $E(V, H)$  is the energy function and is given by
 
 $$ E(V, H) = - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j $$
 
-The resulting joint distribution $P(V, H)$ is called a ***Boltzmann distribution*** or ***Gibb's Distribution***. We have further restricted our connections only between visible and hidden variables. Hence, this models are called **Restriced Boltzmann Machines**.
+The resulting joint distribution $P(V, H)$ is called a ***Boltzmann distribution*** or ***Gibb's Distribution***. We have further restricted our connections only between visible and hidden variables. Hence, this model is called **Restricted Boltzmann Machines**.
 
 ### RBMs as Stochastic Neural Networks
 
@@ -184,13 +186,15 @@ E(V, H) &=  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j
 \end{align*}
 $$
 
-Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th varaible. Then
+Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th variable. Then
 
-$$\alpha_l(H) = - \sum_{j=1}^{n} W_{lj}h_j - b_l$$
-
-$$\beta(V_{-l}, H) = - \sum_{i=1, i \neq l}^{m} \sum_{j=1}^{n} W_{ij}v_ih_j - \sum_{i=1, i \neq l}^{m} b_iv_i - \sum_{j=1}^{n} c_jh_j$$
-
-$$E(V, H) = \alpha_l(H)v_l + \beta(V_{-l}, H)$$
+$$
+\begin{gather*}
+\alpha_l(H) = - \sum_{j=1}^{n} W_{lj}h_j - b_l \\
+\beta(V_{-l}, H) = - \sum_{i=1, i \neq l}^{m} \sum_{j=1}^{n} W_{ij}v_ih_j - \sum_{i=1, i \neq l}^{m} b_iv_i - \sum_{j=1}^{n} c_jh_j \\
+E(V, H) = \alpha_l(H)v_l + \beta(V_{-l}, H) \\
+\end{gather*}
+$$
 
 $$
 \begin{align*}
@@ -240,25 +244,25 @@ P(h_l=0 \mid V) &= \sigma(-\alpha_l(V)) \\
 \end{align*}
 $$
 
-We have derived all the formulas we need to show that the model can be thought of as a neural network with each variables being a neuron! Let's go ahead to the last step of completely transforming this model into a neural network by deriveing a loss function...
+We have derived all the formulas we need to show that the model can be thought of as a neural network with each variable being a neuron! Let's go ahead to the last step of completely transforming this model into a neural network by deriving a loss function...
 
 ### Unsupervised Learning with RBMs
 
-Just like in any other probabilistic framework, we want to maximize the ***likelihood*** which is the probability of observing the data. As $\log(.)$ function is a concave function, we can maximize the log likelihood instead.
+Just like in any other probabilistic framework, we want to maximize the ***likelihood*** which is the probability of observing the data. As $\log(.)$ a function is a concave function, we can maximize the log-likelihood instead.
 
 $$
-\begin{align}
+\begin{gather*}
 & arg\,max_{W, b, c} \log P(V) \\
 & arg\,max_{W, b, c} \log \frac{1}{Z} \sum_{H}P(V, H) \\
 & arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log Z \\
 & arg\,max_{W, b, c} \log \sum_{H}P(V, H) - \log \sum_{V, H} P(V, H) \\
 & arg\,max_{W, b, c} \log \sum_{H} \exp(-E(V, H)) - \log \sum_{V, H} \exp(-E(V, H)) \\
-\end{align}
+\end{gather*}
 $$
 
-### Computing the gradient of the log likelihood
+### Computing the gradient of the log-likelihood
 
-Let's pretend for a second that $\theta$ is a collection of all the paramters and we want to maximize the above function wrt them. Let's start by evaluating the gradient first.
+Let's pretend for a second that $\theta$ is a collection of all the parameters and we want to maximize the above function wrt them. Let's start by evaluating the gradient first.
 
 $$
 \begin{align*}
@@ -273,15 +277,54 @@ $$
 
 Now we can calculate the gradients with respect to our original parameters $W$, $b$, and $c$.
 
-$$\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right)$$
-
-$$\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = \mathbb{E}_{P(H \mid V)}\left( v_i \right) - \mathbb{E}_{P(V, H)}\left( v_i \right)$$
-
-$$\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \mathbb{E}_{P(H \mid V)}\left( h_j \right) - \mathbb{E}_{P(V, H)}\left( h_j \right)$$
+$$
+\begin{gather*}
+\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right) \\
+\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = \mathbb{E}_{P(H \mid V)}\left( v_i \right) - \mathbb{E}_{P(V, H)}\left( v_i \right) \\
+\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \mathbb{E}_{P(H \mid V)}\left( h_j \right) - \mathbb{E}_{P(V, H)}\left( h_j \right) \\
+\end{gather*}
+$$
 
 ### Sampling
 
+The gradients with respect to our parameters are expectations that are summations over an exponential number of terms and hence interactable. They can't be evaluated analytically and we have to fall back to some approximation methods. Expectations almost immediately point towards sampling. So, we need to sample from this multimodal probability distribution space of $2^{m+n}$ dimensions. This is a really difficult task that we will tackle using Gibbs Sampling. So, let's get started!
+
 ### Markov Chain
+
+**Goal 1**: Given a random variable $X \in \mathbb{R}^n$, we want to sample from a joint distribution $P(X)$.
+
+**Goal 2**: Given a function $f(X)$ of some random variable $X$, we want to calculate the expectation $\mathbb{E}_{P(X)}(f(X))$.
+
+Suppose that instead of a single random variable $X$, we have a chain of random variables $X_1, ..., X_k$ where $X_i \in \mathbb{R}^n \forall i \in \{1, 2, ..., k\}$.
+
+Instead of looking at the real values variables $X$, we will stick to our binary-valued variables.
+
+Let's define the state of a random variable as any value from its domain. For our example, the RV $X_i$ is a $n$ dimensional vector and each dimension can take on a $0$ or a $1$. This means the size of the state space is $2^{n}$ for our case.
+
+Suppose we are initially in some *state* $X_0$ at time $0$. We now *transition* from this state to some other state $X_1$ at time $1$. Similarly, we keep on transitioning from the previous state to some new state at each time step. Eventually, we would end up with a *chain* of $k$ random variables if we did this for $k$ time steps. We are interested in calculating the probability of transitioning to $X_{k+1}$ given all the previous states $X_1, X_2, ..., X_k$.
+
+$$P(X_{k+1}=x_{k+1} \mid X_1=x_1, X_2, x_2, ..., X_k=x_k)$$
+
+Assuming that the next state only depends on the previous state, we end up with a distribution
+
+$$P(X_{k+1}=x_{k+1} \mid X_k=x_k)$$
+
+This property of $X_{k+1} \perp \{X_1, X_2, ..., X_{k-1}\} \mid X_k$ is called the ***Markov Property*** and the resulting chain is called a ***Markov Chain***. As the variables we have are binary, we can specify the distribution $P(X_{k+1}=x_{k+1} \mid X_k=x_k)$ by defining its value for each value our RV can take in time step $k+1$ and in time step $k$. We can further arrange these probabilities in a matrix $\mathbb{T}$ where an entry $\mathbb{T}_{ab}$ denote the probability of moving from state $a$ to state $b$. Such a matrix is called a ***Transition Matrix*** and denoted by $\mathbb{T}$. For our case, the size of this matrix is $2^{n} \times 2^{n}$.
+
+This transition matrix can change at each time step but, for our task, we assume it to be constant at all time steps. Such a Markov chain is called ***time-homogeneous Markov chain***.
+
+Now suppose that the starting distribution at time step $0$ is given by $\mu_0$. Just to be clear, $mu^0$ is a $2^n$ dimensional vector such that $\mu^{0}_{a} = P(X_0=a)$ where $a$ is a value $X_0$ can take at time step $0$. Hence, $\mu^0$ contains probabilities of all the values $X$ can take at any time step and hence is $2^n$ dimensional vector. $\mu^{0}_a$ is the probability that the random variable takes on the value $a$ among all possible $2^n$ values. Now, we can evaluate $P(X_1=b)$ as
+
+$$P(X_1=b) = \sum_{a}P(X_0=a, X_1=b)$$
+
+The above formula tries to find every possible path from which we could have reached $b$ and sum up over all such probabilities in order to get the final probability. Quite intuitive, right?
+
+$$
+\begin{align*}
+P(X_1=b) &= \sum_{a} P(X_0=a)P(X_1=b \mid X_0=a) \\
+         &= \sum_{a} \mu^{0}_{a} \mathbb{T}_{ab}
+\end{align*}
+$$
 
 ### Why do we care about Markov Chains
 
