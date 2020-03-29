@@ -180,7 +180,7 @@ Let's derive some formulas that show that these RBMs are just plain old neural n
 
 The energy function is given by
 
-$$E(V, H) &=  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j$$
+$$E(V, H) =  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j$$
 
 Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th variable. Then
 
@@ -341,13 +341,13 @@ $$
 \begin{align*}
 P(X_2) &= \mu^{1}\mathbb{T} \\
        &= (\mu^{0}\mathbb{T})\mathbb{T} \\
-       &= \mu^{0}\mahbb{T}^2
+       &= \mu^{0}\mathbb{T}^2
 \end{align*}
 $$
 
 Similarly, for $k$'th time step
 
-$$P(X_k) = \mu^{0}\mahbb{T}^k$$
+$$P(X_k) = \mu^{0}\mathbb{T}^k$$
 
 Now, the above equation has exponential number of terms ($\mu^{k} \in \mathbb{R}^{2^n}$ and $\mathbb{T} \in \mathbb{R}^{2^n \times 2^n}$) and hence intractable to store or calculate. Let's keep that at the back of our minds and we will revisit it later.
 
@@ -374,9 +374,11 @@ Now suppose we have a Markov Chain whose stationary distribution $\pi$ is our de
 
 *Theorem 1: If $X_1, X_2, ..., X_n$ is a **irreducible** time homogeneous markov chain with stationary distribution $\pi$, then*
 
-$$\frac{1}{t}\sum_{i=1}^{t} f(X_i) \to^{t \to \infty} \mathbb{E}_{P(X)}(f(X)) \text{where} X \in \mathbb{X} \text{and} X \sim \pi$$
+$$\frac{1}{t}\sum_{i=1}^{t} f(X_i) \longrightarrow^{t \to \infty} \mathbb{E}_{P(X)}(f(X)) \text{ where } X \in \mathbb{X} \text{and} X \sim \pi$$
 
-*Further, if the Markov Chain is non-periodic then $P(X_t=x_t \mid X_{0}=x_{0}) \to \pi \text{as} t \to \infty, \forall x_{t}, x_{0} \in \mathbb{X}$.*
+*Further, if the Markov Chain is non-periodic then*
+
+$$P(X_t=x_t \mid X_{0}=x_{0}) \to \pi \text{ as } t \to \infty, \forall x_{t}, x_{0} \in \mathbb{X}$$
 
 ### Setting up a Markov Chain for RBMs
 
