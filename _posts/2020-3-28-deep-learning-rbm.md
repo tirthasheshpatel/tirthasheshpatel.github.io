@@ -196,10 +196,10 @@ $$
 \begin{align*}
 P(v_l=1 \mid H) &= P(v_l=1 \mid V_{-l}, H) \\
                 &= \frac{P(v_l=1, V_{-l}, H)}{P(v_l=0, V_{-l}, H) + P(v_l=1, V_{-l}, H)} \\
-                &= \frac{e^{\alpha_l(H)1 + \beta(V_{-l}, H)}}{e^{\alpha_l(H)1 + \beta(V_{-l}, H)} + e^{\alpha_l(H)0 + \beta(V_{-l}, H)}} \\
-                &= \frac{1}{1 + e^{ - \alpha_l(H) }} \\
-                &= \sigma(\alpha_l(H)) \\
-                &= \sigma(- \sum_{j=1}^{n} W_{lj}h_j - b_l) \\
+                &= \frac{e^{- \alpha_l(H)1 - \beta(V_{-l}, H)}}{e^{- \alpha_l(H)1 - \beta(V_{-l}, H)} + e^{- \alpha_l(H)0 - \beta(V_{-l}, H)}} \\
+                &= \frac{1}{1 + e^{ \alpha_l(H) }} \\
+                &= \sigma(- \alpha_l(H)) \\
+                &= \sigma(\sum_{j=1}^{n} W_{lj}h_j + b_l) \\
 \end{align*}
 $$
 
@@ -207,8 +207,8 @@ Similarly, we have
 
 $$
 \begin{align*}
-P(v_l=0 \mid H) &= \sigma(-\alpha_l(H)) \\
-                &= \sigma(\sum_{j=1}^{n} W_{lj}h_j + b_l) \\
+P(v_l=0 \mid H) &= \sigma(\alpha_l(H)) \\
+                &= \sigma(- \sum_{j=1}^{n} W_{lj}h_j - b_l) \\
 \end{align*}
 $$
 
@@ -224,10 +224,10 @@ $$
 \begin{align*}
 P(h_l=1 \mid V) &= P(h_l=1 \mid V, H_{-l}) \\
                 &= \frac{P(h_l=1, V, H_{-l})}{P(h_l=0, V, H_{-l}) + P(h_l=1, V, H_{-l})} \\
-                &= \frac{e^{\alpha_l(V)1 + \beta(V, H_{-l})}}{e^{\alpha_l(V)1 + \beta(V, H_{-l})} + e^{\alpha_l(V)0 + \beta(V, H_{-l})}} \\
-                &= \frac{1}{1 + e^{ - \alpha_l(V) }} \\
-                &= \sigma(\alpha_l(V)) \\
-                &= \sigma(- \sum_{i=1}^{m} W_{il}v_i - c_l) \\
+                &= \frac{e^{- \alpha_l(V)1 - \beta(V, H_{-l})}}{e^{- \alpha_l(V)1 - \beta(V, H_{-l})} + e^{- \alpha_l(V)0 - \beta(V, H_{-l})}} \\
+                &= \frac{1}{1 + e^{ \alpha_l(V) }} \\
+                &= \sigma(- \alpha_l(V)) \\
+                &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
 \end{align*}
 $$
 
@@ -235,8 +235,8 @@ Similarly, we have
 
 $$
 \begin{align*}
-P(h_l=0 \mid V) &= \sigma(-\alpha_l(V)) \\
-                &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
+P(h_l=0 \mid V) &= \sigma(\alpha_l(V)) \\
+                &= \sigma(- \sum_{i=1}^{m} W_{il}v_i - c_l) \\
 \end{align*}
 $$
 
@@ -421,7 +421,7 @@ The above expression says that the probability of the state of more than one ran
 
 At eash step, we need to compute $P(X_i=y_i \mid X_{-i}=x_{-i})$.
 
-We say how to compute in the [RBMs as Stochastic Neural Networks section](#rbms-as-stochastic-neural-networks). Let's write those out assuming $y_i=1$. (Note that $y_i$ is also binary and take values $0$ or $1$)
+We saw how to compute in the [RBMs as Stochastic Neural Networks section](#rbms-as-stochastic-neural-networks). Let's write those out assuming $y_i=1$. (Note that $y_i$ is also binary and take values $0$ or $1$)
 
 $$
 \begin{gather*}
@@ -440,6 +440,76 @@ To prove that our chain converges to our desired distrbution, we need to define 
 
 $$\pi(x)\mathbb{T}_{xy} = \pi(y)\mathbb{T}_{yx}$$
 
+Let's prove this theorem for 3 different cases.
+
+- ***Case 1: When $X$ and $Y$ are different in more than two dimensions.***
+
+We clearly stated that we can only transition to those states where either one of the variable changes it value or all the variables remain the same. This means that, for this case, $\mathbb{T}_{xy} = 0$.
+
+$$
+\begin{gather*}
+\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}
+\pi(x)(0) \stackrel{?}{=} \pi(y)(0)
+0 = 0 (\text{prove me wrong hehe})
+\end{gather*}
+$$
+
+- ***Case 2: When $X$ and $Y$ are the same***
+
+$$
+\begin{gather*}
+\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}
+\pi(x)\mathbb{T}_{xx} = \pi(x)\mathbb{T}_{xx}
+\end{gather*}
+$$
+
+- ***Case 3: When $X$ and $Y$ differ in exactly one dimention***
+
+$$
+\begin{align*}
+\pi(x)\mathbb{T}_{xy} &= P(x) (q(i)P(y_i \mid X_{-i}))
+                      &= P(x_i, X_{-i}) (q(i)\frac{P(y_i, X_{-i})}{P(X_{-i})})
+                      &= P(y_i, X_{-i}) (q(i)\frac{P(x_i, X_{-i})}{P(X_{-i})})
+                      &= P(y) (q(i)P(x_i \mid X_{-i}))
+                      &= P(y) (q(i)P(x_i \mid Y_{-i}))
+                      &= \pi(y) \mathbb{T}_{yx}
+\end{align*}
+$$
+
+The above case proves that the stationary distribution has converged to our distribution. All these three cases combined determine that the ***Detailed Balance Condition*** holds and we can use it as a proxy for our original distribution. Now, we have everything that we need to compute, or rather approximate, the gradient. So, let's move on to training and algorithm!
+
 ### Training RBMs using Gibbs Sampling
+
+Let's first catch up to the last disscussion of gradients that led to all these fucken of Markov chains and Gibb's Sampling.
+
+$$
+\begin{gather*}
+\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right) \\
+\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = \mathbb{E}_{P(H \mid V)}\left( v_i \right) - \mathbb{E}_{P(V, H)}\left( v_i \right) \\
+\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \mathbb{E}_{P(H \mid V)}\left( h_j \right) - \mathbb{E}_{P(V, H)}\left( h_j \right) \\
+\end{gather*}
+$$
+
+Now, we have the Gibb's sampling procedure to compute the emperical estimate of the gradient. Let's try to simplify the gradient little bit more and then we can move on to the training part.
+
+$$
+\begin{align*}
+\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} &= \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right) \\
+                                                    &= \sum_{H}\left(P(H \mid V)v_ih_j\right) - \sum_{V, H}\left(P(V, H) v_ih_j \right) \\
+                                                    &= \sum_{H}\left(P(H \mid V)v_ih_j\right) - \sum_{V} P(V) \sum_{H} P(H \mid V) v_ih_J \\
+\end{align*}
+$$
+
+We can further simplify $\sum_{H}\left(P(H \mid V)v_ih_j\right)$ as
+
+$$
+\begin{align*}
+\sum_{H}\left(P(H \mid V)v_ih_j\right) &= \sum_{h_j}\sum_{H_{-j}}\left( P(h_j \mid H_{-j}, V)P(H_{-j} \mid V)v_ih_j \right) \\
+                                       &= \sum_{h_j}\left( P(h_j \mid H_{-j}, V) v_ih_j \right) \left( \sum_{H_{-j}}P(H_{-j} \mid V) \right) \\
+                                       &= \sum_{h_j}\left( P(h_j \mid H_{-j}, V) v_ih_j \right) \\
+                                       &= P(h_j=1 \mid H_{-j}, V) v_i \\
+                                       &= \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) \\
+\end{align*}
+$$
 
 ### Training RBMs using Contrastive Divergence
