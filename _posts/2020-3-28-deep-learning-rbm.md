@@ -448,9 +448,9 @@ We clearly stated that we can only transition to those states where either one o
 
 $$
 \begin{gather*}
-\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}
-\pi(x)(0) \stackrel{?}{=} \pi(y)(0)
-0 = 0 (\text{prove me wrong hehe})
+\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}\\
+\pi(x)(0) \stackrel{?}{=} \pi(y)(0)\\
+0 = 0 (\text{prove me wrong hehe})\\
 \end{gather*}
 $$
 
@@ -458,8 +458,8 @@ $$
 
 $$
 \begin{gather*}
-\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}
-\pi(x)\mathbb{T}_{xx} = \pi(x)\mathbb{T}_{xx}
+\pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}\\
+\pi(x)\mathbb{T}_{xx} = \pi(x)\mathbb{T}_{xx}\\
 \end{gather*}
 $$
 
@@ -467,12 +467,12 @@ $$
 
 $$
 \begin{align*}
-\pi(x)\mathbb{T}_{xy} &= P(x) (q(i)P(y_i \mid X_{-i}))
-                      &= P(x_i, X_{-i}) (q(i)\frac{P(y_i, X_{-i})}{P(X_{-i})})
-                      &= P(y_i, X_{-i}) (q(i)\frac{P(x_i, X_{-i})}{P(X_{-i})})
-                      &= P(y) (q(i)P(x_i \mid X_{-i}))
-                      &= P(y) (q(i)P(x_i \mid Y_{-i}))
-                      &= \pi(y) \mathbb{T}_{yx}
+\pi(x)\mathbb{T}_{xy} &= P(x) (q(i)P(y_i \mid X_{-i}))\\
+                      &= P(x_i, X_{-i}) (q(i)\frac{P(y_i, X_{-i})}{P(X_{-i})})\\
+                      &= P(y_i, X_{-i}) (q(i)\frac{P(x_i, X_{-i})}{P(X_{-i})})\\
+                      &= P(y) (q(i)P(x_i \mid X_{-i}))\\
+                      &= P(y) (q(i)P(x_i \mid Y_{-i}))\\
+                      &= \pi(y) \mathbb{T}_{yx}\\
 \end{align*}
 $$
 
