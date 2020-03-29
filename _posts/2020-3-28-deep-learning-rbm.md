@@ -366,6 +366,8 @@ Such a distribution $\pi$ is called the stationary distribution of the Markov Ch
 1. Sample from $P(X)$
 2. Compute the expectation $\mathbb{E}_{P(X)}(f(X))$
 
+#### Attack Plan
+
 Now suppose we have a Markov Chain whose stationary distribution $\pi$ is our desired probability distribution $P(X)$ then
   - we can sample from the stationary distribution easily.
   - we can use those samples to calculate the emperical estimate for our expectation
@@ -374,13 +376,69 @@ Now suppose we have a Markov Chain whose stationary distribution $\pi$ is our de
 
 *Theorem 1: If $X_1, X_2, ..., X_n$ is a **irreducible** time homogeneous markov chain with stationary distribution $\pi$, then*
 
-$$\frac{1}{t}\sum_{i=1}^{t} f(X_i) \longrightarrow^{t \to \infty} \mathbb{E}_{P(X)}(f(X)) \text{ where } X \in \mathbb{X} \text{and} X \sim \pi$$
+$$\frac{1}{t}\sum_{i=1}^{t} f(X_i) \xrightarrow{t \to \infty} \mathbb{E}_{P(X)}(f(X)) \text{ where } X \in \mathbb{X} \text{ and } X \sim \pi$$
 
 *Further, if the Markov Chain is non-periodic then*
 
 $$P(X_t=x_t \mid X_{0}=x_{0}) \to \pi \text{ as } t \to \infty, \forall x_{t}, x_{0} \in \mathbb{X}$$
 
+#### Adding onto our goal list
+
+1. Define the Markov Chain for our RBMs.
+2. Define what the transition matrix for our Markov Chain is.
+3. Show that it is easy to sample from this chain.
+4. Show that the stationary distribution $\pi$ is the desired distribution $P(V, H)$.
+5. Show that the chain is ***irreducible*** and ***aperiodic***.
+
+Let's also define $X = \{V, H\}$ which means that $\{X_1, X_2, X_3, ..., X_{m+n}\} = \{V_1, V_2, ..., V_m, H_1, H_2, ..., H_n\}$.
+
 ### Setting up a Markov Chain for RBMs
+
+#### Procedure
+
+1. At time step $0$, we start be randomly initializing $X_0 \in \{0, 1\}^{m+n}$ where $X = \{V, H\}$
+2. We randomly choose some $i \in {1, 2, ..., m+n}$ from a uniform distribution, say, $q(i)$
+3. Fix values of all the variables except $X_i$.
+4. Sample the new value for $X_i$ (could be a $V$ or a $H$) using the following conditional distribution.
+    - $P(X_{i}=y_i \mid X_{-i}=X_{-i})$
+5. Repeat the steps 2 to 4 for many many time steps.
+
+#### Identifying the transition matrix
+
+If we were to provide the entire transition matrix, then we would need $\mathbb{R}^{2^{m+n} \times 2^{m+n}}$ real values. Such a matrix is impossible to store in practice. So, in the procedure above, we have defined a very very sparse matrix by only allowing those transitions where the value of only one variable changes at a time step. It can formally be written as
+
+$$
+\mathbb{T}_{xy}
+\begin{cases}
+q(i)P(y_i \mid x_{-i}), & \text{where $y \in \{0, 1\}^{m+n}$ and $\exists i \in \{1, 2, ..., m+n\}$ such that $X_j=y_j \forall j \in \{1, 2, ..., m+n\} - \{i\}$} \\
+0,                      & otherwise
+\end{cases}
+$$
+
+The above expression says that the probability of the state of more than one random variable being different is $0$. While the probability that the $i'th$ random variable would change given values of all the other random variables is $q(i)P(y_i \mid x_{-i})$.
+
+#### How is it easy to sample from this chain?
+
+At eash step, we need to compute $P(X_i=y_i \mid X_{-i}=x_{-i})$.
+
+We say how to compute in the [RBMs as Stochastic Neural Networks section](#rbms-as-stochastic-neural-networks). Let's write those out assuming $y_i=1$. (Note that $y_i$ is also binary and take values $0$ or $1$)
+
+$$
+\begin{gather*}
+P(v_l=1 \mid H) = \sigma(- \sum_{j=1}^{n} W_{lj}h_j - b_l) \\
+P(h_l=1 \mid V) = \sigma(- \sum_{i=1}^{m} W_{il}v_i - c_l) \\
+\end{gather*}
+$$
+
+We can now sample from a uniform distribution and use $P(v_l=1 \mid H)$ and $P(h_l=1 \mid V)$ values as thresholds to decide weather to assign a $1$ or a $0$ to the hidden or visible variable. Formally, we are just sampling from Bernoulli's distribution with probability of success $P(v_l=1 \mid H)$ or $P(h_l=1 \mid V)$ depending on $i \leq m$ or $i > m$.
+
+#### How do we show that the stationary distribution is P(X)?
+
+To prove that our chain converges to our desired distrbution, we need to define a theorem.
+
+***Detailed Balance Theorem**: To show that the distribution $\pi$ of a Markov Chain described by the transition probabilities $\mathbb{T}_{xy}, x, y \in \Omega$, it is sufficient to show that $\forall x, y \in \Omega$, the following condition holds*
+
+$$\pi(x)\mathbb{T}_{xy} = \pi(y)\mathbb{T}_{yx}$$
 
 ### Training RBMs using Gibbs Sampling
 
