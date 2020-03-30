@@ -6,6 +6,17 @@ image: /images/graphical_models/logo_rbm.jpeg
 tags: [Deep Learning, Machine Learning]
 ---
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
 ## Influence and Reference
 
 This article is highly influenced by the [NPTEL's Deep Learning - Part 2 course by Mitesh Khapra](https://nptel.ac.in/courses/106/106/106106201/) and uses its material reserving all the rights to their corresponding authors. This article contains a full implementation of Restricted Boltzmann Machines using pure NumPy and no other 3rd party frameworks.
@@ -425,8 +436,8 @@ We saw how to compute in the [RBMs as Stochastic Neural Networks section](#rbms-
 
 $$
 \begin{gather*}
-P(v_l=1 \mid H) = \sigma(- \sum_{j=1}^{n} W_{lj}h_j - b_l) \\
-P(h_l=1 \mid V) = \sigma(- \sum_{i=1}^{m} W_{il}v_i - c_l) \\
+P(v_l=1 \mid H) = \sigma(\sum_{j=1}^{n} W_{lj}h_j + b_l) \\
+P(h_l=1 \mid V) = \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
 \end{gather*}
 $$
 
@@ -450,7 +461,7 @@ $$
 \begin{gather*}
 \pi(x)\mathbb{T}_{xy} \stackrel{?}{=} \pi(y)\mathbb{T}_{yx}\\
 \pi(x)(0) \stackrel{?}{=} \pi(y)(0)\\
-0 = 0 (\text{prove me wrong hehe})\\
+0 = 0 & (\text{prove me wrong hehe})\\
 \end{gather*}
 $$
 
@@ -496,7 +507,7 @@ $$
 \begin{align*}
 \frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} &= \mathbb{E}_{P(H \mid V)}\left( v_ih_j \right) - \mathbb{E}_{P(V, H)}\left( v_ih_j \right) \\
                                                     &= \sum_{H}\left(P(H \mid V)v_ih_j\right) - \sum_{V, H}\left(P(V, H) v_ih_j \right) \\
-                                                    &= \sum_{H}\left(P(H \mid V)v_ih_j\right) - \sum_{V} P(V) \sum_{H} P(H \mid V) v_ih_J \\
+                                                    &= \sum_{H}\left(P(H \mid V)v_ih_j\right) - \sum_{V} P(V) \sum_{H}\left(P(H \mid V)v_ih_j\right) \\
 \end{align*}
 $$
 
@@ -507,9 +518,13 @@ $$
 \sum_{H}\left(P(H \mid V)v_ih_j\right) &= \sum_{h_j}\sum_{H_{-j}}\left( P(h_j \mid H_{-j}, V)P(H_{-j} \mid V)v_ih_j \right) \\
                                        &= \sum_{h_j}\left( P(h_j \mid H_{-j}, V) v_ih_j \right) \left( \sum_{H_{-j}}P(H_{-j} \mid V) \right) \\
                                        &= \sum_{h_j}\left( P(h_j \mid H_{-j}, V) v_ih_j \right) \\
-                                       &= P(h_j=1 \mid H_{-j}, V) v_i \\
-                                       &= \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) \\
+                                       &= P(h_j=1 \mid H_{-j}, V)v_i \\
+                                       &= \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \\
 \end{align*}
 $$
+
+Substituting this in our gradient equation, we have
+
+$$\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \right)$$
 
 ### Training RBMs using Contrastive Divergence
