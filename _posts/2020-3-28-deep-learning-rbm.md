@@ -6,7 +6,6 @@ image: /images/graphical_models/logo_rbm.jpeg
 tags: [Deep Learning, Machine Learning]
 ---
 
-
 ## Influence and Reference
 
 This article is highly influenced by the [NPTEL's Deep Learning - Part 2 course by Mitesh Khapra](https://nptel.ac.in/courses/106/106/106106201/) and uses its material reserving all the rights to their corresponding authors. This article contains a full implementation of Restricted Boltzmann Machines using pure NumPy and no other 3rd party frameworks.
@@ -24,6 +23,7 @@ This article is highly influenced by the [NPTEL's Deep Learning - Part 2 course 
 - [Why do we care about Markov Chains](#why-do-we-care-about-markov-chains)
 - [Setting up a Markov Chain for RBMs](#setting-up-a-markov-chain-for-rbms)
 - [Training RBMs using Gibbs Sampling](#training-rbms-using-gibbs-sampling)
+- [Implementing RBMs in Python](#implementation)
 - [Training RBMs using Contrastive Divergence](#training-rbms-using-contrastive-divergence)
 
 ### Joint Distributions
@@ -210,22 +210,19 @@ P(v_l=0 \mid H) &= \sigma(\alpha_l(H)) \\
 \end{align*}
 $$
 
-We can similarly calculate the P(h_l=1 \mid V, H_{-l}).
-
-$$\alpha_l(V) = - \sum_{i=1}^{m} W_{il}v_i - c_l$$
-
-$$\beta(V, H_{-l}) = - \sum_{i=1}^{m} \sum_{j=1, j \neq l}^{n} W_{ij}v_ih_j - \sum_{i=1}^{m} b_iv_i - \sum_{j=1, \neq l}^{n} c_jh_j$$
-
-$$E(V, H) = \alpha_l(V)h_l + \beta(V, H_{-l})$$
+We can similarly calculate the $P(h_l=1 \mid V, H_{-l})$.
 
 $$
+\alpha_l(V) = - \sum_{i=1}^{m} W_{il}v_i - c_l \\
+\beta(V, H_{-l}) = - \sum_{i=1}^{m} \sum_{j=1, j \neq l}^{n} W_{ij}v_ih_j - \sum_{i=1}^{m} b_iv_i - \sum_{j=1, \neq l}^{n} c_jh_j \\
+E(V, H) = \alpha_l(V)h_l + \beta(V, H_{-l}) \\
 \begin{align*}
 P(h_l=1 \mid V) &= P(h_l=1 \mid V, H_{-l}) \\
                 &= \frac{P(h_l=1, V, H_{-l})}{P(h_l=0, V, H_{-l}) + P(h_l=1, V, H_{-l})} \\
                 &= \frac{e^{- \alpha_l(V)1 - \beta(V, H_{-l})}}{e^{- \alpha_l(V)1 - \beta(V, H_{-l})} + e^{- \alpha_l(V)0 - \beta(V, H_{-l})}} \\
                 &= \frac{1}{1 + e^{ \alpha_l(V) }} \\
                 &= \sigma(- \alpha_l(V)) \\
-                &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
+P(h_l=1 \mid V) &= \sigma(\sum_{i=1}^{m} W_{il}v_i + c_l) \\
 \end{align*}
 $$
 
@@ -528,6 +525,22 @@ $$
 \end{gather*}
 $$
 
-We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. Hence, we have to use the Gibb's sampling procedure to compute the emperical estimate of the gradient. But before we do that, let's vectorize the results we have until now.
+We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. Hence, we have to use the Gibb's sampling procedure to compute the emperical estimate of the gradient. So, let's look at the practical implementation of this algoroithm!
+
+### Implementation
+
+#### 1. Vectorize
+
+We have to first vectorize all the equations we have seen so far to implement them. Remember vectorization just means we convert all the scalars to vectors and matrices to speed up the computation.
+
+$$
+\begin{gather*}
+P(v=1 \mid H) = \sigma( W^T h + b) \\
+P(h=1 \mid V) = \sigma( W^T v + c) \\
+\nabla_{W} \mathcal{L}(\theta) = v \sigma\left( W^{T}v + c \right)^{T} - \mathbb{E}_{P(V)} \left( v \sigma\left( W^{T}v + c \right)^{T} \right) \\
+\nabla_{b} \mathcal{L}(\theta) = v - \mathbb{E}_{P(V)} \left( v \right) \\
+\nabla_{c} \mathcal{L}(\theta) = \sigma\left( W^{T}v + c \right)^{T} - \mathbb{E}_{P(V)} \left( \sigma\left( W^{T}v + c \right)^{T} \right) \\
+\end{gather*}
+$$
 
 ### Training RBMs using Contrastive Divergence
