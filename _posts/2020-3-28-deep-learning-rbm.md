@@ -541,12 +541,333 @@ We have to first vectorize all the equations we have seen so far to implement th
 
 $$
 \begin{gather*}
-P(v=1 \mid H) = \sigma( W^T h + b) \\
+P(v=1 \mid H) = \sigma( W h + b) \\
 P(h=1 \mid V) = \sigma( W^T v + c) \\
 \nabla_{W} \mathcal{L}(\theta) = v \sigma\left( W^{T}v + c \right)^{T} - \mathbb{E}_{P(V)} \left( v \sigma\left( W^{T}v + c \right)^{T} \right) \\
 \nabla_{b} \mathcal{L}(\theta) = v - \mathbb{E}_{P(V)} \left( v \right) \\
 \nabla_{c} \mathcal{L}(\theta) = \sigma\left( W^{T}v + c \right)^{T} - \mathbb{E}_{P(V)} \left( \sigma\left( W^{T}v + c \right)^{T} \right) \\
 \end{gather*}
 $$
+
+#### 2. Block Gibb's Sampling
+
+Instead of sampling just one of the variables in one time step, we sample all of them at once and use it to update all the variables in the previous sample at once. This means that we eleminate a for loop that could cause efficiency problems. We run the chain for many many time steps (say 1 million) and use all those samples to estimate the expectation. In such a long sun, all the variables are going to get updated anyways so the end resulst is not affected.
+
+#### 3. Code like a real man
+
+Below is the **fully vectorized** code for implementing RBMs in python using numpy only. I have created a ``fit`` method that takes as parameter a dataset of shape ``(n_samples, n_features)`` and trains the RBM on the dataset. Once fitted, the model can be used for two tasks:
+
+1. Generate instances similar to those in the training dataset
+2. Encode an instance to its latent space to perform dimentionality reduction.
+
+``decode()`` method can be used to perform generation and ``encode()`` method can be used to map an instance to its latent space. Some examples and experiments are shown below.
+
+```python
+import numpy as np
+
+def sigmoid(X):
+    r"""Evaluate the sigmoid function elementwise on
+    a vector or matrix X
+
+    Parameters
+    ----------
+    X: array_like
+        Array on which the function needs to be applied
+
+    Returns
+    -------
+    sigma_X: array_like of shape `X.shape`
+        Array on which sigmoid function is applied elementwise
+    """
+    sigma_X = 1. / (1. + np.exp(-X))
+    return sigma_X
+
+class BinaryRestrictedBoltzmannMachine(object):
+    r"""A restricted boltzmann machine model that takes
+    binary inputs and maps it to a binary latent space.
+
+    Parameters
+    ----------
+    hidden_dims: int
+        The number of hidden or latent variables in your model
+
+    Returns
+    -------
+    self : object
+    """
+
+    def __init__(self, hidden_dims):
+        self.hidden_dims = hidden_dims
+
+    def _init_params(self, visible_dims):
+        r"""Initialize the parameters of the model
+
+        Parameters
+        ----------
+        visible_dims: int
+            The number of visible dimentations.
+
+        Returns
+        -------
+        None
+        """
+        self.visible_dims = visible_dims
+
+        m = self.visible_dims
+        n = self.hidden_dims
+
+        self.W = np.random.randn(m, n)
+        self.b = np.random.randn(m, 1)
+        self.c = np.random.randn(n, 1)
+
+        return None
+
+    def __gibbs_step(self, V_t):
+        r"""Take one gibbs sampling step.
+
+        Parameters
+        ----------
+        V_t: array_like
+            The values of the visible variables at time step `t`.
+
+        Returns
+        -------
+        V_tplus1: array_like
+            The value of variables at time step `t+1`.
+        """
+        # We will first sample the hidden variables using
+        # P(H_t | V_t) => probability of observing H given V at time step t.
+        # P(V_tplus1 | H_t) => Sample new visible varaibles at time step t+1.
+        probs_H = sigmoid(self.W.T @ V_t + self.c)
+
+        # One more thing, this is called "block" gibb's
+        # sampling where we vectorize over all dimensions
+        # and sample from all the dimensions at the same time.
+        H_t = 1. * (np.random.uniform(probs_H) > probs_H)
+
+        probs_V = sigmoid(self.W @ H_t + self.b)
+        V_tplus1 = 1. * (np.random.uniform(probs_V) > probs_V)
+
+        return V_tplus1
+
+    def _gibbs_sampling(self, V_0, burn_in=1000, tune=2000):
+        r"""The gibb's sampling step in training to calculate
+        the estimates of the expectation in the gradient.
+
+        Parameters
+        ----------
+        V_0: array_like
+            The visible variables at time step 0.
+
+        burn_in: array_like
+            The number of samples to disregard from
+            the chain.
+
+        tune: array_like
+            The number of samples to use to estimate
+            the actual expectation
+
+        Returns
+        -------
+        expectation_w, expectation_b, expectation_c: array_like
+            The expecation term appearing in the gradients wrt W, b and c
+            respectively.
+        """
+
+        # We first find the total number of training instances
+        # present in the array and then the number of visible
+        # and hidden dimentions.
+        num_examples = V_0.shape[-1]
+        m = self.visible_dims
+        n = self.hidden_dims
+
+        # We start sampling from the markov chain.
+        V_sampled = self.__gibbs_step(V_0)
+
+        # This for loop just "warms up" the chain to reach
+        # its stationary distribution. Please try to keep
+        # these steps as large as possible to converge to
+        # the desired distribution!
+        for _ in range(burn_in):
+            V_sampled = self.__gibbs_step(V_sampled)
+
+        # The chain has now reached its stationary distribution
+        # and we can start collecting the samples and estimate
+        # required estimations.
+        expectation_b = np.sum(V_sampled,
+                               axis=-1,
+                               keepdims=True)
+        expectation_c = np.sum(sigmoid(self.W.T @ V_sampled + self.c),
+                               axis=-1,
+                               keepdims=True)
+        expectation_w = V_sampled @ sigmoid(self.W.T @ V_sampled + self.c).T
+
+        # Collect a `tune` number of samples and find the
+        # sum over them. We will normalize it with `tune`
+        # later on...
+        for i in range(tune):
+            V_sampled = self.__gibbs_step(V_sampled)
+
+            expectation_b += np.sum(V_sampled,
+                                    axis=-1,
+                                    keepdims=True)
+            expectation_c += np.sum(sigmoid(self.W.T @ V_sampled + self.c),
+                                    axis=-1,
+                                    keepdims=True)
+            expectation_w += V_sampled @ sigmoid(self.W.T @ V_sampled + self.c).T
+
+        # Finally, we have to devide by the number of samples
+        # we have drawn to calculate the expectation
+        return (
+            expectation_w / float(tune+num_examples),
+            expectation_b / float(tune+num_examples),
+            expectation_c / float(tune+num_examples)
+        )
+
+    def _param_grads(self, V, expectation_w, expectation_b, expectation_c):
+        r"""Calculate the emperical estimates of the gradients of the energy
+        function with respect to [W, b, c].
+
+        Parameters
+        ----------
+        V: array_like
+            Visible variables/data.
+
+        expectation_w: array_like
+            Expectation term in the equation for gradient wrt W.
+
+        expectation_b: array_like
+            Expectation term in the equation for gradient wrt b.
+
+        expectation_c: array_like
+            Expectation term in the equation for gradient wrt c.
+
+        Returns
+        -------
+        dloss_dW, dloss_db, dloss_dc: tuple
+            Gradients wrt all the parameters in the order [W, b, c].
+        """
+        dloss_dW = V @ sigmoid(self.W.T @ V + self.c).T - expectation_w
+        dloss_db = np.sum(V, axis=-1, keepdims=True) - expectation_b
+        dloss_dc = sigmoid(self.W.T @ V + self.c) - expectation_c
+
+        return dloss_dW, dloss_db, dloss_dc
+
+    def _apply_grads(self, lr, dloss_dW, dloss_db, dloss_dc):
+        """Update the parameters [W, b, c] of the model using
+        stochastic gradient descent.
+
+        Parameters
+        ----------
+        lr: int
+            Learning rate of the model
+
+        dloss_dW: array_like
+            The gradient of energy function wrt W.
+
+        dloss_db: array_like
+            The gradient of energy function wrt b.
+
+        dloss_dc: array_like
+            The gradient of energy function wrt c.
+
+        Returns
+        -------
+        None
+        """
+        # Remember we are perfoming gradient ASSCENT (not descent)
+        # to MAXIMIZE (not minimize) the energy function!
+        self.W = self.W + lr * dloss_dW
+        self.b = self.b + lr * dloss_db
+        self.c = self.c + lr * dloss_dc
+
+    def fit(self, X, lr=0.1, epochs=10, burn_in=1000, tune=2000):
+        r"""Train the model on provided data
+
+        Parameters
+        ----------
+        X: array_like
+            The data array of shape (n_samples, n_features)
+
+        lr: float, optional
+            The learning rate of the model. Defaults to 0.1
+
+        epochs: int, optional
+            The number of steps to train your model
+
+        burn_in: int, optional
+            The number of steps to warm the markov chain up
+
+        tune: int, optional
+            The number of samples to generate from the merkov chain
+        """
+        # We want to vectorize over multiple batches
+        # and so we have to reshape our data to `(n_features, n_samples)`
+        X = X.T
+        num_examples = X.shape[-1]
+        self.visible_dims = X.shape[0]
+
+        m = self.visible_dims
+        n = self.hidden_dims
+
+        # Initialize the parameters [W, b, c] of our model
+        self._init_params(m)
+
+        # Initialize the markov chain
+        V_0 = np.random.randn(m, num_examples)
+
+        # Run the training for provided number of epochs
+        for _ in range(epochs):
+            # Emperically calculate the expectation using our markov chain.
+            Ew, Eb, Ec = self._gibbs_sampling(V_0, burn_in=burn_in, tune=tune)
+
+            # Using the emperical estimates of the expectation, calculate
+            # the gradients wrt all our parameters
+            dloss_dW, dloss_db, dloss_dc = self._param_grads(X, Ew, Eb, Ec)
+
+            # Update the parameters
+            self._apply_grads(lr, dloss_dW, dloss_db, dloss_dc)
+
+        return self
+
+    def decode(self, H=None):
+        """Move from latent space to data space. Acts like a generator.
+
+        Parameters
+        ----------
+        H: array_like, optional
+            A vector of latent/hidden variables. If `None`, then it is
+            randomly initialized
+
+        Returns
+        -------
+        decoded: array_like
+            The generated data from given latent space
+        """
+        # We generate a random latent space if not given
+        if H is None:
+            H = 1. * (np.random.rand(self.hidden_dims, 1) > 0.5)
+
+        # We sample the Vs given Hs.
+        probs_V = sigmoid(self.W @ H + self.b)
+        return 1. * (probs_V > 0.5)
+
+    def encode(self, V):
+        """Encode the given data in its latent variables.
+
+        Parameters
+        ----------
+        V: array_like
+            The data to be encoded
+
+        Returns
+        -------
+        encoded: array_like
+            An encoded vector of the given data
+        """
+        # We will sampe a random H for a given V.
+        probs_H = sigmoid(self.W.T @ V + self.c)
+        return 1. * (probs_H > 0.5)
+```
 
 ### Training RBMs using Contrastive Divergence
