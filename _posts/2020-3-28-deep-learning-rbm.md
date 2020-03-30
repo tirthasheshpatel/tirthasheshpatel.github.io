@@ -6,16 +6,6 @@ image: /images/graphical_models/logo_rbm.jpeg
 tags: [Deep Learning, Machine Learning]
 ---
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      processEscapes: true
-    }
-  });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
 
 ## Influence and Reference
 
@@ -526,5 +516,16 @@ $$
 Substituting this in our gradient equation, we have
 
 $$\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \right)$$
+
+We can similarly derive the equations for the gradients with respect to $b_i$ and $c_j$
+
+$$
+\begin{gather*}
+\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = v_i - \sum_{V} P(V) v_i \\
+\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) \right) \\
+\end{gather*}
+$$
+
+We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. So, we need gibb's sampling to calculate the empirical estimate of the expectation.
 
 ### Training RBMs using Contrastive Divergence
