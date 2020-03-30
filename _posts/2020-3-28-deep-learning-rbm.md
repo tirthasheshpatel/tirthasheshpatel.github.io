@@ -870,4 +870,126 @@ class BinaryRestrictedBoltzmannMachine(object):
         return 1. * (probs_H > 0.5)
 ```
 
+#### 4. Experiment
+
+1. **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import rbm
+from keras.datasets import mnist
+
+(X_train, y), (_, _) = mnist.load_data()
+
+# Normalize and reshape
+X_train = X_train.reshape(60000, -1)
+X_train = 1. * ((X_train[1] / 255.) >= 0.5)
+
+# Plot the image
+plt.imshow(X_train.reshape(28, 28))
+plt.title("Training Instance")
+plt.show()
+
+# Convert the dimensions to format `(n_samples, n_features)`.
+# For an image, pixels are its `n_features` and we have only
+# one training instance.
+X = X_train.reshape(1, -1)
+
+# We will mainly experiment with different latent space
+# dimensions. For this instance, i have 30-D latent space.
+hidden_dims = 30
+
+# Define our model
+model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
+
+# Train the model on our dataset with learning rate 0.5
+model.fit(X, 0.5)
+
+# Use the `decode()` method to generate an image.
+image = model.decode()
+
+# Plot the generated image.
+plt.imshow(image.reshape(28, 28))
+plt.title("Generated Instance")
+plt.show()
+```
+
+This is the image I used for training.
+
+![Training Instance](/images/graphical_models/rbm_train_instance.png)
+
+And this is the generated image.
+
+![Generated instance](/images/graphical_models/rbm_generated_instance.png)
+
+You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimentional latent space.
+
+2. Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 20 ``epochs``, 100 ``burn_in`` steps (the samples we are going to disregard), 1000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import rbm
+from keras.datasets import mnist
+
+(X_train, y), (_, _) = mnist.load_data()
+
+# Normalize and reshape
+X_train = X_train.reshape(60000, -1)
+X_train = 1. * ((X_train[y == 3][:101] / 255.) >= 0.5)
+
+# Plot some training isntances
+fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
+ax[0, 0].imshow(X_train[0].reshape(28, 28))
+ax[0, 1].imshow(X_train[1].reshape(28, 28))
+ax[0, 2].imshow(X_train[2].reshape(28, 28))
+ax[1, 0].imshow(X_train[3].reshape(28, 28))
+ax[1, 1].imshow(X_train[4].reshape(28, 28))
+ax[1, 2].imshow(X_train[5].reshape(28, 28))
+ax[2, 0].imshow(X_train[6].reshape(28, 28))
+ax[2, 1].imshow(X_train[7].reshape(28, 28))
+ax[2, 2].imshow(X_train[8].reshape(28, 28))
+fig.suptitle("Training instances")
+plt.show()
+
+# We will mainly experiment with different latent space
+# dimensions. For this instance, i have 30-D latent space.
+hidden_dims = 30
+
+# Define our model
+model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
+
+# Train the model on our dataset with learning rate 0.5
+model.fit(X_train, lr=0.5, burn_in=100, tune=1000, epochs=20, verbose=True)
+
+# Use the `decode()` method to generate an image.
+images = [model.decode() for _ in range(9)]
+
+fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
+ax[0, 0].imshow(images[0].reshape(28, 28))
+ax[0, 1].imshow(images[1].reshape(28, 28))
+ax[0, 2].imshow(images[2].reshape(28, 28))
+ax[1, 0].imshow(images[3].reshape(28, 28))
+ax[1, 1].imshow(images[4].reshape(28, 28))
+ax[1, 2].imshow(images[5].reshape(28, 28))
+ax[2, 0].imshow(images[6].reshape(28, 28))
+ax[2, 1].imshow(images[7].reshape(28, 28))
+ax[2, 2].imshow(images[8].reshape(28, 28))
+fig.suptitle("Generated instances")
+plt.show()
+```
+
+Some training instances are shown below.
+
+![Training instances](/images/graphical_models/rbm_train_3.png)
+
+This model generates the following images!
+
+![Generated images](/images/graphical_models/rbm_generated_3.png)
+
+As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my github page. Let's move ahead to the last experiment of this model.
+
+3. **Bad Generator**: The model performs very good on training instance that are similar like just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
+
 ### Training RBMs using Contrastive Divergence
