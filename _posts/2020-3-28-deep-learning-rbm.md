@@ -24,7 +24,6 @@ This article is highly influenced by the [NPTEL's Deep Learning - Part 2 course 
 - [Setting up a Markov Chain for RBMs](#setting-up-a-markov-chain-for-rbms)
 - [Training RBMs using Gibbs Sampling](#training-rbms-using-gibbs-sampling)
 - [Implementing RBMs in Python](#implementation)
-- [Training RBMs using Contrastive Divergence](#training-rbms-using-contrastive-divergence)
 
 ### Joint Distributions
 
@@ -872,7 +871,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
 #### 4. Experiment
 
-1. **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+- **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
 
 ```python
 import numpy as np
@@ -925,7 +924,7 @@ And this is the generated image.
 
 You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimentional latent space.
 
-2. Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 20 ``epochs``, 100 ``burn_in`` steps (the samples we are going to disregard), 1000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+- Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 20 ``epochs``, 100 ``burn_in`` steps (the samples we are going to disregard), 1000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
 
 ```python
 import numpy as np
@@ -990,6 +989,60 @@ This model generates the following images!
 
 As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my github page. Let's move ahead to the last experiment of this model.
 
-3. **Bad Generator**: The model performs very good on training instance that are similar like just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
+- **Bad Generator**: The model performs very good on training instance that are similar like just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
 
-### Training RBMs using Contrastive Divergence
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import rbm
+from keras.datasets import mnist
+
+(X_train, y), (_, _) = mnist.load_data()
+
+# Normalize and reshape
+X_train = X_train.reshape(60000, -1)
+X_train = 1. * ((X_train[:2] / 255.) >= 0.5)
+
+# Plot the image
+plt.imshow(X_train[0].reshape(28, 28))
+plt.title("Training Instance")
+plt.show()
+
+plt.imshow(X_train[1].reshape(28, 28))
+plt.title("Training Instance")
+plt.show()
+
+# We will mainly experiment with different latent space
+# dimensions. For this instance, i have 30-D latent space.
+hidden_dims = 30
+
+# Define our model
+model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
+
+# Train the model on our dataset with learning rate 0.5
+model.fit(X_train, 0.5)
+
+# Use the `decode()` method to generate an image.
+image = model.decode()
+
+# Plot the generated image.
+plt.imshow(image.reshape(28, 28))
+plt.title("Generated Instance")
+plt.show()
+```
+
+The training instances are shown below. We have trained the model on only two instances. One instance is a $0$ and the other is a $5$.
+
+![Training instance 1](/images/graphical_models/rbm_mm_train_1.png)
+![Training instance 2](/images/graphical_models/rbm_mm_train_2.png)
+
+The generated images is
+
+![Generated image](/images/graphical_models/rbm_mm_generate.png)
+
+What?! The model just learned to put one images onto the other! This is not expected, right? Let me explain. The problem is not training but sampling. This is one of the limitations of Gibb's Sampling. This sampling method sometimes thinks that the expectation lies at the peak of the distribution. But as explined in the Betancourt's paper on MCMC methods, the actual samples must lie inside the, so called, "***typical set***" of the expectation and not the mode of the distribution. Well, this can be solved using more advanced sampling methods like Hamiltonian Monte Carlo or No U-Turn Sampler. PyMC3 folks have done a great job on those sampling methods and you should definitely check it out!!
+
+Having done so much mathematics, coding, and experimenting, I hope you guys took something home!
+
+Signing out!
+Tirth Patel.
