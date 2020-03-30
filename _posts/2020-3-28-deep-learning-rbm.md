@@ -182,7 +182,7 @@ The energy function is given by
 
 $$E(V, H) =  - \sum_{i}\sum_{j} W_{ij}v_ih_j - \sum_{i} b_iv_i - \sum_{j} c_jh_j$$
 
-Now, let's say $V_{-l}$ denote all the visible variables except the $l$'th variable. Then
+Now, let's say $V_{-l}$ denote all the visible variables except the $l'th$ variable. Then
 
 $$
 \begin{gather*}
@@ -345,7 +345,7 @@ P(X_2) &= \mu^{1}\mathbb{T} \\
 \end{align*}
 $$
 
-Similarly, for $k$'th time step
+Similarly, for $k'th$ time step
 
 $$P(X_k) = \mu^{0}\mathbb{T}^k$$
 
@@ -370,7 +370,7 @@ Such a distribution $\pi$ is called the stationary distribution of the Markov Ch
 
 Now suppose we have a Markov Chain whose stationary distribution $\pi$ is our desired probability distribution $P(X)$ then
   - we can sample from the stationary distribution easily.
-  - we can use those samples to calculate the emperical estimate for our expectation
+  - we can use those samples to calculate the empirical estimate for our expectation
     $$\mathbb{E}(f(X)) \approx \frac{1}{n} \sum_{k}^{k+n} f(X_i) $$
     where $X_i$ is drawn from the stationary distribution $\pi$ of the markov chain.
 
@@ -434,7 +434,7 @@ We can now sample from a uniform distribution and use $P(v_l=1 \mid H)$ and $P(h
 
 #### How do we show that the stationary distribution is P(X)?
 
-To prove that our chain converges to our desired distrbution, we need to define a theorem.
+To prove that our chain converges to our desired distribution, we need to define a theorem.
 
 ***Detailed Balance Theorem**: To show that the distribution $\pi$ of a Markov Chain described by the transition probabilities $\mathbb{T}_{xy}, x, y \in \Omega$, it is sufficient to show that $\forall x, y \in \Omega$, the following condition holds*
 
@@ -444,7 +444,7 @@ Let's prove this theorem for 3 different cases.
 
 - ***Case 1: When $X$ and $Y$ are different in more than two dimensions.***
 
-We clearly stated that we can only transition to those states where either one of the variable changes it value or all the variables remain the same. This means that, for this case, $\mathbb{T}_{xy} = 0$.
+We clearly stated that we can only transition to those states where either one of the variables changes its value or all the variables remain the same. This means that, for this case, $\mathbb{T}_{xy} = 0$.
 
 $$
 \begin{gather*}
@@ -463,7 +463,7 @@ $$
 \end{gather*}
 $$
 
-- ***Case 3: When $X$ and $Y$ differ in exactly one dimention***
+- ***Case 3: When $X$ and $Y$ differ in exactly one dimension***
 
 $$
 \begin{align*}
@@ -480,7 +480,7 @@ The above case proves that the stationary distribution has converged to our dist
 
 ### Training RBMs using Gibbs Sampling
 
-Let's first catch up to the last disscussion of gradients that led to all these fucken of Markov chains and Gibb's Sampling.
+Let's first catch up to the last discussion of gradients that led to all these fucken of Markov chains and Gibb's Sampling.
 
 $$
 \begin{gather*}
@@ -490,7 +490,7 @@ $$
 \end{gather*}
 $$
 
-Let's try to simplify the gradient little bit more and then we can move on to the training part.
+Let's try to simplify the gradient a little bit more and then we can move on to the training part.
 
 $$
 \begin{align*}
@@ -530,7 +530,7 @@ $$
 \end{gather*}
 $$
 
-We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. Hence, we have to use the Gibb's sampling procedure to compute the emperical estimate of the gradient. So, let's look at the practical implementation of this algoroithm!
+We have removed the expectation with respect to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. Hence, we have to use Gibb's sampling procedure to compute the empirical estimate of the gradient. So, let's look at the practical implementation of this algorithm!
 
 ### Implementation
 
@@ -550,14 +550,14 @@ $$
 
 #### 2. Block Gibb's Sampling
 
-Instead of sampling just one of the variables in one time step, we sample all of them at once and use it to update all the variables in the previous sample at once. This means that we eleminate a for loop that could cause efficiency problems. We run the chain for many many time steps (say 1 million) and use all those samples to estimate the expectation. In such a long sun, all the variables are going to get updated anyways so the end resulst is not affected.
+Instead of sampling just one of the variables in one time step, we sample all of them at once and use it to update all the variables in the previous sample at once. This means that we eliminate a for loop that could cause efficiency problems. We run the chain for many many time steps (say 1 million) and use all those samples to estimate the expectation. In such a long run, all the variables are going to get updated anyways so the result is not affected.
 
 #### 3. Code like a real man
 
-Below is the **fully vectorized** code for implementing RBMs in python using numpy only. I have created a ``fit`` method that takes as parameter a dataset of shape ``(n_samples, n_features)`` and trains the RBM on the dataset. Once fitted, the model can be used for two tasks:
+Below is the **fully vectorized** code for implementing RBMs in python using numpy only. I have created a ``fit`` method that takes as a parameter a dataset of shape ``(n_samples, n_features)`` and trains the RBM on the dataset. Once fitted, the model can be used for two tasks:
 
 1. Generate instances similar to those in the training dataset
-2. Encode an instance to its latent space to perform dimentionality reduction.
+2. Encode an instance to its latent space to perform dimensionality reduction.
 
 ``decode()`` method can be used to perform generation and ``encode()`` method can be used to map an instance to its latent space. Some examples and experiments are shown below.
 
@@ -571,7 +571,7 @@ def sigmoid(X):
     Parameters
     ----------
     X: array_like
-        Array on which the function needs to be applied
+        An array on which the function needs to be applied
 
     Returns
     -------
@@ -582,7 +582,7 @@ def sigmoid(X):
     return sigma_X
 
 class BinaryRestrictedBoltzmannMachine(object):
-    r"""A restricted boltzmann machine model that takes
+    r"""A restricted Boltzmann machine model that takes
     binary inputs and maps it to a binary latent space.
 
     Parameters
@@ -604,7 +604,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         Parameters
         ----------
         visible_dims: int
-            The number of visible dimentations.
+            The number of visible dimensions.
 
         Returns
         -------
@@ -639,7 +639,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         # P(V_tplus1 | H_t) => Sample new visible varaibles at time step t+1.
         probs_H = sigmoid(self.W.T @ V_t + self.c)
 
-        # One more thing, this is called "block" gibb's
+        # One more thing, this is called "block" Gibbs
         # sampling where we vectorize over all dimensions
         # and sample from all the dimensions at the same time.
         H_t = 1. * (np.random.uniform(probs_H) > probs_H)
@@ -650,7 +650,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         return V_tplus1
 
     def _gibbs_sampling(self, V_0, burn_in=1000, tune=2000):
-        r"""The gibb's sampling step in training to calculate
+        r"""The Gibb's sampling step in training to calculate
         the estimates of the expectation in the gradient.
 
         Parameters
@@ -669,7 +669,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         Returns
         -------
         expectation_w, expectation_b, expectation_c: array_like
-            The expecation term appearing in the gradients wrt W, b and c
+            The expectation term appearing in the gradients wrt W, b and c
             respectively.
         """
 
@@ -680,7 +680,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         m = self.visible_dims
         n = self.hidden_dims
 
-        # We start sampling from the markov chain.
+        # We start sampling from the Markov chain.
         V_sampled = self.__gibbs_step(V_0)
 
         # This for loop just "warms up" the chain to reach
@@ -715,7 +715,7 @@ class BinaryRestrictedBoltzmannMachine(object):
                                     keepdims=True)
             expectation_w += V_sampled @ sigmoid(self.W.T @ V_sampled + self.c).T
 
-        # Finally, we have to devide by the number of samples
+        # Finally, we have to divide by the number of samples
         # we have drawn to calculate the expectation
         return (
             expectation_w / float(tune+num_examples),
@@ -795,7 +795,7 @@ class BinaryRestrictedBoltzmannMachine(object):
             The number of steps to train your model
 
         burn_in: int, optional
-            The number of steps to warm the markov chain up
+            The number of steps to warm the Markov chain up
 
         tune: int, optional
             The number of samples to generate from the merkov chain
@@ -815,9 +815,9 @@ class BinaryRestrictedBoltzmannMachine(object):
         # Initialize the markov chain
         V_0 = np.random.randn(m, num_examples)
 
-        # Run the training for provided number of epochs
+        # Run the training for the provided number of epochs
         for _ in range(epochs):
-            # Emperically calculate the expectation using our markov chain.
+            # Empirically calculate the expectation using our Markov chain.
             Ew, Eb, Ec = self._gibbs_sampling(V_0, burn_in=burn_in, tune=tune)
 
             # Using the emperical estimates of the expectation, calculate
@@ -896,7 +896,7 @@ plt.show()
 X = X_train.reshape(1, -1)
 
 # We will mainly experiment with different latent space
-# dimensions. For this instance, i have 30-D latent space.
+# dimensions. For this instance, i have a 30-D latent space.
 hidden_dims = 30
 
 # Define our model
@@ -922,7 +922,7 @@ And this is the generated image.
 
 ![Generated instance](/images/graphical_models/rbm_generated_instance.png)
 
-You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimentional latent space.
+You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimensional latent space.
 
 - Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 20 ``epochs``, 100 ``burn_in`` steps (the samples we are going to disregard), 1000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
 
@@ -953,7 +953,7 @@ fig.suptitle("Training instances")
 plt.show()
 
 # We will mainly experiment with different latent space
-# dimensions. For this instance, i have 30-D latent space.
+# dimensions. For this instance, i have a 30-D latent space.
 hidden_dims = 30
 
 # Define our model
@@ -987,9 +987,9 @@ This model generates the following images!
 
 ![Generated images](/images/graphical_models/rbm_generated_3.png)
 
-As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my github page. Let's move ahead to the last experiment of this model.
+As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my GitHub page. Let's move ahead to the last experiment of this model.
 
-- **Bad Generator**: The model performs very good on training instance that are similar like just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
+- **Bad Generator**: The model performs very well on training instances that are similar to just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
 
 ```python
 import numpy as np
@@ -1013,7 +1013,7 @@ plt.title("Training Instance")
 plt.show()
 
 # We will mainly experiment with different latent space
-# dimensions. For this instance, i have 30-D latent space.
+# dimensions. For this instance, i have a 30-D latent space.
 hidden_dims = 30
 
 # Define our model
@@ -1036,11 +1036,11 @@ The training instances are shown below. We have trained the model on only two in
 ![Training instance 1](/images/graphical_models/rbm_mm_train_1.png)
 ![Training instance 2](/images/graphical_models/rbm_mm_train_2.png)
 
-The generated images is
+The generated images are
 
 ![Generated image](/images/graphical_models/rbm_mm_generate.png)
 
-What?! The model just learned to put one images onto the other! This is not expected, right? Let me explain. The problem is not training but sampling. This is one of the limitations of Gibb's Sampling. This sampling method sometimes thinks that the expectation lies at the peak of the distribution. But as explined in the Betancourt's paper on MCMC methods, the actual samples must lie inside the, so called, "***typical set***" of the expectation and not the mode of the distribution. Well, this can be solved using more advanced sampling methods like Hamiltonian Monte Carlo or No U-Turn Sampler. PyMC3 folks have done a great job on those sampling methods and you should definitely check it out!!
+What?! The model just learned to put one image onto the other! This is not expected, right? Let me explain. The problem is not training but a sampling. This is one of the limitations of Gibb's Sampling. This sampling method sometimes thinks that the expectation lies at the peak of the distribution. But as explained in the Betancourt's paper on MCMC methods, the actual samples must lie inside the so-called, "***typical set***" of the expectation and not the mode of the distribution. Well, this can be solved using more advanced sampling methods like Hamiltonian Monte Carlo or No U-Turn Sampler. PyMC3 folks have done a great job on those sampling methods and you should definitely check it out!!
 
 Having done so much mathematics, coding, and experimenting, I hope you guys took something home!
 
