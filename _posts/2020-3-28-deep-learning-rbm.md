@@ -1062,6 +1062,7 @@ Code is ready. It's down here.
 
 <summary>Code for RBMs using Contrastive Divergence</summary>
 
+
 ```python
 import sys
 import numpy as np
@@ -1107,7 +1108,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         ----------
         visible_dims: int
             The number of visible dimentations.
-        
+
         Returns
         -------
         None
@@ -1232,13 +1233,13 @@ class BinaryRestrictedBoltzmannMachine(object):
         ----------
         V_0: array_like
             A training sample
-        
+
         burn_in: int
             Present for API consistency.
-        
+
         tune: int
             `k` term in `k-contrastive-divergence` algorithm.
-        
+
         Returns
         -------
         expectation_w, expectation_b, expectation_c: array_like
@@ -1266,10 +1267,10 @@ class BinaryRestrictedBoltzmannMachine(object):
         ----------
         V: array_like
             Visible variables/data.
-        
+
         expectation_w: array_like
             Expectation term in the equation for gradient wrt W.
-        
+
         expectation_b: array_like
             Expectation term in the equation for gradient wrt b.
 
@@ -1295,7 +1296,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         ----------
         lr: int
             Learning rate of the model
-        
+
         dloss_dW: array_like
             The gradient of energy function wrt W.
 
@@ -1304,7 +1305,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         dloss_dc: array_like
             The gradient of energy function wrt c.
-        
+
         Returns
         -------
         None
@@ -1322,13 +1323,13 @@ class BinaryRestrictedBoltzmannMachine(object):
         ----------
         X: array_like
             The data array of shape (n_samples, n_features)
-        
+
         lr: float, optional
             The learning rate of the model. Defaults to 0.1
 
         epochs: int, optional
             The number of steps to train your model
-        
+
         method: string, optional
             Can be either "gitbbs_sampling" or "constrastive_divergence".
             Defaults to "constrastive_divergence"
@@ -1338,7 +1339,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         tune: int, optional
             The number of samples to generate from the merkov chain
-        
+
         verbose: bool, optional
             Weather to log the epochs or not.
         """
@@ -1389,7 +1390,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         H: array_like, optional
             A vector of latent/hidden variables. If `None`, then it is
             randomly initialized
-        
+
         Returns
         -------
         decoded: array_like
@@ -1419,8 +1420,8 @@ class BinaryRestrictedBoltzmannMachine(object):
         # We will sampe a random H for a given V.
         probs_H = sigmoid(self.W.T @ V + self.c)
         return 1. * (probs_H >= 0.5)
-
 ```
+
 
 </details>
 
