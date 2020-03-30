@@ -190,10 +190,6 @@ $$
 \alpha_l(H) = - \sum_{j=1}^{n} W_{lj}h_j - b_l \\
 \beta(V_{-l}, H) = - \sum_{i=1, i \neq l}^{m} \sum_{j=1}^{n} W_{ij}v_ih_j - \sum_{i=1, i \neq l}^{m} b_iv_i - \sum_{j=1}^{n} c_jh_j \\
 E(V, H) = \alpha_l(H)v_l + \beta(V_{-l}, H) \\
-\end{gather*}
-$$
-
-$$
 \begin{align*}
 P(v_l=1 \mid H) &= P(v_l=1 \mid V_{-l}, H) \\
                 &= \frac{P(v_l=1, V_{-l}, H)}{P(v_l=0, V_{-l}, H) + P(v_l=1, V_{-l}, H)} \\
@@ -202,6 +198,7 @@ P(v_l=1 \mid H) &= P(v_l=1 \mid V_{-l}, H) \\
                 &= \sigma(- \alpha_l(H)) \\
                 &= \sigma(\sum_{j=1}^{n} W_{lj}h_j + b_l) \\
 \end{align*}
+\end{gather*}
 $$
 
 Similarly, we have
@@ -491,7 +488,7 @@ $$
 \end{gather*}
 $$
 
-Now, we have the Gibb's sampling procedure to compute the emperical estimate of the gradient. Let's try to simplify the gradient little bit more and then we can move on to the training part.
+Let's try to simplify the gradient little bit more and then we can move on to the training part.
 
 $$
 \begin{align*}
@@ -515,17 +512,22 @@ $$
 
 Substituting this in our gradient equation, we have
 
-$$\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \right)$$
+$$
+\begin{align*}
+\frac{\partial\mathcal{L}(\theta)}{\partial W_{ij}} &= \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \right) \\
+                                                    &= \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i - \mathbb{E}_{P(V)}\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right)v_i \right) \\
+\end{align*}
+$$
 
 We can similarly derive the equations for the gradients with respect to $b_i$ and $c_j$
 
 $$
 \begin{gather*}
-\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = v_i - \sum_{V} P(V) v_i \\
-\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) - \sum_{V} P(V)\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) \right) \\
+\frac{\partial\mathcal{L}(\theta)}{\partial b_i} = v_i - \mathbb{E}_{P(V)} v_i \\
+\frac{\partial\mathcal{L}(\theta)}{\partial c_j} = \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) - \mathbb{E}_{P(V)}\left( \sigma\left( \sum_{i=1}^{m} W_{ij}v_i + c_j \right) \right) \\
 \end{gather*}
 $$
 
-We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. So, we need gibb's sampling to calculate the empirical estimate of the expectation.
+We have removed the expectation with respet to $P(H, V)$ and $P(H \mid V)$ but still the expectation with respect to $P(V)$ remains and is exponential in time. Hence, we have to use the Gibb's sampling procedure to compute the emperical estimate of the gradient. But before we do that, let's vectorize the results we have until now.
 
 ### Training RBMs using Contrastive Divergence
