@@ -562,6 +562,7 @@ Below is the **fully vectorized** code for implementing RBMs in python using num
 ``decode()`` method can be used to perform generation and ``encode()`` method can be used to map an instance to its latent space. Some examples and experiments are shown below.
 
 ```python
+import sys
 import numpy as np
 
 def sigmoid(X):
@@ -571,7 +572,7 @@ def sigmoid(X):
     Parameters
     ----------
     X: array_like
-        An array on which the function needs to be applied
+        Array on which the function needs to be applied
 
     Returns
     -------
@@ -582,7 +583,7 @@ def sigmoid(X):
     return sigma_X
 
 class BinaryRestrictedBoltzmannMachine(object):
-    r"""A restricted Boltzmann machine model that takes
+    r"""A restricted boltzmann machine model that takes
     binary inputs and maps it to a binary latent space.
 
     Parameters
@@ -604,7 +605,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         Parameters
         ----------
         visible_dims: int
-            The number of visible dimensions.
+            The number of visible dimentations.
 
         Returns
         -------
@@ -639,18 +640,18 @@ class BinaryRestrictedBoltzmannMachine(object):
         # P(V_tplus1 | H_t) => Sample new visible varaibles at time step t+1.
         probs_H = sigmoid(self.W.T @ V_t + self.c)
 
-        # One more thing, this is called "block" Gibbs
+        # One more thing, this is called "block" gibb's
         # sampling where we vectorize over all dimensions
         # and sample from all the dimensions at the same time.
-        H_t = 1. * (np.random.uniform(probs_H) > probs_H)
+        H_t = 1. * (np.random.rand(*probs_H.shape) >= probs_H)
 
         probs_V = sigmoid(self.W @ H_t + self.b)
-        V_tplus1 = 1. * (np.random.uniform(probs_V) > probs_V)
+        V_tplus1 = 1. * (np.random.rand(*probs_V.shape) >= probs_V)
 
         return V_tplus1
 
     def _gibbs_sampling(self, V_0, burn_in=1000, tune=2000):
-        r"""The Gibb's sampling step in training to calculate
+        r"""The gibb's sampling step in training to calculate
         the estimates of the expectation in the gradient.
 
         Parameters
@@ -669,7 +670,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         Returns
         -------
         expectation_w, expectation_b, expectation_c: array_like
-            The expectation term appearing in the gradients wrt W, b and c
+            The expecation term appearing in the gradients wrt W, b and c
             respectively.
         """
 
@@ -680,7 +681,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         m = self.visible_dims
         n = self.hidden_dims
 
-        # We start sampling from the Markov chain.
+        # We start sampling from the markov chain.
         V_sampled = self.__gibbs_step(V_0)
 
         # This for loop just "warms up" the chain to reach
@@ -715,7 +716,7 @@ class BinaryRestrictedBoltzmannMachine(object):
                                     keepdims=True)
             expectation_w += V_sampled @ sigmoid(self.W.T @ V_sampled + self.c).T
 
-        # Finally, we have to divide by the number of samples
+        # Finally, we have to devide by the number of samples
         # we have drawn to calculate the expectation
         return (
             expectation_w / float(tune+num_examples),
@@ -780,7 +781,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         self.b = self.b + lr * dloss_db
         self.c = self.c + lr * dloss_dc
 
-    def fit(self, X, lr=0.1, epochs=10, burn_in=1000, tune=2000):
+    def fit(self, X, lr=0.1, epochs=10, burn_in=1000, tune=2000, verbose=False):
         r"""Train the model on provided data
 
         Parameters
@@ -795,10 +796,13 @@ class BinaryRestrictedBoltzmannMachine(object):
             The number of steps to train your model
 
         burn_in: int, optional
-            The number of steps to warm the Markov chain up
+            The number of steps to warm the markov chain up
 
         tune: int, optional
             The number of samples to generate from the merkov chain
+
+        verbose: bool, optional
+            Weather to log the epochs or not.
         """
         # We want to vectorize over multiple batches
         # and so we have to reshape our data to `(n_features, n_samples)`
@@ -815,9 +819,9 @@ class BinaryRestrictedBoltzmannMachine(object):
         # Initialize the markov chain
         V_0 = np.random.randn(m, num_examples)
 
-        # Run the training for the provided number of epochs
+        # Run the training for provided number of epochs
         for _ in range(epochs):
-            # Empirically calculate the expectation using our Markov chain.
+            # Emperically calculate the expectation using our markov chain.
             Ew, Eb, Ec = self._gibbs_sampling(V_0, burn_in=burn_in, tune=tune)
 
             # Using the emperical estimates of the expectation, calculate
@@ -826,6 +830,9 @@ class BinaryRestrictedBoltzmannMachine(object):
 
             # Update the parameters
             self._apply_grads(lr, dloss_dW, dloss_db, dloss_dc)
+
+            if verbose:
+                sys.stdout.write(f"\rEpoch {_+1}")
 
         return self
 
@@ -845,11 +852,11 @@ class BinaryRestrictedBoltzmannMachine(object):
         """
         # We generate a random latent space if not given
         if H is None:
-            H = 1. * (np.random.rand(self.hidden_dims, 1) > 0.5)
+            H = 1. * (np.random.rand(self.hidden_dims, 1) >= 0.5)
 
         # We sample the Vs given Hs.
         probs_V = sigmoid(self.W @ H + self.b)
-        return 1. * (probs_V > 0.5)
+        return 1. * (probs_V >= 0.5)
 
     def encode(self, V):
         """Encode the given data in its latent variables.
@@ -866,12 +873,13 @@ class BinaryRestrictedBoltzmannMachine(object):
         """
         # We will sampe a random H for a given V.
         probs_H = sigmoid(self.W.T @ V + self.c)
-        return 1. * (probs_H > 0.5)
+        return 1. * (probs_H >= 0.5)
+
 ```
 
 #### 4. Experiment
 
-- **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+- **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
 
 ```python
 import numpy as np
@@ -897,7 +905,7 @@ X = X_train.reshape(1, -1)
 
 # We will mainly experiment with different latent space
 # dimensions. For this instance, i have a 30-D latent space.
-hidden_dims = 30
+hidden_dims = 3
 
 # Define our model
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
@@ -924,7 +932,7 @@ And this is the generated image.
 
 You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimensional latent space.
 
-- Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $30$ hidden/latent variables for 20 ``epochs``, 100 ``burn_in`` steps (the samples we are going to disregard), 1000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+- Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 20 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``2.0``.
 
 ```python
 import numpy as np
@@ -954,13 +962,13 @@ plt.show()
 
 # We will mainly experiment with different latent space
 # dimensions. For this instance, i have a 30-D latent space.
-hidden_dims = 30
+hidden_dims = 3
 
 # Define our model
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
 
 # Train the model on our dataset with learning rate 0.5
-model.fit(X_train, lr=0.5, burn_in=100, tune=1000, epochs=20, verbose=True)
+model.fit(X_train, lr=2.0, burn_in=1000, tune=2000, epochs=20, verbose=True)
 
 # Use the `decode()` method to generate an image.
 images = [model.decode() for _ in range(9)]
@@ -1014,7 +1022,7 @@ plt.show()
 
 # We will mainly experiment with different latent space
 # dimensions. For this instance, i have a 30-D latent space.
-hidden_dims = 30
+hidden_dims = 3
 
 # Define our model
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
