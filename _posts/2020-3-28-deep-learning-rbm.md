@@ -18,7 +18,7 @@ The code is available both on colab and GitHub.
 
 1. **Colab Link** : [![launch in Colab](https://img.shields.io/badge/Open%20in-Colab-yellowgreen)](https://colab.research.google.com/drive/1dGjafQOqi2wdXvZK_QfLCrGa4hjtz_EA)
 
-2. **GitHub Link**: [GitHub Ropository](https://github.com/tirthasheshpatel/Generative-Models)
+2. **GitHub Link**: [![launch on GitHub](https://img.shields.io/badge/Open%20on-GitHub-blue)](https://github.com/tirthasheshpatel/Generative-Models)
 
 ### Table of Contents
 
