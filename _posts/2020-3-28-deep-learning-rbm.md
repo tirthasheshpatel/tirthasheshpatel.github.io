@@ -3,12 +3,22 @@ type: post
 title: Restricted  Boltzmann Machines in Deep Learning
 subtitle: Deep Learning Course - Part 2. See how to implement a generative model called RBM in Python
 image: /images/graphical_models/rbm_generated_3.png
+gh-repo: tirthasheshpatel/Generative-Models
+gh-badge: [star, fork, follow]
 tags: [Deep Learning, Machine Learning]
 ---
 
 ## Influence and Reference
 
 This article is highly influenced by the [NPTEL's Deep Learning - Part 2 course by Mitesh Khapra](https://nptel.ac.in/courses/106/106/106106201/) and uses its material reserving all the rights to their corresponding authors. This article contains a full implementation of Restricted Boltzmann Machines using pure NumPy and no other 3rd party frameworks.
+
+### Code
+
+The code is available both on colab and GitHub.
+
+1. **Colab Link** : [![launch in Colab](https://img.shields.io/badge/Open%20in-Colab-yellowgreen)](https://colab.research.google.com/drive/1dGjafQOqi2wdXvZK_QfLCrGa4hjtz_EA)
+
+2. **GitHub Link**: [GitHub Ropository](https://github.com/tirthasheshpatel/Generative-Models)
 
 ### Table of Contents
 
@@ -923,7 +933,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
 #### 4. Experiment
 
-- **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.5``.
+- **Excellent Generator**: Let's train our rbm on one training instance of the mnist dataset and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 10 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.1``.
 
 ```python
 import numpy as np
@@ -955,7 +965,7 @@ hidden_dims = 3
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
 
 # Train the model on our dataset with learning rate 0.5
-model.fit(X, 0.5)
+model.fit(X, method="gibbs_sampling", 0.1)
 
 # Use the `decode()` method to generate an image.
 image = model.decode()
@@ -976,7 +986,7 @@ And this is the generated image.
 
 You can see the generated image is very similar to the one on which the model was trained! This is because there is only one image and we have set a very high dimensional latent space.
 
-- Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 20 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``2.0``.
+- Good Generator: Let's train our model on 100 images of a handwritten 3 and see its performance. I have trained the below model with 1 training instance with $784 (28 \times 28)$ visible variables and $3$ hidden/latent variables for 20 ``epochs``, 1000 ``burn_in`` steps (the samples we are going to disregard), 2000 ``tune`` steps (samples we are going to use to estimate the gradient), and a learning rate of ``0.005``.
 
 ```python
 import numpy as np
@@ -1012,7 +1022,7 @@ hidden_dims = 3
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
 
 # Train the model on our dataset with learning rate 0.5
-model.fit(X_train, lr=2.0, burn_in=1000, tune=2000, epochs=20, verbose=True)
+model.fit(X_train, lr=0.005, method="gibbs_sampling", burn_in=1000, tune=2000, epochs=20, verbose=True)
 
 # Use the `decode()` method to generate an image.
 images = [model.decode() for _ in range(9)]
@@ -1041,7 +1051,7 @@ This model generates the following images!
 
 As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my GitHub page. Let's move ahead to the last experiment of this model.
 
-- **Bad Generator**: The model performs very well on training instances that are similar to just training on images of $3$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
+- **Bad Generator**: The model performs very well on training instances that are similar to just training on images of $5$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
 
 ```python
 import numpy as np
@@ -1072,7 +1082,7 @@ hidden_dims = 3
 model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
 
 # Train the model on our dataset with learning rate 0.5
-model.fit(X_train, 0.5)
+model.fit(X_train, method="gibbs_sampling", lr=0.05, burn_in=1000, tune=2000, epochs=20, verbose=True)
 
 # Use the `decode()` method to generate an image.
 image = model.decode()
