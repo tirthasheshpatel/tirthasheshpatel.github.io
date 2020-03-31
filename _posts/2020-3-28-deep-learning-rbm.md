@@ -643,14 +643,14 @@ class BinaryRestrictedBoltzmannMachine(object):
         # One more thing, this is called "block" gibb's
         # sampling where we vectorize over all dimensions
         # and sample from all the dimensions at the same time.
-        H_t = 1. * (np.random.rand(*probs_H.shape) >= probs_H)
+        H_t = 1. * (np.random.rand(*probs_H.shape) <= probs_H)
 
         probs_V = sigmoid(self.W @ H_t + self.b)
-        V_tplus1 = 1. * (np.random.rand(*probs_V.shape) >= probs_V)
+        V_tplus1 = 1. * (np.random.rand(*probs_V.shape) <= probs_V)
 
         return V_tplus1
 
-    def _gibbs_sampling(self, V_0, burn_in=1000, tune=2000):
+    def _gibbs_sampling(self, V_0, burn_in, tune):
         r"""The gibb's sampling step in training to calculate
         the estimates of the expectation in the gradient.
 
@@ -659,11 +659,11 @@ class BinaryRestrictedBoltzmannMachine(object):
         V_0: array_like
             The visible variables at time step 0.
 
-        burn_in: array_like
+        burn_in: int
             The number of samples to disregard from
             the chain.
 
-        tune: array_like
+        tune: int
             The number of samples to use to estimate
             the actual expectation
 
@@ -724,6 +724,39 @@ class BinaryRestrictedBoltzmannMachine(object):
             expectation_c / float(tune+num_examples)
         )
 
+    def _contrastive_divergence(self, V_0, burn_in, tune):
+        r"""Train using contrastive divergence method
+
+        Parameters
+        ----------
+        V_0: array_like
+            A training sample
+
+        burn_in: int
+            Present for API consistency.
+
+        tune: int
+            `k` term in `k-contrastive-divergence` algorithm.
+
+        Returns
+        -------
+        expectation_w, expectation_b, expectation_c: array_like
+            The expecation term appearing in the gradients wrt W, b and c
+            respectively.
+        """
+        V_tilt = V_0
+        for _ in range(tune):
+            V_tilt = self.__gibbs_step(V_tilt)
+
+        expectation_b = np.sum(V_tilt,
+                               axis=-1,
+                               keepdims=True)
+        expectation_c = np.sum(sigmoid(self.W.T @ V_tilt + self.c),
+                               axis=-1,
+                               keepdims=True)
+        expectation_w = V_tilt @ sigmoid(self.W.T @ V_tilt + self.c).T
+        return expectation_w, expectation_b, expectation_c
+
     def _param_grads(self, V, expectation_w, expectation_b, expectation_c):
         r"""Calculate the emperical estimates of the gradients of the energy
         function with respect to [W, b, c].
@@ -781,7 +814,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         self.b = self.b + lr * dloss_db
         self.c = self.c + lr * dloss_dc
 
-    def fit(self, X, lr=0.1, epochs=10, burn_in=1000, tune=2000, verbose=False):
+    def fit(self, X, lr=0.1, epochs=10, method="contrastive_divergence", burn_in=1000, tune=2000, verbose=False):
         r"""Train the model on provided data
 
         Parameters
@@ -794,6 +827,10 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         epochs: int, optional
             The number of steps to train your model
+
+        method: string, optional
+            Can be either "gitbbs_sampling" or "constrastive_divergence".
+            Defaults to "constrastive_divergence"
 
         burn_in: int, optional
             The number of steps to warm the markov chain up
@@ -816,13 +853,20 @@ class BinaryRestrictedBoltzmannMachine(object):
         # Initialize the parameters [W, b, c] of our model
         self._init_params(m)
 
-        # Initialize the markov chain
-        V_0 = np.random.randn(m, num_examples)
-
         # Run the training for provided number of epochs
         for _ in range(epochs):
             # Emperically calculate the expectation using our markov chain.
-            Ew, Eb, Ec = self._gibbs_sampling(V_0, burn_in=burn_in, tune=tune)
+            if method == "gibbs_sampling":
+                _method = self._gibbs_sampling
+            elif method == "contrastive_divergence":
+                _method = self._contrastive_divergence
+            else:
+                raise ValueError(f"invalid method: {method}. You sholud inherit this "
+                                 f"class and implement the method with an `_` at"
+                                 f"the start to use it instead of built-in methods.")
+
+            V_0 = X
+            Ew, Eb, Ec = _method(V_0, burn_in=burn_in, tune=tune)
 
             # Using the emperical estimates of the expectation, calculate
             # the gradients wrt all our parameters
@@ -856,7 +900,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         # We sample the Vs given Hs.
         probs_V = sigmoid(self.W @ H + self.b)
-        return 1. * (probs_V >= 0.5)
+        return 1. * (np.random.rand(*probs_V.shape) <= probs_V)
 
     def encode(self, V):
         """Encode the given data in its latent variables.
@@ -873,7 +917,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         """
         # We will sampe a random H for a given V.
         probs_H = sigmoid(self.W.T @ V + self.c)
-        return 1. * (probs_H >= 0.5)
+        return 1. * (np.random.rand(*probs_H.shape) <= probs_H)
 
 ```
 
