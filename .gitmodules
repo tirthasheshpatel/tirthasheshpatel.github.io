@@ -1,0 +1,3 @@
+[submodule "observatory/so-simple-theme"]
+	path = observatory/so-simple-theme
+	url = git@github.com:mmistakes/so-simple-theme.git
