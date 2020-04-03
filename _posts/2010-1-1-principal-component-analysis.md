@@ -27,12 +27,12 @@ For step $n+1$, we will have
 
 $$
 \begin{align*}
-M^{n+1}v_0 &= M ( M^{n}v_0 )
-           &= M ( ke_d )
-           &= k ( Me_d )
-           &= k ( \lambda_de_d )
-           &= k ( 1 e_d ) & (\text{see theorem} 1)
-           &= ke_d
+M^{n+1}v_0 &= M ( M^{n}v_0 )\\
+           &= M ( ke_d )\\
+           &= k ( Me_d )\\
+           &= k ( \lambda_de_d )\\
+           &= k ( 1 e_d ) & (\text{see theorem} 1)\\
+           &= ke_d\\
 \end{align*}
 $$
 
@@ -40,10 +40,10 @@ We can see that the series has converged to a constant multiple of the dominant 
 
 $$
 \begin{align*}
-M^{n+1}v_0 &= M ( M^{n}v_0 )
-           &= M ( ke_d )
-           &= k ( Me_d )
-           &= k ( \lambda_de_d )
+M^{n+1}v_0 &= M ( M^{n}v_0 )\\
+           &= M ( ke_d )\\
+           &= k ( Me_d )\\
+           &= k ( \lambda_de_d )\\
 \end{align*}
 $$
 
