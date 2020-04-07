@@ -3,6 +3,7 @@ type: post
 title: A Cool Math Concept S1E1
 subtitle: this concept is used in deep learning RNN models to analyze exploding and vanishing gradients
 image: /images/random/alto1.png
+tags: Random
 ---
 
 ![ALTO](/images/random/alto1.png)
