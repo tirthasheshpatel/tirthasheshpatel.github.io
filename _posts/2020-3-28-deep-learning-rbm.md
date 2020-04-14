@@ -562,7 +562,46 @@ $$
 
 Instead of sampling just one of the variables in one time step, we sample all of them at once and use it to update all the variables in the previous sample at once. This means that we eliminate a for loop that could cause efficiency problems. We run the chain for many many time steps (say 1 million) and use all those samples to estimate the expectation. In such a long run, all the variables are going to get updated anyways so the result is not affected.
 
-#### 3. Code like a real man
+#### 3. Training using Contrastive Divergence
+
+In ***constrastive divergence*** method, instead of burning and tuning the Markov Chain, we replace the entire expectation with just a single sample and the initialization of the Markov Chain is done using a training instance instead of a random initialization. This method drastically simplifies the computations and works very well in practice. Below is the code showing how to implement this method for training.
+
+```python
+def _contrastive_divergence(self, V_0, burn_in, tune):
+        r"""Train using contrastive divergence method
+
+        Parameters
+        ----------
+        V_0: array_like
+            A training sample
+
+        burn_in: int
+            Present for API consistency.
+
+        tune: int
+            `k` term in `k-contrastive-divergence` algorithm.
+
+        Returns
+        -------
+        expectation_w, expectation_b, expectation_c: array_like
+            The expecation term appearing in the gradients wrt W, b and c
+            respectively.
+        """
+        V_tilt = V_0
+        for _ in range(tune):
+            V_tilt = self.__gibbs_step(V_tilt)
+
+        expectation_b = np.sum(V_tilt,
+                               axis=-1,
+                               keepdims=True)
+        expectation_c = np.sum(sigmoid(self.W.T @ V_tilt + self.c),
+                               axis=-1,
+                               keepdims=True)
+        expectation_w = V_tilt @ sigmoid(self.W.T @ V_tilt + self.c).T
+        return expectation_w, expectation_b, expectation_c
+```
+
+#### 4. Code like a real man
 
 Below is the **fully vectorized** code for implementing RBMs in python using numpy only. I have created a ``fit`` method that takes as a parameter a dataset of shape ``(n_samples, n_features)`` and trains the RBM on the dataset. Once fitted, the model can be used for two tasks:
 
@@ -683,11 +722,6 @@ class BinaryRestrictedBoltzmannMachine(object):
             The expecation term appearing in the gradients wrt W, b and c
             respectively.
         """
-
-        # We first find the total number of training instances
-        # present in the array and then the number of visible
-        # and hidden dimentions.
-        num_examples = V_0.shape[-1]
         m = self.visible_dims
         n = self.hidden_dims
 
@@ -729,9 +763,9 @@ class BinaryRestrictedBoltzmannMachine(object):
         # Finally, we have to devide by the number of samples
         # we have drawn to calculate the expectation
         return (
-            expectation_w / float(tune+num_examples),
-            expectation_b / float(tune+num_examples),
-            expectation_c / float(tune+num_examples)
+            expectation_w / float(tune),
+            expectation_b / float(tune),
+            expectation_c / float(tune)
         )
 
     def _contrastive_divergence(self, V_0, burn_in, tune):
@@ -792,7 +826,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         """
         dloss_dW = V @ sigmoid(self.W.T @ V + self.c).T - expectation_w
         dloss_db = np.sum(V, axis=-1, keepdims=True) - expectation_b
-        dloss_dc = sigmoid(self.W.T @ V + self.c) - expectation_c
+        dloss_dc = np.sum(sigmoid(self.W.T @ V + self.c), axis=-1, keepdims=True) - expectation_c
 
         return dloss_dW, dloss_db, dloss_dc
 
@@ -820,9 +854,9 @@ class BinaryRestrictedBoltzmannMachine(object):
         """
         # Remember we are perfoming gradient ASSCENT (not descent)
         # to MAXIMIZE (not minimize) the energy function!
-        self.W = self.W + lr * dloss_dW
-        self.b = self.b + lr * dloss_db
-        self.c = self.c + lr * dloss_dc
+        self.W = self.W + lr * dloss_dW / self.num_examples
+        self.b = self.b + lr * dloss_db / self.num_examples
+        self.c = self.c + lr * dloss_dc / self.num_examples
 
     def fit(self, X, lr=0.1, epochs=10, method="contrastive_divergence", burn_in=1000, tune=2000, verbose=False):
         r"""Train the model on provided data
@@ -854,7 +888,7 @@ class BinaryRestrictedBoltzmannMachine(object):
         # We want to vectorize over multiple batches
         # and so we have to reshape our data to `(n_features, n_samples)`
         X = X.T
-        num_examples = X.shape[-1]
+        self.num_examples = X.shape[1]
         self.visible_dims = X.shape[0]
 
         m = self.visible_dims
@@ -890,7 +924,7 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         return self
 
-    def decode(self, H=None):
+    def decode(self, H=None, return_proba=False):
         """Move from latent space to data space. Acts like a generator.
 
         Parameters
@@ -910,6 +944,8 @@ class BinaryRestrictedBoltzmannMachine(object):
 
         # We sample the Vs given Hs.
         probs_V = sigmoid(self.W @ H + self.b)
+        if return_proba:
+            return probs_V
         return 1. * (np.random.rand(*probs_V.shape) <= probs_V)
 
     def encode(self, V):
@@ -929,6 +965,16 @@ class BinaryRestrictedBoltzmannMachine(object):
         probs_H = sigmoid(self.W.T @ V + self.c)
         return 1. * (np.random.rand(*probs_H.shape) <= probs_H)
 
+    def generate_smooth(self):
+        """Generate a continuous input space.
+
+        Returns
+        -------
+        generated: array-like
+            An array of generated input space.
+        """
+        return self.decode(return_proba=True)
+
 ```
 
 #### 4. Experiment
@@ -938,7 +984,6 @@ class BinaryRestrictedBoltzmannMachine(object):
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-import rbm
 from keras.datasets import mnist
 
 (X_train, y), (_, _) = mnist.load_data()
@@ -951,11 +996,6 @@ X_train = 1. * ((X_train[1] / 255.) >= 0.5)
 plt.imshow(X_train.reshape(28, 28))
 plt.title("Training Instance")
 plt.show()
-
-# Convert the dimensions to format `(n_samples, n_features)`.
-# For an image, pixels are its `n_features` and we have only
-# one training instance.
-X = X_train.reshape(1, -1)
 
 # We will mainly experiment with different latent space
 # dimensions. For this instance, i have a 30-D latent space.
@@ -991,26 +1031,25 @@ You can see the generated image is very similar to the one on which the model wa
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-import rbm
 from keras.datasets import mnist
 
 (X_train, y), (_, _) = mnist.load_data()
 
 # Normalize and reshape
 X_train = X_train.reshape(60000, -1)
-X_train = 1. * ((X_train[y == 3][:101] / 255.) >= 0.5)
+X_train = 1. * ((X_train[y == 5] / 255.) >= 0.5)
 
 # Plot some training isntances
 fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
-ax[0, 0].imshow(X_train[0].reshape(28, 28))
-ax[0, 1].imshow(X_train[1].reshape(28, 28))
-ax[0, 2].imshow(X_train[2].reshape(28, 28))
-ax[1, 0].imshow(X_train[3].reshape(28, 28))
-ax[1, 1].imshow(X_train[4].reshape(28, 28))
-ax[1, 2].imshow(X_train[5].reshape(28, 28))
-ax[2, 0].imshow(X_train[6].reshape(28, 28))
-ax[2, 1].imshow(X_train[7].reshape(28, 28))
-ax[2, 2].imshow(X_train[8].reshape(28, 28))
+ax[0, 0].imshow(X_train[10].reshape(28, 28))
+ax[0, 1].imshow(X_train[11].reshape(28, 28))
+ax[0, 2].imshow(X_train[12].reshape(28, 28))
+ax[1, 0].imshow(X_train[13].reshape(28, 28))
+ax[1, 1].imshow(X_train[14].reshape(28, 28))
+ax[1, 2].imshow(X_train[15].reshape(28, 28))
+ax[2, 0].imshow(X_train[16].reshape(28, 28))
+ax[2, 1].imshow(X_train[17].reshape(28, 28))
+ax[2, 2].imshow(X_train[18].reshape(28, 28))
 fig.suptitle("Training instances")
 plt.show()
 
@@ -1019,13 +1058,13 @@ plt.show()
 hidden_dims = 3
 
 # Define our model
-model = rbm.BinaryRestrictedBoltzmannMachine(hidden_dims)
+model = BinaryRestrictedBoltzmannMachine(hidden_dims)
 
-# Train the model on our dataset with learning rate 0.5
-model.fit(X_train, lr=0.005, method="gibbs_sampling", burn_in=1000, tune=2000, epochs=20, verbose=True)
+# Train the model on our dataset with learning rate 1.0
+model.fit(X_train, lr=1.0, burn_in=None, tune=1, epochs=100, verbose=True)
 
 # Use the `decode()` method to generate an image.
-images = [model.decode() for _ in range(9)]
+images = [model.generate_smooth() for _ in range(9)]
 
 fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
 ax[0, 0].imshow(images[0].reshape(28, 28))
@@ -1041,15 +1080,15 @@ fig.suptitle("Generated instances")
 plt.show()
 ```
 
-Some training instances are shown below.
+Some training instances and their reconstructions are shown below.
 
-![Training instances](/images/graphical_models/rbm_train_3.png)
+![Training instances](/images/graphical_models/rbm_recon_5.png)
 
 This model generates the following images!
 
-![Generated images](/images/graphical_models/rbm_generated_3.png)
+![Generated images](/images/graphical_models/rbm_gen.png)
 
-As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my GitHub page. Let's move ahead to the last experiment of this model.
+As you can see the model generates very good instances and can be, more or less, be used as a generative model. But some images are not too good. You can try to generate better images by setting up the hyperparameters like ``method``, ``tune``, ``burn_in``, ``epochs``, ``lr``, etc. Don't forget to show your results off in the comment section on my GitHub page. Let's move ahead to the last experiment of this model.
 
 - **Bad Generator**: The model performs very well on training instances that are similar to just training on images of $5$ or $0$. But what happens if we train it on more than one type of image (like a mix of all 10 digits)?? Let's see.
 
@@ -1105,47 +1144,6 @@ The generated images are
 What?! The model just learned to put one image onto the other! This is not expected, right? Let me explain. The problem is not training but a sampling. This is one of the limitations of Gibb's Sampling. This sampling method sometimes thinks that the expectation lies at the peak of the distribution. But as explained in the Betancourt's paper on MCMC methods, the actual samples must lie inside the so-called, "***typical set***" of the expectation and not the mode of the distribution. Well, this can be solved using more advanced sampling methods like Hamiltonian Monte Carlo or No U-Turn Sampler. PyMC3 folks have done a great job on those sampling methods and you should definitely check it out!!
 
 Even though we have removed the exponent from the time complexity, we need to sample thousands and thousands of samples from our chain which is very inefficient! So, let's try to tackle that last thing!!
-
-### Training using Contrastive Divergence
-
-``WIP``
-
-Code is ready. You can add this method to the class and use it instead of ``_gibbs_sampling()``.
-
-```python
-def _contrastive_divergence(self, V_0, burn_in, tune):
-    r"""Train using contrastive divergence method
-
-    Parameters
-    ----------
-    V_0: array_like
-        A training sample
-
-    burn_in: int
-        Present for API consistency.
-
-    tune: int
-        `k` term in `k-contrastive-divergence` algorithm.
-
-    Returns
-    -------
-    expectation_w, expectation_b, expectation_c: array_like
-        The expecation term appearing in the gradients wrt W, b and c
-        respectively.
-    """
-    V_tilt = V_0
-    for _ in range(tune):
-        V_tilt = self.__gibbs_step(V_tilt)
-
-    expectation_b = np.sum(V_tilt,
-                            axis=-1,
-                            keepdims=True)
-    expectation_c = np.sum(sigmoid(self.W.T @ V_tilt + self.c),
-                            axis=-1,
-                            keepdims=True)
-    expectation_w = V_tilt @ sigmoid(self.W.T @ V_tilt + self.c).T
-    return expectation_w, expectation_b, expectation_c
-```
 
 Having done so much mathematics, coding, and experimenting, I hope you guys took something home!
 
