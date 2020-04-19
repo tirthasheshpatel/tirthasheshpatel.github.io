@@ -58,7 +58,7 @@ exclude:
 # *** If you're not sure what this mean, then leave this section as it is. Only modify the url and baseurl if you know what you're doing!***
 
 # url is the the website domain URL without a trailing slash
-url: "https://tirthasheshpatel.github.io"
+url: "https://www.tirthasheshpatel.com"
 
 # baseurl should be an empty string
 baseurl: ""
@@ -67,12 +67,12 @@ baseurl: ""
 
 # List of links in the navigation bar
 navbar-links:
-  Author's home: "http://tirthasheshpatel.github.io"
+  Author's home: "http://www.tirthasheshpatel.com"
   About Me: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
   #   - Learn markdown: "http://www.markdowntutorial.com/"
-  GSoC 2020: "http://tirthasheshpatel.github.io/gsoc2020"
+  GSoC 2020: "http://www.tirthasheshpatel.com/gsoc2020"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
@@ -125,7 +125,7 @@ share-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "tirthasheshpatel.github.io"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "tirthasheshpatel.com"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Web Statistics Section --- #
 
