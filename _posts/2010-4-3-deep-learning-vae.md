@@ -6,6 +6,7 @@ image: /images/graphical_models/vae_logo.png
 gh-repo: tirthasheshpatel/Generative-Models
 gh-badge: [star, fork, follow]
 tags: [Deep Learning, Machine Learning]
+hide: true
 ---
 
 ## Influence and Reference
