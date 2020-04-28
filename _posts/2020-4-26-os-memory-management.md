@@ -2,7 +2,7 @@
 layout: post
 title: Memory Management in OS
 subtitle: This article describes how is the memory managed by the OS using paging and segmentation
-tags: Operating Systems
+tags: [Operating Systems]
 hide: true
 ---
 
