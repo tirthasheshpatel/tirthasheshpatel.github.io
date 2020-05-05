@@ -335,7 +335,7 @@ footer .theme-by {
 }
 
 .post-preview .post-title {
-  font-size: 30px;
+  font-size: 25px;
   margin-top: 0;
 }
 .post-preview .post-subtitle {
@@ -378,7 +378,7 @@ footer .theme-by {
 
 @media only screen and (min-width: 768px) {
   .post-preview .post-title {
-    font-size: 36px;
+    font-size: 30px;
   }
 }
 
@@ -465,11 +465,11 @@ footer .theme-by {
 }
 .intro-header .page-heading h1 {
   margin-top: 0;
-  font-size: 50px;
+  font-size: 36px;
 }
 .intro-header .post-heading h1 {
   margin-top: 0;
-  font-size: 35px;
+  font-size: 34px;
 }
 .intro-header .page-heading .page-subheading,
 .intro-header .post-heading .post-subheading {
@@ -518,10 +518,10 @@ footer .theme-by {
     padding: 150px 0;
   }
   .intro-header .page-heading h1 {
-    font-size: 80px;
+    font-size: 50px;
   }
   .intro-header .post-heading h1 {
-    font-size: 50px;
+    font-size: 32px;
   }
   .intro-header.big-img .img-desc {
     font-size: 14px;
@@ -773,7 +773,7 @@ pre {
 }
 
 #full-tags-list .tag-entry a {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 #full-tags-list .tag-entry .entry-date {
