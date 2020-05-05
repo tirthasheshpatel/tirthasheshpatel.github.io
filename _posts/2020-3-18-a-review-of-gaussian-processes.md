@@ -2,7 +2,7 @@
 type: post
 title: A review of Gaussian Processes
 subtitle: A theoritical introduction to Gaussian Processes and implementation from scratch using python!
-image: /images/gaussian_process_files/gaussian_process_24_1.png
+image: /images/gaussian_process_files/exp_sin_sq_cov_func.svg
 tags: [Machine Learning, GSoC 2020, Python]
 ---
 
