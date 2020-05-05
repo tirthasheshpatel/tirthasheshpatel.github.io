@@ -39,8 +39,8 @@
   {% if page.gsoc_post %}
   <div class="avatar-container">
 	  <div class="avatar-img-border">
-	    <a href="https://tirthasheshpatel.github.io/gsoc2020/">
-	      <img class="avatar-img" src="{{ page.gsoc_logo }}" />
+	    <a href="{{ '' | absolute_url }}">
+	      <img class="avatar-img" src="{{ page.gsoc_logo | relative_url }}" />
 		  </a>
 	  </div>
 	</div>
