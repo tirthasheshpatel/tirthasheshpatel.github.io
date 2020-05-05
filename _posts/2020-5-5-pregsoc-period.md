@@ -2,7 +2,7 @@
 title: Week -3 of GSoC 2020 with PyMC4
 subtitle: This blog articulates my ideas to implement Gaussian Processes in PyMC4
 gsoc_post: true
-image: /images/gsoc-logo.png
+hide: true
 gh-repo: tirthasheshpatel/pymc4
 gh-badge: [star, fork, follow]
 tags: [GSoC 2020]
