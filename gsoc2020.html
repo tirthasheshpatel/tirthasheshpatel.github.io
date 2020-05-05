@@ -8,7 +8,9 @@ use-site-title: true
 <div class="posts-list">
   {% for post in paginator.posts %}
   {% if post.hide == true %}
-  {% elsif post.tags contains "GSoC 2020" %}
+  {% else %}
+  <!-- {% assign post_tags = post.tags | join:", " %} -->
+  {% if post.tags contains 'GSoC 2020' %}
     <article class="post-preview">
       <a href="{{ post.url | relative_url }}">
       <h2 class="post-title">{{ post.title }}</h2>
@@ -56,6 +58,7 @@ use-site-title: true
       {% endif %}
 
     </article>
+  {% endunless %}
   {% endif %}
   {% endfor %}
 </div>
