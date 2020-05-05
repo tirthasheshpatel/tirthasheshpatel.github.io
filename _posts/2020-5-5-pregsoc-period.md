@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Week -3 of GSoC 2020 with PyMC4
 subtitle: This blog articulates my ideas to implement Gaussian Processes in PyMC4
 gsoc_post: ture;
