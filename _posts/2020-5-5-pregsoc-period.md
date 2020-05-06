@@ -30,7 +30,7 @@ Gaussian Processes (GPs) are very widely used in the field of spatial as well as
 
 Two big players in the deep learning paradigm, TensorFlow and PyTorch, have been indulged in GP Modelling since the launch of these frameworks. Deep Learning's success in the field of machine learning has motivated many researches and developers to build Gaussian Process models that can fit in a deep learning environment without having to switch between packages. `GPyTorch` is one such package that allows the user to easily build and embed GP models in PyTorch's deep learning models.
 
-``to be ccontinued...``
+``to be continued...``
 
 <!-- *****  References  ***** -->
 
