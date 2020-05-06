@@ -66,9 +66,6 @@ url: "https://tirthasheshpatel.github.io"
 # baseurl should be an empty string
 baseurl: ""
 
-# --- Navigation bar options --- #
-
-# List of links in the navigation bar
 navbar-links:
   Author's home: "http://tirthasheshpatel.github.io"
   About Me: "aboutme"
@@ -79,9 +76,7 @@ navbar-links:
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
-# title-img: /path/to/image
-
-# --- Background colour/image options --- #
+#title-img: /path/to/image
 
 # Personalize the colors in your website. Colour values can be any valid CSS colour
 
@@ -120,13 +115,13 @@ social-network-links:
   stackoverflow: 10177420/tirth-patel # users/10177420/tirth-patel
   rss: true
 
-# Select which share links to show in posts
+# Select which social network share links to show in posts
 share-links-active:
   twitter: true
   facebook: true
   linkedin: true
 
-# How to display the link to the website in the footer
+# How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
 url-pretty: "tirthasheshpatel.github.io"  # eg. "deanattali.com/beautiful-jekyll"
 
@@ -144,7 +139,6 @@ url-pretty: "tirthasheshpatel.github.io"  # eg. "deanattali.com/beautiful-jekyll
 # Matomo (aka Piwik) Web statistics
 # Uncomment the following section to enable Matomo. The opt-out parameter controls
 # whether or not you want to allow users to opt out of tracking.
-
 #matomo:
 #  site_id: "9"
 #  uri: "demo.wiki.pro"
@@ -182,10 +176,14 @@ excerpt_length: 80
 # and RSS feed title
 title-separator: "-"
 
-# Ruby Date Format
+# Ruby Date Format to show dates of posts
 date_format: "%B %-d, %Y"
 
-# --- Don't need to touch anything below here (but you can if you want) --- #
+# Facebook App ID
+#fb_app_id: ""
+
+
+# --- You don't need to touch anything below here (but you can if you want) --- #
 
 # Output options (more information on Jekyll's site)
 timezone: "America/Vancouver"
@@ -207,6 +205,7 @@ defaults:
       layout: "post"
       comments: false  # add comments to all blog posts
       social-share: true # add social media sharing buttons to all blog posts
+      readtime: false # add estimated reading time on all blog posts
   -
     scope:
       path: "" # all files
@@ -214,71 +213,16 @@ defaults:
       layout: "page"
       show-avatar: true
 
-# Use tags index page and make tags on each post clickable
-link-tags: true
-
 # Exclude these files from production site
 exclude:
   - CHANGELOG.md
   - CNAME
-  - Dockerfile
   - Gemfile
   - Gemfile.lock
   - LICENSE
   - README.md
-  - Vagrantfile
-
-# prose.io config
-prose:
-  rooturl: '_posts'
-  media: 'img'
-  ignore:
-    - 404.html
-    - LICENSE
-    - feed.xml
-    - _config.yml
-    - /_layouts
-    - /_includes
-    - /css
-    - /img
-    - /js
-  metadata:
-    _posts:
-      - name: "layout"
-        field:
-          element: "hidden"
-          value: "post"
-      - name: "title"
-        field:
-          element: "text"
-          label: "Post title"
-          placeholder: "Title"
-          alterable: true
-      - name: "subtitle"
-        field:
-          element: "textarea"
-          label: "Subtitle"
-          placeholder: "A description of your post."
-          alterable: true
-      - name: "date"
-        field:
-          element: "text"
-          label: "Date"
-          help: "Enter date of post."
-          placeholder: "yyyy-mm-dd"
-          alterable: true
-      - name: "image"
-        field:
-          element: "text"
-          label: "Image"
-          help: "Add a thumbnail image to your post."
-          placeholder: "Thumbnail"
-          alterable: true
-      - name: "published"
-        field:
-          element: "checkbox"
-          label: "Publish"
-          help: "Check to publish post, uncheck to hide."
+  - screenshot.png
+  - docs/
 
 plugins:
   - jekyll-paginate
