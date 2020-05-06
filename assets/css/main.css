@@ -329,6 +329,9 @@ img {
 .navbar-custom .avatar-container .avatar-img-border {
   width: 100%;
   display: inline-block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   margin-left: -50%;
   {% unless site.round-avatar == false %}
     border-radius: 50%;
