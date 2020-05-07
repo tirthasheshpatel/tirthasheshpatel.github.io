@@ -2,6 +2,7 @@
 layout: post
 title: Chapter 6 - Process Scheduling in Operating Systems
 subtitle: How are processes scheduled in operating systems as complex as Linux and Windows?
+hide: true
 tags: [Operating Systems]
 ---
 
