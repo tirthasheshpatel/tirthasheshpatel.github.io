@@ -51,17 +51,29 @@
 	{% elsif page.image and (layout.show-avatar or page.show-avatar) %}
 	<div class="avatar-container">
 	  <div class="avatar-img-border">
-	    <a href="{{ '' | absolute_url }}">
+	    {% if page.image-redirect-link %}
+	    <a href="{{ page.image-redirect-link }}">
 	      <img class="avatar-img" src="{{ page.image | relative_url }}" />
-		</a>
+      </a>
+      {% else %}
+      <a href="{{ '' | absolute_url }}">
+	      <img class="avatar-img" src="{{ page.image | relative_url }}" />
+      </a>
+      {% endif %}
 	  </div>
 	</div>
 	{% elsif site.avatar and (layout.show-avatar or page.show-avatar) %}
 	<div class="avatar-container">
 	  <div class="avatar-img-border">
-	    <a href="{{ '' | absolute_url }}">
+	    {% if page.image-redirect-link %}
+	    <a href="{{ page.image-redirect-link }}">
 	      <img class="avatar-img" src="{{ site.avatar | relative_url }}" />
-		</a>
+      </a>
+      {% else %}
+      <a href="{{ '' | absolute_url }}">
+	      <img class="avatar-img" src="{{ site.avatar | relative_url }}" />
+      </a>
+      {% endif %}
 	  </div>
 	</div>
 	{% endif %}
