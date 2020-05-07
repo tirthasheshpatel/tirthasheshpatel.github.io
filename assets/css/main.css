@@ -813,7 +813,7 @@ pre {
   margin-bottom: 10px;
 }
 .highlight > pre {
-  background: azure;
+  background: ghostwhite;
   /* background-image: linear-gradient(
     rgba(0,0,0,0.06), rgba(0,0,0,0.06) 1.5em, rgba(0,0,0,0.03) 1.5em, rgba(0,0,0,0.03) 3em); */
   background-size: auto 3em;
