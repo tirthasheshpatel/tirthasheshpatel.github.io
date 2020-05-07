@@ -61,16 +61,12 @@ image-redirect-link: https://summerofcode.withgoogle.com/projects/61354164507115
             </div>
       
             {% if post.tags.size > 0 %}
-            <div class="blog-tags">
-              Tags:
-              {% if site.link-tags %}
-              {% for tag in post.tags %}
-              <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
-              {% endfor %}
-              {% else %}
-                {{ post.tags | join: ", " }}
-              {% endif %}
-            </div>
+              <div class="blog-tags">
+                Tags:
+                {% for tag in post.tags %}
+                <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+                {% endfor %}
+              </div>
             {% endif %}
       
           </article>
