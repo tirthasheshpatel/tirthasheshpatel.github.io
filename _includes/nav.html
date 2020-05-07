@@ -37,9 +37,15 @@
   {% if page.gsoc_post %}
   <div class="avatar-container">
 	  <div class="avatar-img-border">
-	    <a href="https://tirthasheshpatel.github.io/gsoc2020/">
+      {% if page.image-redirect-link %}
+	    <a href="{{ page.image-redirect-link }}">
 	      <img class="avatar-img" src="{{ site.gsoc_logo | relative_url }}" />
-		  </a>
+      </a>
+      {% else %}
+      <a href="https://tirthasheshpatel.github.io/gsoc2020/">
+	      <img class="avatar-img" src="{{ site.gsoc_logo | relative_url }}" />
+      </a>
+      {% endif %}
 	  </div>
 	</div>
 	{% elsif page.image and (layout.show-avatar or page.show-avatar) %}
@@ -49,6 +55,7 @@
 	      <img class="avatar-img" src="{{ page.image | relative_url }}" />
 		</a>
 	  </div>
+	</div>
 	{% elsif site.avatar and (layout.show-avatar or page.show-avatar) %}
 	<div class="avatar-container">
 	  <div class="avatar-img-border">
