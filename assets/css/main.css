@@ -329,7 +329,7 @@ img {
 
 .navbar-custom .avatar-container .avatar-img-border {
   width: 100%;
-  display: inline-block;
+  display: relative;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -346,7 +346,7 @@ img {
   {% unless site.round-avatar == false %}
     border-radius: 50%;
   {% endunless %}
-  display: block;
+  display: relative;
 }
 
 .navbar-custom.top-nav-expanded .avatar-container {
