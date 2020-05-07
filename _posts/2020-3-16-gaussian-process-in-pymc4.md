@@ -279,7 +279,7 @@ ax.plot(X, y, 'ok', ms=3, label="Data")
 ax.set_xlabel("X"); ax.set_ylabel("y"); plt.legend();
 ```
 
-![svg](/images/gaussian_process_files/gaussian_process_16_1.svg)
+![png](/images/gaussian_process_files/gaussian_process_16_1.png)
 
 ```python
 @pm.model
@@ -355,7 +355,7 @@ array([[<matplotlib.axes._subplots.AxesSubplot object at 0x000001BCCCF73780>,
         dtype=object)
 ```
 
-![svg](/images/gaussian_process_files/gaussian_process_20_1.svg)
+![png](/images/gaussian_process_files/gaussian_process_20_1.png)
 
 ```python
 from pymc4.gp.util import plot_gp_dist
@@ -374,7 +374,7 @@ plt.xlabel("X"); plt.ylabel("True f(x)")
 plt.title("Posterior distribution over $f(x)$ at the observed values"); plt.legend();
 ```
 
-![svg](/images/gaussian_process_files/gaussian_process_21_1.svg)
+![png](/images/gaussian_process_files/gaussian_process_21_1.png)
 
 ```python
 pred_samples = pm.sample_posterior_predictive(gp, trace=trace, var_names=["latent_gp_model/f_pred"])
@@ -403,4 +403,4 @@ plt.xlabel("$X$"); plt.ylabel("True $f(x)$")
 plt.title("Conditional distribution of $f_*$, given $f$"); plt.legend();
 ```
 
-![svg](/images/gaussian_process_files/gaussian_process_24_1.svg)
+![png](/images/gaussian_process_files/gaussian_process_24_1.png)
