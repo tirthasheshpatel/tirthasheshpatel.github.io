@@ -45,7 +45,7 @@ It was a relief and moment of pride to see this mail. It is the support from my 
 
 The journey so far has helped me learn a lot about bayesian modelling, software development and using tools such as TensorFlow and TensorFlow Probability. Along the way, I was also able to help some pymc users on discourse and I hope to do so in the future too.
 
-I want to thank [Christopher Fonnesbeck][4], [Osvaldo Martin][5] and [pymc-devs][1] for giving me this opportunity to work with them on this awesome project! Lastly, I want to thank and dedicate this internship to my parents (especially my mother), who made me capable of standing up for myself and educated me with unconditional love! I love you, mom and dad!
+I want to thank [Christopher Fonnesbeck][4], [Osvaldo Martin][5] and [pymc-devs][1] for giving me this opportunity to work with them on this awesome project! Lastly, I want to thank and dedicate this internship to my parents (especially my late mother), who made me capable of standing up for myself and educated me with unconditional love! I love you, mom and dad!
 
 [1]: https://github.com/pymc-devs
 [2]: https://numfocus.org/
