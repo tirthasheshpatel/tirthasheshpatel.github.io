@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Geting started with Gaussian Process in PyMC4
+title: Getting started with Gaussian Process in PyMC4
 subtitle: A tutorial on creating GP models in python using PyMC4 scientific package and using them for temporal and spatial predictions
 image: /images/gaussian_process_files/gaussian_process_24_1.png
 gsoc_post: true
@@ -12,7 +12,7 @@ comments: true
 
 ### Theory
 
-Gaussian process are non-parametric models that define a distribution over a function where function itself is a random variable of some inputs $X$. They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a GP prior can be defined as
+Gaussian processes are non-parametric models that define a distribution over a function where the function itself is a random variable of some inputs $X$. They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a GP prior can be defined as
 
 $$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$
 
@@ -24,7 +24,7 @@ This conditional can then be used to sample new points from the inferred functio
 
 ### Implementation
 
-The implementation of Gaussian Process model is divided in three parts:
+The implementation of Gaussian Process model is divided into three parts:
 
 1. Creating a mean function.
 2. Creating a covariance function.
@@ -65,7 +65,7 @@ class Mean:
         return MeanProd(self, mean2)
 ```
 
-where `feature_ndims` are the rightmost dimentions of the input that will be absorbed during the computation. The `__call__` method is used to evaluate the mean function at some point $X$. The $X$ (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean function to yield a new mean function that is an instance of ``MeanAdd`` (or ``MeanProd``). You can create your own mean function just by inheriting the base class and implementing the method ``__call__``.
+where `feature_ndims` are the rightmost dimensions of the input that will be absorbed during the computation. The `__call__` method is used to evaluate the mean function at some point $X$. The $X$ (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean functions to yield a new mean function that is an instance of ``MeanAdd`` (or ``MeanProd``). You can create your mean function just by inheriting the base class and implementing the method ``__call__``.
 
 The most common mean function used in GP models is the zero mean function that returns zero irrespective of the inputs. It can be implemented as
 
@@ -75,7 +75,7 @@ mean_fn = pm.gp.mean.Zero(feature_ndims=2)
 
 ### Covariance Functions
 
-Covariance function try to approximate the covariance matrix of the modelled function. The base class used to implement covariance functions in PyMC4 is given below
+Covariance function tries to approximate the covariance matrix of the modelled function. The base class used to implement covariance functions in PyMC4 is given below
 
 ```python
 class Covariance:
@@ -146,9 +146,9 @@ class Covariance:
         return self._feature_ndims
 ```
 
-where ``_init_kernel`` is a method used to initialize the covariance function. This method should return a instance of covariance function that has ``matrix`` method to evaluate the covariance function and return a covariance matrix. Specifically, this method takes as input two tensors (or numpy arrays) of shape ``(batch_shape, n, features)`` and ``(batch_shape, m, features)`` and returns a covariance matrix of shape ``(batch_shape, n, m)``. This marix **must** be positive semi-definite. You can optionally override ``evaluate_kernel`` method to evaluate the function at two specific points.
+where ``_init_kernel`` is a method used to initialize the covariance function. This method should return an instance of a covariance function that has ``matrix`` method to evaluate the covariance function and return a covariance matrix. Specifically, this method takes as input two tensors (or numpy arrays) of shape ``(batch_shape, n, features)`` and ``(batch_shape, m, features)`` and returns a covariance matrix of shape ``(batch_shape, n, m)``. This matrix **must** be positive semi-definite. You can optionally override ``evaluate_kernel`` method to evaluate the function at two specific points.
 
-There are many covariance functions that can be used to infer different functions but the most common one is the Radial Basis Function. This function can be implemented using the ``ExpQuad`` covariance function in PyMC4.
+Many covariance functions can be used to infer different functions but the most common one is the Radial Basis Function. This function can be implemented using the ``ExpQuad`` covariance function in PyMC4.
 
 $$k(x, x') = \sigma^2 \mathrm{exp}\left[ -\frac{(x - x')^2}{2 l^2} \right]$$
 
@@ -164,7 +164,7 @@ The `gp.LatentGP` class is a direct implementation of a GP.  No additive noise i
 
 $$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$
 
-Use the `prior` and `conditional` methods to actually construct random variables representing the unknown, or latent, function whose distribution is the GP prior or GP conditional.  This GP implementation can be used to implement regression on data that is not normally distributed. For more information on the `prior` and `conditional` methods, see their docstrings.
+Use the `prior` and `conditional` methods to construct random variables representing the unknown, or latent, the function whose distribution is the GP prior or GP conditional.  This GP implementation can be used to implement regression on data that is not normally distributed. For more information on the `prior` and `conditional` methods, see their docstrings.
 
 ```python
 gp = pm.gp.LatentGP(cov_fn=cov_fn, mean_fn=mean_fn)
@@ -208,7 +208,7 @@ samples = pm.sample(gp_model, num_samples=100, num_chains=3)
 ```none
 WARNING:tensorflow:From C:\Users\tirth\Desktop\INTERESTS\PyMC4\env\lib\site-packages\tensorflow\python\ops\linalg\linear_operator_lower_triangular.py:158: calling LinearOperator.__init__ (from tensorflow.python.ops.linalg.linear_operator) with graph_parents is deprecated and will be removed in a future version.
 Instructions for updating:
-Do not pass `graph_parents`.  They will  no longer be used.
+Do not pass `graph_parents`.  They will no longer be used.
 ```
 
 ```python
@@ -238,7 +238,7 @@ Attributes:
 (3, 100, 2, 2, 5)
 ```
 
-### Example 1 : Regression with Student-T distributed noise
+### Example 1 : Regression with Student-t distributed noise
 
 In this example, we try to find a continuous interpolant through our data that is distributed as a ``multivariate_normal`` distribution with some ``student-t`` noise.
 
@@ -291,7 +291,7 @@ def latent_gp_model(X, y, X_new):
     X: np.ndarray, tensor
         The prior data
     y: np.ndarray, tensor
-        The function coressponding to the prior data
+        The function corresponding to the prior data
     X_new: np.ndarray, tensor
         The new data points to evaluate the conditional
 
