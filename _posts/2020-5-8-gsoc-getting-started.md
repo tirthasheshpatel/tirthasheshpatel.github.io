@@ -21,7 +21,7 @@ My work consists of implementing many Gaussian Process Models including Student'
 
 ### My Journey so far...
 
-I started using PyMC3 in June of 2018 while I was doing a course on [Bayesian Methods for Machine Learning][6] hoping to understand bayesian modelling and MCMC algorithms. It helped me to understand and write bayesian models in Python with ease without diving deep into the underlying algorithms. I never would have thought that I am going to help develop a tool as complex as this in the near future!
+I started using PyMC3 in June of 2019 while I was doing a course on [Bayesian Methods for Machine Learning][6] hoping to understand bayesian modelling and MCMC algorithms. It helped me to understand and write bayesian models in Python with ease without diving deep into the underlying algorithms. I never would have thought that I am going to help develop a tool as complex as this in the near future!
 
 In January 2020, I discovered that PyMC3 is taking part in GSoC'20 and thought to myself that I may never get a chance to work with such a huge organization and with developers as experienced as [Christopher Fonnesbeck][4] and [Thomas Wiecki][7].
 
