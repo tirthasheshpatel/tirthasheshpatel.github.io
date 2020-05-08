@@ -2,7 +2,6 @@
 layout: post
 title: Pre-GSoC Period - I am excited to get started!
 subtitle: I am very excited to get started with my GSoC project with PyMC3 team!
-image: /images/pymc-logo.png
 gsoc_post: true
 tags: [GSoC 2020]
 comments: true
