@@ -47,6 +47,8 @@ The journey so far has helped me learn a lot about bayesian modelling, software 
 
 I want to thank [Christopher Fonnesbeck][4], [Osvaldo Martin][5] and [pymc-devs][1] for giving me this opportunity to work with them on this awesome project! Lastly, I want to thank and dedicate this internship to my parents (especially my late mother), who made me capable of standing up for myself and educated me with unconditional love! I love you, mom and dad!
 
+Edit: My sister was pissed off that I didn't mention her. So, here it is. Thanks to my sister for recommending and introducing me to the GSoC program. Without her, I may not have even found out about this progam!
+
 [1]: https://github.com/pymc-devs
 [2]: https://numfocus.org/
 [3]: https://github.com/pymc-devs/pymc4
