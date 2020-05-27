@@ -1,6 +1,6 @@
 ---
 type: post
-title: PyTorch Primere
+title: PyTorch Premiere
 subtitle: Creating your first model in PyTorch
 tags: [Deep Learning, Machine Learning]
 ---
