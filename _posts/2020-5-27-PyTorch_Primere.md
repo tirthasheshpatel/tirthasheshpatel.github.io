@@ -5,13 +5,13 @@ subtitle: Creating your first model in PyTorch
 tags: [Deep Learning, Machine Learning]
 ---
 
-```
+```python
 import torch
 import numpy as np
 ```
 
 
-```
+```python
 # cannot use np.float32 or np.float64 with torch tensors
 a = torch.arange(0, 50, step=1, dtype=torch.float64).reshape(10,5)
 print(a)
@@ -34,12 +34,12 @@ print(a.shape)
 
 
 
-```
+```python
 numpy_style_a = a.numpy() # convert to numpy style array
 ```
 
 
-```
+```python
 numpy_style_a
 ```
 
@@ -60,7 +60,7 @@ numpy_style_a
 
 
 
-```
+```python
 # convert numpy to torch style tensor
 numpy_style_to_torch_style_a = torch.from_numpy(numpy_style_a)
 print(numpy_style_to_torch_style_a)
@@ -79,13 +79,13 @@ print(numpy_style_to_torch_style_a)
 
 
 
-```
+```python
 a = torch.from_numpy(np.random.randn(5, 3)) # Lets generate 2 random tensors
 b = torch.from_numpy(np.random.randn(3, 5)) # and operate on them
 ```
 
 
-```
+```python
 print(f"{a}\n{b}")
 ```
 
@@ -100,7 +100,7 @@ print(f"{a}\n{b}")
 
 
 
-```
+```python
 # to add,subtract use a+b,a-b
 # for matrix multiplication
 c = a @ b # @ -> matrix multiplication
@@ -122,14 +122,14 @@ print(c)
 
 
 
-```
+```python
 # making tensors on GPU :o
 # See the RAM bar will increase as soon as we create a tensor on GPU
 a_gpu = torch.arange(0, 50, dtype=torch.float64, device='cuda').reshape(5, 10)
 ```
 
 
-```
+```python
 a_gpu
 ```
 
@@ -146,7 +146,7 @@ a_gpu
 
 
 
-```
+```python
 # torch.is_tensor
 print(torch.is_tensor([1., 2., 3.]))
 print(torch.is_tensor(a))
@@ -157,7 +157,7 @@ print(torch.is_tensor(a))
 
 
 
-```
+```python
 # torch.set_default_dtype -> set floating point dtype
 torch.set_default_dtype(torch.float64)
 a = torch.linspace(0, 10, 100)
@@ -171,7 +171,7 @@ print(torch.get_default_dtype())
 
 
 
-```
+```python
 # torch.numel -> same as np.ndarray.size
 print(torch.numel(a))
 ```
@@ -180,7 +180,7 @@ print(torch.numel(a))
 
 
 
-```
+```python
 # torch.tensor -> Similar to np.array(data)
 # ``torch.tensor`` always copies ``data``. To avoid copying
 # np.ndarray use ``torch.as_tensor`` instead
@@ -217,7 +217,7 @@ print(b.grad)
 
 
 
-```
+```python
 # torch.sparse_coo_tensor -> create a sparse tensor ==> amazing
 a = torch.sparse_coo_tensor(torch.empty([1, 0]),
                             torch.empty([0, 2]), [1, 2])
@@ -230,7 +230,7 @@ print(a)
 
 
 
-```
+```python
 # torch.as_tensor  -> create a tensor from np.ndarray
 # torch.as_strided -> np.lib.stride_tricks.as_strided
 # torch.from_numpy -> as the name suggest
@@ -259,7 +259,7 @@ print(a)
 ```
 
 
-```
+```python
 # torch.gather -> Gathers values along an axis specified by `dim` (`axis`)
 a = torch.arange(10)
 a_gather = torch.gather(a, dim=0, index=torch.tensor([0, 0, 1, 1, 6, 5, 9, 5, 6, 7]))
@@ -274,7 +274,7 @@ print(torch.gather(t, 1, torch.tensor([[0,0],[1,0]])))
 
 
 
-```
+```python
 # torch.index_seelct -> select the indices along a given `dim` (`axis`)
 # This operation creates a copy if the `out` argument is not the same shape
 # as the input tensor.
@@ -297,7 +297,7 @@ torch.index_select(a, 0, torch.tensor([0, 2]))
 
 
 
-```
+```python
 # torch.masked_select -> selects the masked entries only.
 # Always creates a copy.
 a = torch.randn(3, 4)
@@ -318,7 +318,7 @@ torch.masked_select(a, a<=0)
 
 
 
-```
+```python
 # torch.narrow -> Select the entires from the array
 # along a particular `dim` starting at `start` and
 # ending at `end`. Signature: input, dim, start, end.
@@ -342,7 +342,7 @@ torch.narrow(a, 0, 1, 2) # 2 inclusive
 
 
 
-```
+```python
 # torch.reshape -> Creates a view whenever possible
 # use torch.as_strided for garunteed view.
 a = torch.randn(1, 2, 3, 4, 5)
@@ -361,7 +361,7 @@ torch.reshape(a, [5, 4, 3, 2, 1]).shape
 
 
 
-```
+```python
 # torch.split -> Splits the tensor into chunks.
 # Each chunk is a view of the original tensor.
 a = torch.randn(3, 5)
@@ -382,7 +382,7 @@ print(torch.split(a, [1, 4], dim=1)[1])
 
 
 
-```
+```python
 # torch.squeeze -> same as np.squeeze
 a = torch.randn(5, 1, 1, 4, 1, 1, 3, 1, 1, 2)
 print(a.shape)
@@ -404,7 +404,7 @@ torch.unsqueeze(b, -1).shape
 
 
 
-```
+```python
 # torch.where -> if `condition`, `x`, else `y`
 a = torch.tensor([[1, 2], [3, 4]])
 torch.where(a>2, a, 1-a)
@@ -419,7 +419,7 @@ torch.where(a>2, a, 1-a)
 
 
 
-```
+```python
 #                       Random Sampling in Torch!!
 # torch.seed
 # torch.set_rng_state
@@ -451,7 +451,7 @@ torch.where(a>2, a, 1-a)
 ```
 
 
-```
+```python
 # Serialization
 # torch.save -> Saves tensor objects and model in pickle file
 # torch.load -> Loads tensor objects and model from a pickle file
@@ -469,7 +469,7 @@ a
 
 
 
-```
+```python
 # Parallelism
 # torch.get_num_threads()
 # torch.set_num_threads()
@@ -488,7 +488,7 @@ print(torch.get_num_threads())
 
 
 
-```
+```python
 # torch.no_grad() -> Context manager to disable backprop for
 #                    some particular operation. This means that
 #                    the operation will not be recorded on graph.
@@ -503,7 +503,7 @@ print(c.requires_grad)
 
 
 
-```
+```python
 # torch.enable_grad() -> Enablewe grad for operations where grad computation
 #                        has been altered using torch.no_grad or torch.set_grad_enabled
 # Method 1
@@ -529,7 +529,7 @@ print(c.requires_grad)
 
 
 
-```
+```python
 # Math operations
 # torch.abs
 # torch.acos
@@ -620,7 +620,7 @@ print(c.requires_grad)
 ```
 
 
-```
+```python
 # torch.clamp -> works like `np.clip`. Clips a tensor in [min, max] range
 a = torch.arange(0, 20)
 print(a)
@@ -635,7 +635,7 @@ print(a)
 
 
 
-```
+```python
 # Advanced Mathematical Operations
 # torch.digamma -> Derivative of log of gamma function => d/dx ( ln(gamma(input)) )
 # torch.erf -> Error function
@@ -654,7 +654,7 @@ print(a)
 ```
 
 
-```
+```python
 # Comparison Ops
 # torch.equal
 # torch.eq
@@ -671,7 +671,7 @@ print(a)
 ```
 
 
-```
+```python
 # torch.sort
 # torch.argsort
 # torch.topk
@@ -679,12 +679,12 @@ print(a)
 ```
 
 
-```
+```python
 # TODO: BLAS and LAPACK functions
 ```
 
 
-```
+```python
 #################################################################################
 #                                                                               #
 #                           NEURAL NETWORKS IN PYTORCH                          #
@@ -711,7 +711,7 @@ torch.seed(42)
 
 
 
-```
+```python
 # torch.nn.Parameter -> Registers a parameter in the scope of the module.
 #                       Doesn't backpropogate if used in or from other module,
 #                       unless registered.
@@ -738,7 +738,7 @@ class LinearRegressor(nn.Module):
 ```
 
 
-```
+```python
 # Preparing Data
 import matplotlib.pyplot as plt
 n_examples = 10
@@ -759,7 +759,7 @@ plt.show()
 
 
 
-```
+```python
 # Initialize the LinearRegressor model.
 model = LinearRegressor(n_features)
 print(model(X))
@@ -784,7 +784,7 @@ print([i for i in model.parameters()])
 
 
 
-```
+```python
 # Training a torch.nn.Module() model
 from time import sleep
 from sys import stdout
@@ -816,7 +816,7 @@ for i in range(epochs):
     epoch: 199 	 loss: 0.003
 
 
-```
+```python
 # Let's see how good did we perform
 print(w_true)
 print(b_true)
