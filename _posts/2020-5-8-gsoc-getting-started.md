@@ -5,6 +5,7 @@ subtitle: I am very excited to get started with my GSoC project with PyMC3 team!
 gsoc_post: true
 tags: [GSoC 2020]
 comments: true
+permalink: /gsoc2020/pre-gsoc-period-i-am-excited-to-get-started
 ---
 
 ## Getting started with GSoC '20

@@ -8,6 +8,7 @@ gh-repo: tirthasheshpatel/pymc4
 gh-badge: [star, fork, follow]
 tags: [Machine Learning, GSoC 2020]
 comments: true
+permalink: /gsoc2020/getting-started-with-gaussian-process-in-pymc4
 ---
 
 ### Theory

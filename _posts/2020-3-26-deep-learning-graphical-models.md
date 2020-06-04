@@ -3,6 +3,7 @@ type: post
 title: Graphical Models for Deep Learning
 subtitle: Deep Learning Course - Part 2
 tags: [Machine Learning, Deep Learning]
+permalink: posts/graphical-models-for-deep-learning
 ---
 
 ![Cool Graph](/images/graphical_models/logo_graph.jpg)
