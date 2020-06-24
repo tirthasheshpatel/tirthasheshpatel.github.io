@@ -189,7 +189,7 @@ timezone: "America/Vancouver"
 # markdown: kramdown
 # highlighter: rouge
 permalink: /:year-:month-:day-:title/
-paginate: 10
+paginate: 1000
 
 kramdown:
   input: GFM
@@ -202,7 +202,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      comments: false  # add comments to all blog posts
+      comments: true  # add comments to all blog posts
       social-share: true # add social media sharing buttons to all blog posts
       readtime: false # add estimated reading time on all blog posts
   -
