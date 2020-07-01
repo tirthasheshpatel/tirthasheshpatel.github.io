@@ -7,7 +7,8 @@ hide: true
 tags: [Game Theory]
 ---
 
-{: .box-warning} This is a draft and yet to be posted!
+{: .box-warning}
+**Warning:** This is a draft. It is yet to be posted
 
 This article focuses at creating notes for the Game Theory course on Coursera.
 
