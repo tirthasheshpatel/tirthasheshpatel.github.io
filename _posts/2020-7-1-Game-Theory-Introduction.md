@@ -116,4 +116,14 @@ This action profile (of each player rating the mode 1) is known as the `Nash Equ
   - Somebody has an incentive to deviate from a profile of actions that do not form an equilibrium.
 
 {: .box-note}
-**Note**: Nash equilibrium implicitly assumes everyone plays the action that maximizes *their* utility but if that profile isn't played, nash equilibria fails to provide the bast reponse to that profile of actions.
+**Note**: Nash equilibrium implicitly assumes everyone plays the action that maximizes *their* utility but if that profile isn't played, nash equilibria fails to provide the best reponse to that profile of actions.
+
+### Best Response
+
+If you knew what everyone is going to do, it would be easy to pick the best action.
+
+Let $a_{-i} = \langle a_1, a_2, ..., a_{i-1}, a_{i+1}, ..., a_n \rangle$. Hence, $a = (a_i, a_{-i})$.
+
+{: .box-note}
+Best Response Definition:
+$$a_{i}^{*} \in \mathcal{BR}(a_{-i}) \text{ iff } u_i(a_{i}^{*}, a_{-i}) \ge u_i(a_i, a_{-i})$$
