@@ -168,15 +168,15 @@ Turns out thee are no nash equilibrium profiles for this game.
 
 ### Domination and Strategies
 
-Let $s_i$ and $s'_i$ be two strategies for some player $i$ and let $S_{-i}$ be a set of **all** strategy profiles **other** players could take.
+Let $s\_i$ and $s'\_i$ be two strategies for some player $i$ and let $S_{-i}$ be a set of **all** strategy profiles **other** players could take.
 
 We define **domination** of strategies as follows:
 
 {: .box-note}
-**Strictly Dominant Strategy (Definition)**: If $u_i(s_i, S_{-i}) > u_i(s'_{i}, S_{-i})$ then $s_i$ strictly dominates $s'_{i}$
+**Strictly Dominant Strategy (Definition)**: If $u\_i(s\_i, S\_{-i}) > u\_i(s'\_{i}, S_{-i})$ then $s_i$ strictly dominates $s'_{i}$
 
 {: .box-note}
-**Very Weakly Dominant Strategy (Definition)**: If $u_i(s_i, S_{-i}) \ge u_i(s'_{i}, S_{-i})$ then $s_i$ very weakly dominates $s'_{i}$
+**Very Weakly Dominant Strategy (Definition)**: If $u_i(s_i, S_{-i}) \ge u_i(s'_{i}, S\_{-i})$ then $s_i$ very weakly dominates $s'_{i}$
 
 If one strategy dominates all others, then it is `dominant`.
 
