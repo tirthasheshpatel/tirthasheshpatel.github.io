@@ -38,7 +38,7 @@ Each Agent has its ***utility function***.
   - Players move sequentially (represented as a tree!).
   - Keeps track of what each player knows when he/she makes each decision.
 
-{: .box-note}
+{: .box-warning}
 **Note**: In games represeted by a `Normal Form`, the players don't have the knowledge of what other players have chosen.
 
 #### Normal form
@@ -51,7 +51,7 @@ Each Agent has its ***utility function***.
   - `Utility function` is a function mapping actions of each player to their utilities. Hence, it takes as input a `action profile` $a$ and outputs a utility vector of size $n$ representing the utility of each player for that action profile.
     - $u: A \to \mathbb{R}^n$
 
-{: .box-note}
+{: .box-warning}
 **Note**: The utility of the players doesn't only depend on their action but also on actions of other players.
 
 ### More Games
@@ -81,7 +81,7 @@ Example 1: We toll two coins. If both are heads or tails, player 1 gets $1$ and 
 
 Example 2: Game of Rock-Paper-Scissors! Whoever wins gets $1$ other gets $-1$ and if it ties, both get $0$. This is also a game of pure competion and a zero sum game.
 
-{: .box-note}
+{: .box-error}
 **Excersise**: Try to find more games of pure competition.
 
 `Games of co-operation`: Players have excatly the same interests.
@@ -115,7 +115,7 @@ This action profile (of each player rating the mode 1) is known as the `Nash Equ
   - Nobody has an incentive to *deviate* from their action if an equilibrium profile is played.
   - Somebody has an incentive to deviate from a profile of actions that do not form an equilibrium.
 
-{: .box-note}
+{: .box-warning}
 **Note**: Nash equilibrium implicitly assumes everyone plays the action that maximizes *their* utility but if that profile isn't played, nash equilibria fails to provide the best reponse to that profile of actions.
 
 ### Best Response
@@ -125,5 +125,94 @@ If you knew what everyone is going to do, it would be easy to pick the best acti
 Let $a_{-i} = \langle a_1, a_2, ..., a_{i-1}, a_{i+1}, ..., a_n \rangle$. Hence, $a = (a_i, a_{-i})$.
 
 {: .box-note}
-Best Response Definition:
-$$a_{i}^{*} \in \mathcal{BR}(a_{-i}) \text{ iff } u_i(a_{i}^{*}, a_{-i}) \ge u_i(a_i, a_{-i})$$
+**Best Response (Definition)**:
+$$a_{i}^{*} \in \mathcal{BR}(a_{-i}) \text{ iff } \forall a_i \in A_i, u_i(a_{i}^{*}, a_{-i}) \ge u_i(a_i, a_{-i})$$
+
+This definition leads us to the definition on `Nash Equilibrium` that says:
+
+{: .box-note}
+**Nash Equlibrium (Definition)**
+Action profile $a = \langle a_1, ..., a_n \rangle$ is a *pure strategy* Nash Equilibrium iff $\forall i, a_i \in \mathcal{BR}(a_{-i})$
+
+{: .box-warning}
+There could be a unique or multiple or no Nash Equilibria of a game.
+
+### Nash Equilibrium of Example Games
+
+1. Prisoner's Delimma
+
+|   |   C    |   D    |
+|---|--------|--------|
+| C | -1, -1 | 0, -4  |
+| D | -4, 0  | -3, -3 |
+
+The best move for the Player 1 is to choose D irrespective of what the other player chooses because he is bound to recieve either 0 or -3 unlike the case in which he chooses C where he may end up recieving -4! Same goes for the player 2 and hence there is a unique nash equilibrium which is the action profile $\\{D, D\\}$. If any one of them deviates from this profile, he/she will end up recieving -4 while the other player recieves 0.
+
+2. Couple going to a movie!
+
+| 1/2 |   A   |   B   |
+|-----|-------|-------|
+| A   | $1,2$ | $0,0$ |
+| B   | $0,0$ | $2,1$ |
+
+Action profiles $\\{A, A\\}$ and $\\{B, B\\}$ both are Nash Equlibrium profiles for this game.
+
+3. Two coins toss game.
+
+| 1/2 |    H   |    T   |
+|-----|--------|--------|
+| H   | $1,-1$ | $-1,1$ |
+| T   | $-1,1$ | $1,-1$ |
+
+Turns out thee are no nash equilibrium profiles for this game.
+
+### Domination and Strategies
+
+Let $s_i$ and $s'_i$ be two strategies for some player $i$ and let $S_{-i}$ be a set of **all** strategy profiles **other** players could take.
+
+We define **domination** of strategies as follows:
+
+{: .box-note}
+**Strictly Dominant Strategy (Definition)**: If $u_i(s_i, S_{-i}) > u_i(s'_{i}, S_{-i})$ then $s_i$ strictly dominates $s'_{i}$
+
+{: .box-note}
+**Very Weakly Dominant Strategy (Definition)**: If $u_i(s_i, S_{-i}) \ge u_i(s'_{i}, S_{-i})$ then $s_i$ very weakly dominates $s'_{i}$
+
+If one strategy dominates all others, then it is `dominant`.
+
+A strategy profile where everone is playing a dominant strategy must be a Nash Equilibrium. An equilibrium of strictly dominant strategies must be unique.
+
+Example: `Prisoner's Delimma`
+
+|   |   C    |   D    |
+|---|--------|--------|
+| C | -1, -1 | 0, -4  |
+| D | -4, 0  | -3, -3 |
+
+The dominant strategy profile in this game is $\\{D, D\\}$ beasue no matter what the other player chooses, coosing D will lead to a "strictly" better outcome.
+
+### Pareto Optimality
+
+This concept asks us to look at the games from the outside as an observer and not as a player which is what we have been doing until now.
+
+{: .box-note}
+From the point of view of an outside, can some outcomes of a game be said to be `better` than others.
+
+Idea: Sometimes, one outcome $o$ is at least as good for every agent as another outcome $o'$, and there is some agent who strictly prefers $o$ to $o'$.
+  - in this case, it seems reasonable to say that $o$ is better than $o'$.
+  - we say $o$ `pareto-dominates` $o'$.
+
+{: .box-note}
+**Pareto Optimality (Definition)**: An outcome $o^{*}$ is said to be Pareto-optimal if no other outcome Pareto-dominates it.
+
+{: .box-warning}
+The can be multiple pareto optimal outcomes but it is not possible to have a game in which there is no pareto optimal outcome!
+
+So, why is "**Prisoner's *Delimma***" such a "delimma"?
+
+|   |   C    |   D    |
+|---|--------|--------|
+| C | -1, -1 | 0, -4  |
+| D | -4, 0  | -3, -3 |
+
+As we have seen, the dominant strategy and nash equilibrium for this game is the profile $\\{D, D\\}$. Now, the pareto optimal profiles are $\\{C, C\\}$, $\\{C, D\\}$, and $\\{D, C\\}$. The Nash Equilibria which is also the dominant strategy is the only one that isn't a pareto optimal!! This is why this example is paradoxical and hence a "delimma".
