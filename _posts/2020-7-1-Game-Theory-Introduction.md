@@ -47,8 +47,6 @@ This article focuses at creating notes for the Game Theory course on Coursera.
   - `Players`: $N = \{1, 2, ..., n\}$ is a finite set of $n$ players, indexed by $i$.
   - `Action Set` for player $i$ is given by $A_i$
   - `Action Profile` is the cartesian cross product space of all the actions of each of the players.
-
-$$a = (a_1, ..., a_i, ..., a_n) \in A = |A_1| \times |A_2| \times ... \times |A_i| \times ... \times |A_n|$$
-
+    - Action Profile $a = (a_1, ..., a_i, ..., a_n) \in A = A_1 \times A_2 \times ... \times A_i \times ... \times A_n$
   - `Utility function` is a function mapping actions of each player to their utilities. Hence, it takes as input a `action profile` $a$ and outputs a utility vector of size $n$ representing the utility of each player for that action profile.
     - $u: A \to \mathbb{R}^n$
