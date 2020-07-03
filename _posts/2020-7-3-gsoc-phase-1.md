@@ -91,10 +91,12 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 I laid down some of the most basic aspects of the API I was going to develop throughout the GSoC period in this pull request. It was well received by the PyMC team. The internals are quite different but the overall usage of the API is very similar to PyMC3. This has its own set of advantages and disadvantages. Some of which I list here:
 
+{: .box-warning}
 Pros:
   - Easy to port from PyMC3 to PyMC4.
   - TFP computational backend for speed.
 
+{: .box-error}
 Cons:
   - Prior needs to be explicitly passed in the conditional method (though there is a workaround!)
   - Custom covariance functions are not straight-forward to make because the base class relies on TFP. So, the user has to first implement a TFP kernel and then wrap it using PyMC4's base class (though there is also a workaround for this).
@@ -125,4 +127,4 @@ Week 4 was spent writing a notebook on the Kernel functions API. It was fun to w
 ![Alto's adventure Picture](/images/random/alto1.png)
 
 {: .box-warning}
-Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with their projects! And thank you mentors for your continuous support!
+**Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with their projects! And thank you mentors for your continuous support!**
