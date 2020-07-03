@@ -10,7 +10,7 @@ permalink: /gsoc2020/writing-notebooks-on-gp-kernels
 
 ### Overview of this week
 
-I opened a huge PR in week 3, porting all the kernel functions from PyMC3 to PyMC4. This week, I continued my work on the PR to write a tutorial notebook on the kernel API. Thanks to [Bill Engels](https://github.com/bwengals) and [Alex Andorra][https://github.com/AlexAndorra] for reviewing the notebook multiple times and providing helpful suggestions!
+I opened a huge PR in week 3, porting all the kernel functions from PyMC3 to PyMC4. This week, I continued my work on the PR to write a tutorial notebook on the kernel API. Thanks to [Bill Engels](https://github.com/bwengals) and [Alex Andorra](https://github.com/AlexAndorra) for reviewing the notebook multiple times and providing helpful suggestions!
 
 The other task that I have completed (on my local branch) is to implement ARD on the kernels. I will probably propose a PR by the end of this week.
 
