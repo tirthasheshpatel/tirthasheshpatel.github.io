@@ -93,10 +93,39 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 ![PR 235 Overview](/images/gsoc_files/pr-235.png)
 
+I laid down some of the most basic aspects of the API I was going to develop throughout the GSoC period in this pull request. It was well received by the pymc team. The internals are quite different but the overall usage of the API is very similar to PyMC3. This has its own set of advantages and disadvantages. Some of which I list here:
+
+Pros:
+  - Easy to port from PyMC3 to PyMC4.
+  - TFP computational backend for speed.
+
+Cons:
+  - Prior needs to be explicitly passed in the conditional method (though there is a workaround!)
+  - Custom covariance functions are not straight-forward to make because the base class relies on TFP. So, the user has to first implement a TFP kernel and then wrap it using PyMC4's base class (though there is also a workaround for this).
+  - `Conditional` method can't be separated otherwise, that variable will not be recorded. OTOH, It is highly expensive to compute the gradients of the conditional distribution making inference almost impossible on big datasets.
+
+I have tried to address the cons the next few weeks by refactoring and rewriting some base classes.
+
 ### Week 2
 
 ![PR 272 Overview](/images/gsoc_files/pr-272.png)
 
+This PR adds a new base class for combinations of kernels and introduces multiple new parameters in the kernel functions API. It also adds Constant and WhiteNoise kernel functions not present in TFP.
+
+As these changes are pretty big, I cannot summarize them here. You can take a look at my blog post for week 2 where I give a detailed view of the changes and their use.
+
+I also refactored the test suite so new tests can be added in just a few lines. The base class for wrapping TFP kernels is not very well defined and needs a lot of refactoring to be done.
+
 ### Week 3 and 4
 
 ![PR 285 Overview](/images/gsoc_files/pr-285.png)
+
+I proposed [#285](https://github.com/pymc-devs/pymc4/pull/285) in Week 3 porting all the kernel functions from PyMC3 to PyMC4.
+
+Week 4 was spent writing a notebook on the Kernel functions API. It was fun to work with [Bill Engels](https://github.com/bwengals) who developed the GP API for PyMC3. His reviews were very helpful in making the notebook robust and correcting some of my misunderstandings about the kernels I wrote! I aim to write an article on my blog page about the kernel functions API and how to port to PyMC4 from PyMC3.
+
+### Conclusion!
+
+![Alto's adventure Picture](/images/random/alto1.png)
+
+Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with thier projects! And thank you mentors for your continuous support!
