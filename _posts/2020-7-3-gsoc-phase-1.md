@@ -10,8 +10,10 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 ### Tasks Completed
 
-{: .box-error}
 **Week 1**: [#235: [MRG] ENH: Add Basic Gaussian Process Interface](https://github.com/pymc-devs/pymc4/pull/235)
+
+{: .box-warning}
+**Blog**: [GSoC Week 1 - Latent GP model and Covariance functions!](https://tirthasheshpatel.github.io/gsoc2020/latent-gp-model-and-covariance-functions)
 
   - [x] &nbsp;&nbsp; Create a base class for kernel/covariance functions.
   - [x] &nbsp;&nbsp; Create an API for combining covariance functions.
@@ -26,11 +28,10 @@ permalink: /gsoc2020/gsoc-phase-1-summary
   - [x] &nbsp;&nbsp; Add a documentation suite for the subpackage.
   - [x] &nbsp;&nbsp; Add a test suite for GP Models, Mean functions, and Kernel functions.
 
-{: .box-warning}
-**Blog**: [GSoC Week 1 - Latent GP model and Covariance functions!](https://tirthasheshpatel.github.io/gsoc2020/latent-gp-model-and-covariance-functions)
-
-{: .box-error}
 **Week 2**: [#272: ENH: add constant and white noise kernel, fix docs and tests](https://github.com/pymc-devs/pymc4/pull/272)
+
+{: .box-warning}
+**Blog**: [GSoC Week 2 and Week 3 - Implementing GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
 
   - [x] &nbsp;&nbsp; Add `Constant` kernel with batched input support.
   - [x] &nbsp;&nbsp; Add `WhiteNoise` kernel with batched input support.
@@ -43,11 +44,10 @@ permalink: /gsoc2020/gsoc-phase-1-summary
     - [x] &nbsp;&nbsp; Create a template for testing of new mean functions.
   - [x] &nbsp;&nbsp; Refactor the documentation suite according to the `pydocstyle` linting rules.
 
+**Week 3**: [#285 ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
+
 {: .box-warning}
 **Blog**: [GSoC Week 2 and Week 3 - Implementing GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
-
-{: .box-error}
-**Week 3**: [#285 ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
 
   - [x] &nbsp;&nbsp; Create following Kernel functions with tests and documentation for each of them:
     - [x] &nbsp;&nbsp; `RatQuad`
@@ -65,11 +65,10 @@ permalink: /gsoc2020/gsoc-phase-1-summary
     - [x] &nbsp;&nbsp; `ScaledCov`
     - [x] &nbsp;&nbsp; ~~`Kron`~~
 
-{: .box-warning}
-**Blog**: [GSoC Week 2 and Week 3 - Implementing GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
-
-{: .box-error}
 **Week 4**: [#285 ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
+
+{: .box-warning}
+**Blog**: [GSoC Week 4 - Writing Notebooks on GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/writing-notebooks-on-gp-kernels)
 
   - Add notebook for the following Kernel Functions:
     - [x] &nbsp;&nbsp; Basic Kernel API.
@@ -85,9 +84,6 @@ permalink: /gsoc2020/gsoc-phase-1-summary
     - [x] &nbsp;&nbsp; `Gibbs` kernel.
     - [x] &nbsp;&nbsp; `WarpedInput` kernel.
     - [x] &nbsp;&nbsp; `ScaledCov` kernel.
-
-{: .box-warning}
-**Blog**: [GSoC Week 4 - Writing Notebooks on GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/writing-notebooks-on-gp-kernels)
 
 ### Week 1
 
@@ -128,4 +124,5 @@ Week 4 was spent writing a notebook on the Kernel functions API. It was fun to w
 
 ![Alto's adventure Picture](/images/random/alto1.png)
 
+{: .box-warning}
 Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with thier projects! And thank you mentors for your continuous support!
