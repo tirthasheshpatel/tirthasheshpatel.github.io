@@ -89,7 +89,7 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 ![PR 235 Overview](/images/gsoc_files/pr-235.png)
 
-I laid down some of the most basic aspects of the API I was going to develop throughout the GSoC period in this pull request. It was well received by the pymc team. The internals are quite different but the overall usage of the API is very similar to PyMC3. This has its own set of advantages and disadvantages. Some of which I list here:
+I laid down some of the most basic aspects of the API I was going to develop throughout the GSoC period in this pull request. It was well received by the PyMC team. The internals are quite different but the overall usage of the API is very similar to PyMC3. This has its own set of advantages and disadvantages. Some of which I list here:
 
 Pros:
   - Easy to port from PyMC3 to PyMC4.
@@ -125,4 +125,4 @@ Week 4 was spent writing a notebook on the Kernel functions API. It was fun to w
 ![Alto's adventure Picture](/images/random/alto1.png)
 
 {: .box-warning}
-Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with thier projects! And thank you mentors for your continuous support!
+Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with their projects! And thank you mentors for your continuous support!
