@@ -1,3 +1,13 @@
+---
+layout: post
+title: Kernels for GP Modelling in PyMC4.
+subtitle: A guide to the Kernel functions API in PyMC4.
+gsoc_post: true
+tags: [Machine Learning, GSoC 2020, Gaussian Processes]
+comments: true
+permalink: /gsoc2020/kernels-for-gp-modelling-in-pymc4
+---
+
 # Kernels for GP Modelling in PyMC4.
 
 In this tutorial, we will explore the covariance functions aka kernels present in `pm.gp` module and study their properties. This will help choose the appropriate kernel to model your data properly. We will also see the semantics of additive and multiplicative kernels.
