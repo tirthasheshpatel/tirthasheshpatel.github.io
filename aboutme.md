@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: About Me!
 subtitle: Tirth Patel 
 bigimg: /images/logo_sq.jpg
 ---
