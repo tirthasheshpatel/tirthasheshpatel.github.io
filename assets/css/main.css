@@ -813,7 +813,7 @@ pre {
   margin-bottom: 10px;
 }
 .highlight > pre {
-  background: white;
+  background: #090300;
   background-size: auto 3em;
   background-position-y: 0.625rem;
   border: 1px solid rgba(0,0,0,0.1);
