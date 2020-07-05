@@ -2,13 +2,13 @@
 layout: page
 title: About
 subtitle: Tirth Patel 
-bigimg: /images/logo.jpeg
+bigimg: /images/logo_sq.jpg
 ---
 
 
-### Sorry! I have taken this page down for maintainence!
+### My Resume
 
-![Under Construction!!!](/images/404.jpg)
+![Resume](/images/resume.svg)
 
 ### Contact me
 
