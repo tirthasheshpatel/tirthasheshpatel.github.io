@@ -29,28 +29,28 @@ $$
 \begin{align*}
 f(x) > 0 \text{, } \forall x > 0 && \text{Positive Definiteness} \\
 f(\alpha x) = |\alpha|x  && \text{Homogeniety} \\
-f(x + y) \le f(x) + f(y) && \text{Triangular Inequality}
+f(x + y) \le f(x) + f(y) && \text{Triangular Inequality} \\
 \end{align*}
 $$
 
 ### Vector-2 Norm
 
-**Definition**: $\|\cdot\|\_2: \mathbb{C}^{m} \to \mathbb{R}$
+**Definition**: $\|\cdot\|_2: \mathbb{C}^{m} \to \mathbb{R}$
 
 $$
 \begin{align*}
-\|x\|\_2 &= \sqrt{\sum\_{i=0}^{m-1} |x\_i|^2} \\
-         &= \sqrt{x^H x}
+\|x\|_2 &= \sqrt{\sum_{i=0}^{m-1} |x_i|^2} \\
+         &= \sqrt{x^H x} \\
 \end{align*}
 $$
 
 **Lemma 1**: Cauchy Schwarz inequality says $\forall x,y \in \mathbb{C}^m$:
 
-$$|x^H y| \le \|x\|\_2 \|y\|\_2$$
+$$|x^H y| \le \|x\|_2 \|y\|_2$$
 
 **Proof**: Assume that $x \ne 0$ and $y \ne 0$ otherwise the inequality becomes trivially true.
 
-We can then choose $\|x\|\_2 = 1$ and $\|y\|\_2 = 1$. That leaves us to prove $|x^H y| \le 1$
+We can then choose $\|x\|_2 = 1$ and $\|y\|_2 = 1$. That leaves us to prove $|x^H y| \le 1$
 
 Pick
 
@@ -58,7 +58,7 @@ $$
 \alpha =
 \begin{cases}
 1                     && x^H y = 0 \\
-\frac{y^H x}{|x^H y|} && \text{otherwise}
+\frac{y^H x}{|x^H y|} && \text{otherwise} \\
 \end{cases}
 $$
 
@@ -72,24 +72,24 @@ $$
 
 $$
 \begin{align*}
-0 &\le \|x - \alpha y\|\_2^{2} \\
+0 &\le \|x - \alpha y\|_2^{2} \\
   &= (x - \alpha y)^H (x - \alpha y) \\
   &= (x^H - \bar{\alpha}y^H)(x - \alpha y) \\
   &= x^H x - \alpha x^H y - \bar{\alpha}y^H x + (\bar{\alpha}\alpha) (y^H y) \\
   &= 1 - 2 \alpha x^H y + (1) (1) && (x^H x=1, y^H y=1, |\alpha|=1, \bar{\alpha} y^H x=\alpha x^H y) \\
   &= 2 - 2 \alpha x^H y \\
-  &= 2 - 2  \frac{y^H x}{|x^H y|} x^H y && ((x^H y)^H = y^H x, z^H z = \|z\|\_2^{2}) \\
+  &= 2 - 2  \frac{y^H x}{|x^H y|} x^H y && ((x^H y)^H = y^H x, z^H z = \|z\|_2^{2}) \\
   &\le 2 - 2 |x^H y| \\
-|x^H y| &\le 1
+|x^H y| &\le 1 \\
 \end{align*}
 $$
 
-Now if the $\|x\|\_2 \ne 1$ and $\|y\|\_2 \ne 1$ then we can normalize them to have norm 1. Hence, substituting the normalized vector in the above equation, we have:
+Now if the $\|x\|_2 \ne 1$ and $\|y\|_2 \ne 1$ then we can normalize them to have norm 1. Hence, substituting the normalized vector in the above equation, we have:
 
 $$
 \begin{align*}
-|\frac{x^H}{\|x\|\_2} \frac{y}{\|y\|\_2}| &\le 1 \\
-|x^H y| &\le \|x\|\_2 \|y\|\_2
+|\frac{x^H}{\|x\|_2} \frac{y}{\|y\|_2}| &\le 1 \\
+|x^H y| &\le \|x\|_2 \|y\|_2 \\
 \end{align*}
 $$
 
@@ -105,9 +105,9 @@ Hence, we conclude our proof here.
 
 $$
 \begin{align*}
-\|x\|\_2 &= \sqrt{\sum\_{j=0}^{m-1} |x\_j|^2} \\
-         &\ge \sqrt{|x\_i|^2} \\
-         &> 0
+\|x\|_2 &= \sqrt{\sum_{j=0}^{m-1} |x_j|^2} \\
+         &\ge \sqrt{|x_i|^2} \\
+         &> 0 \\
 \end{align*}
 $$
 
@@ -117,10 +117,10 @@ Hence, vector-2 norm is positive definite.
 
 $$
 \begin{align*}
-\|\alpha x\|\_2 &= \sqrt{\sum\_{i=0}^{m-1} |\alpha x\_i|^2} \\
-                &= \sqrt{\sum\_{i=0}^{m-1} |\alpha|^2|x\_i|^2} \\
-                &= |\alpha| \sqrt{\sum\_{i=0}^{m-1} |x\_i|^2} \\
-                &= |\alpha| \|x\|\_2
+\|\alpha x\|_2 &= \sqrt{\sum_{i=0}^{m-1} |\alpha x_i|^2} \\
+                &= \sqrt{\sum_{i=0}^{m-1} |\alpha|^2|x_i|^2} \\
+                &= |\alpha| \sqrt{\sum_{i=0}^{m-1} |x_i|^2} \\
+                &= |\alpha| \|x\|_2 \\
 \end{align*}
 $$
 
@@ -130,14 +130,14 @@ vector-2 norm is homogeneous.
 
 $$
 \begin{align*}
-\|x+y\|\_2^{2} &= (x+y)^H (x+y) \\
+\|x+y\|_2^{2} &= (x+y)^H (x+y) \\
                &= (x^H+y^H) (x+y) \\
-               &= x^H x + x^H y + y^H x + y^H y
-               &= \|x\|\_2^2 + \|y\|\_2^2 + 2\text{Re}(x^H y) \\
-               &\le \|x\|\_2^2 + \|y\|\_2^2 + 2|x^H y| \\
-               &\le \|x\|\_2^2 + \|y\|\_2^2 + 2\|x\|\_2\|y\|\_2 && \text{(Cauchy Schwarz inequality)} \\
-               &= (\|x\|\_2 + \|y\|\_2)^2 \\
-\|x+y\|\_2 &\le \|x\|\_2 + \|y\|\_2
+               &= x^H x + x^H y + y^H x + y^H y \\
+               &= \|x\|_2^2 + \|y\|_2^2 + 2\text{Re}(x^H y) \\
+               &\le \|x\|_2^2 + \|y\|_2^2 + 2|x^H y| \\
+               &\le \|x\|_2^2 + \|y\|_2^2 + 2\|x\|_2\|y\|_2 && \text{(Cauchy Schwarz inequality)} \\
+               &= (\|x\|_2 + \|y\|_2)^2 \\
+\|x+y\|_2 &\le \|x\|_2 + \|y\|_2 \\
 \end{align*}
 $$
 
