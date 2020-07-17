@@ -8,7 +8,7 @@ comments: false
 permalink: /alaff/week-01
 ---
 
-This was a long-ass week with a lot of problems and homework!
+This was a long-ass week with lots of problems and homework!
 
 ### Definition of a "norm" function
 
@@ -16,8 +16,8 @@ This was a long-ass week with a lot of problems and homework!
 
 $$
 \begin{align*}
-f(x) > 0 \text{, } \forall x > 0 & \text{Psitive Definiteness} \\
-f(\alpha x) = |\alpha|x  & \text{Homogeniety} \\
-f(x + y) \le f(x) + f(y) & \text{Triangular Inequality}
+f(x) > 0 \text{, } \forall x > 0 &&< \text{Positive Definiteness} \\
+f(\alpha x) = |\alpha|x  &&< \text{Homogeniety} \\
+f(x + y) \le f(x) + f(y) &&< \text{Triangular Inequality}
 \end{align*}
 $$
