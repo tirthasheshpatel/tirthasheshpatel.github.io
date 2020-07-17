@@ -15,7 +15,9 @@ This was a long-ass week with a lot of problems and homework!
 **Definition**: A functions $f: \mathbb{C}^{m} \to \mathbb{R}$ is a norm if, $\forall x, y \in \mathbb{C}^{m}$ and $\alpha \in \mathbb{R}$, it satisfies:
 
 $$
+\begin{align*}
 f(x) > 0 \text{, } \forall x > 0 & \text{Psitive Definiteness} \\
 f(\alpha x) = |\alpha|x  & \text{Homogeniety} \\
 f(x + y) \le f(x) + f(y) & \text{Triangular Inequality}
+\end{align*}
 $$
