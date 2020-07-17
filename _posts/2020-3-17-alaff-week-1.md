@@ -8,17 +8,6 @@ comments: false
 permalink: /alaff/week-01
 ---
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['<span>$','$</span>'], ['\\(','\\)']],
-      processEscapes: true
-    }
-  });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
-
 This was a long-ass week with lots of problems and homework!
 
 ### Vector Norms
