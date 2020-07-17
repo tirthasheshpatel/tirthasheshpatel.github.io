@@ -43,6 +43,9 @@ $$
 $$|x^H y| \le \|x\|_2 \|y\|_2$$
 </div>
 
+<details>
+<summary>Proof</summary>
+
 **Proof**: Assume that <span>$x \ne 0$</span> and <span>$y \ne 0$</span> otherwise the inequality becomes trivially true.
 
 We can then choose <span>$\|x\|_2 = 1$</span> and <span>$\|y\|_2 = 1$</span>. That leaves us to prove <span>$|x^H y| \le 1$</span>
@@ -98,9 +101,14 @@ $$
 
 Hence, we conclude our proof here.
 
+</details>
+
 <hr width="50%" style="text-align=center;">
 
 **Theorem 1**: Vector-2 norm is a norm function.
+
+<details>
+<summary>Proof</summary>
 
 **Proof**: We need to prove three properties of the norm functions to conclude vector-2 norm is a norm function
 
@@ -152,3 +160,4 @@ $$
 
 Hence, we conclude our proof that vector-2 norm is a norm!
 
+</details>
