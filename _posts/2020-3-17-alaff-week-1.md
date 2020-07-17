@@ -50,7 +50,7 @@ $$|x^H y| \le \|x\|_2 \|y\|_2$$
 
 **Proof**: Assume that $x \ne 0$ and $y \ne 0$ otherwise the inequality becomes trivially true.
 
-We can then choose $\|x\|_2 = 1$ and $\|y\|_2 = 1$. That leaves us to prove $|x^H y| \le 1$
+We can then choose <span>$\|x\|_2 = 1$</span> and <span>$\|y\|_2 = 1$</span>. That leaves us to prove <span>$|x^H y| \le 1$</span>
 
 Pick
 
@@ -62,7 +62,7 @@ $$
 \end{cases}
 $$
 
-Now, $|\alpha| = 1$ and $|\alpha x^H y|$ is real and non-negative (because |\y^H x| = |x^H y|)
+Now, <span>$|\alpha| = 1$</span> and <span>$|\alpha x^H y|$</span> is real and non-negative (because <span>$|\y^H x| = |x^H y|$</span>)
 
 $$
 \begin{align*}
