@@ -8,12 +8,7 @@ image: /images/gsoc-logo.png
 image-redirect-link: https://summerofcode.withgoogle.com/projects/6135416450711552
 ---
 
-{%- capture site_tags -%}
-    {%- for tag in site.tags -%}
-        {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%}
-    {%- endfor -%}
-{%- endcapture -%}
-{%- assign tags_list = site_tags | split:',' | sort -%}
+{% assign date_format = site.date_format | default: "%B %-d, %Y" %}
 
 {%- capture site_tags -%}
     {%- for tag in site.tags -%}
@@ -25,10 +20,6 @@ image-redirect-link: https://summerofcode.withgoogle.com/projects/61354164507115
 <div id="full-tags-list">
   {%- for tag in tags_list -%}
   {% if tag == "GSoC 2020" %}
-      <h2 id="{{- tag -}}" class="linked-section">
-          <i class="fas fa-tag" aria-hidden="true"></i>
-          &nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})
-      </h2>
       <div class="post-list">
           {%- for post in site.tags[tag] -%}
               <div class="tag-entry">
