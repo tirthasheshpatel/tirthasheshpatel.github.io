@@ -13,6 +13,8 @@ The list of the MOOC courses/specailizations I have completed can be found [here
 
 # Projects
 
+This sections contains the detilas of the projects I have worked with and links their source code. All the projects were made with google colab platform.
+
 ### Facial Composites
 
 Facial composites are widely used in forensics to generate images of suspects. Since victim or witness usually isn’t good at drawing, computer-aided generation is applied to reconstruct the face attacker. One of the most commonly used techniques is evolutionary systems that compose the final face from many predefined parts.
