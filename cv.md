@@ -30,8 +30,9 @@ This section includes my work experience and internships that I have accomplishe
 This section contains the information about the talks I have delivered on topics that I love or am an expert in.
 
 ### Speaker at Data-Driven Astronomy
-    - Delivered a 6-hour talk on how data is used in astronomy and its significance.
-    - Frameworks taught : astropy, pandas, numpy, matplotlib.
+
+- Delivered a 6-hour talk on how data is used in astronomy and its significance.
+- Frameworks taught : astropy, pandas, numpy, matplotlib.
 
 # Articles and Blogs
 
