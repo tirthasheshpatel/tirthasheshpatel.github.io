@@ -7,6 +7,8 @@ image: /images/logo_sq.jpg
 image-redirect-link: https://summerofcode.withgoogle.com/projects/6135416450711552
 ---
 
+![github stats](https://github-readme-stats.vercel.app/api?username=tirthasheshpatel&show_icons=true&theme=radical)
+
 # Experience
 
 This section includes my work experience and internships that I have accomplished throughout my career.
@@ -25,7 +27,9 @@ This section includes my work experience and internships that I have accomplishe
 
 # Talks
 
-- Speaker at Data-Driven Astronomy
+This section contains the information about the talks I have delivered on topics that I love or am an expert in.
+
+### Speaker at Data-Driven Astronomy
     - Delivered a 6-hour talk on how data is used in astronomy and its significance.
     - Frameworks taught : astropy, pandas, numpy, matplotlib.
 
