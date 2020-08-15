@@ -1,7 +1,7 @@
 ---
 layout: post
-title: GSoC'20 Phase 1 - A complete overview!
-subtitle: A complete and detailed overview of the work done during Phase 1 of GSoC 2020
+title: GSoC'20 Phase 1 Report
+subtitle: A detailed report of the work done during Phase 1 of GSoC 2020
 gsoc_post: true
 tags: [GSoC 2020]
 comments: true
