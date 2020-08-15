@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kernels for GP Modelling in PyMC4.
-subtitle: A guide to the Kernel functions API in PyMC4.
+subtitle: A guide for using the Kernel functions API in PyMC4 for GP modelling.
 gsoc_post: true
 tags: [Machine Learning, GSoC 2020, Gaussian Processes]
 comments: true
