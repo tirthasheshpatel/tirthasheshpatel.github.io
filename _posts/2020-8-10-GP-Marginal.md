@@ -226,9 +226,9 @@ plt.scatter(xx.mean(0)[:, 0], xx.mean(0)[:, 1], c=iris.target)
 plt.show()
 ```
 
-![png](GP-Marginal_files/GP-Marginal_6_1.png)
+![png](/images/GP-Marginal_files/GP-Marginal_6_1.png)
 
-![png](GP-Marginal_files/GP-Marginal_6_2.png)
+![png](/images/GP-Marginal_files/GP-Marginal_6_2.png)
 
 
 ### GP-LVMs with a non-linear kernel
@@ -269,11 +269,11 @@ plt.show()
 ```
 
 
-![png](GP-Marginal_files/GP-Marginal_8_0.png)
+![png](/images/GP-Marginal_files/GP-Marginal_8_0.png)
 
 
 
-![png](GP-Marginal_files/GP-Marginal_8_1.png)
+![png](/images/GP-Marginal_files/GP-Marginal_8_1.png)
 
 
 
@@ -287,7 +287,7 @@ plt.show()
 ```
 
 
-![png](GP-Marginal_files/GP-Marginal_9_0.png)
+![png](/images/GP-Marginal_files/GP-Marginal_9_0.png)
 
 
 
