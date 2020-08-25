@@ -1,5 +1,6 @@
 ---
 title: Kernels for GP Modelling in PyMC4.
+date: 2020-7-3
 categories:
   - Machine Learning
   - GSoC 2020

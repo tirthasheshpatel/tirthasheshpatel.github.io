@@ -1,5 +1,6 @@
 ---
 title: GSoC Week 4 - Writing Notebooks on GP Kernels!
+date: 2020-7-1
 categories:
   - GSoC 2020
 tags:

@@ -1,5 +1,6 @@
 ---
 title: Why I hate Python's auto-formating tools like Black
+date: 2020-3-23
 categories:
   - Python
 tags:
