@@ -217,3 +217,5 @@ defaults:
       comments: true
       share: true
       related: true
+      dates: true
+      mathjax: true

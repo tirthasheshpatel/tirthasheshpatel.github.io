@@ -1,7 +1,7 @@
 ---
 layout: archive
+author_profile: true
 title: About Me!
-subtitle: Tirth Patel
 permalink: /about
 ---
 
