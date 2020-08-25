@@ -1,8 +1,9 @@
 ---
-type: post
 title: Why I hate Python's auto-formating tools like Black
-subtitle: Do auto-formaters really make your code beautiful?
-tags: [Python]
+categories:
+  - Python
+tags:
+  - Python
 permalink: posts/i-hate-black
 ---
 

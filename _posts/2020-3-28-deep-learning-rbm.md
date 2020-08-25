@@ -1,10 +1,11 @@
 ---
-type: post
 title: Restricted Boltzmann Machines in Deep Learning
-subtitle: Deep Learning Course - Part 2. See how to implement a generative model called RBM in Python
-gh-repo: tirthasheshpatel/Generative-Models
-gh-badge: [star, fork, follow]
-tags: [Deep Learning, Machine Learning]
+categories:
+  - Deep Learning
+  - Machine Learning
+tags:
+  - Deep Learning
+  - Machine Learning
 permalink: posts/restricted-boltzmann-machines-in-deep-learning
 ---
 
