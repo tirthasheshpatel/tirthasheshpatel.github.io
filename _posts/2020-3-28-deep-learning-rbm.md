@@ -1,5 +1,6 @@
 ---
 title: Restricted Boltzmann Machines in Deep Learning
+date: 2020-3-28
 categories:
   - Deep Learning
   - Machine Learning

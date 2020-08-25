@@ -1,5 +1,6 @@
 ---
 title: GSoC'20 Phase 1 Report
+date: 2020-7-3
 categories:
   - GSoC 2020
 tags:

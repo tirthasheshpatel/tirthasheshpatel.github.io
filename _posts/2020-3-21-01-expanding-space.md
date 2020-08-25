@@ -1,5 +1,6 @@
 ---
 title: The Curious Case of the Expanding Universe
+date: 2020-3-21
 categories: 
   - Astronomy
   - Physics

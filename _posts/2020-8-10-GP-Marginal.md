@@ -1,5 +1,6 @@
 ---
 title: Marginal GP model in PyMC4
+date: 2020-8-10
 categories:
   - GSoC 2020
   - Machine Learning
