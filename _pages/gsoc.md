@@ -1,6 +1,6 @@
 ---
 layout: archive
-title: My work during GSoC 2020 with the PyMC Project
+# title: My work during GSoC 2020 with the PyMC Project
 permalink: /gsoc2020
 ---
 
