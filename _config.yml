@@ -48,20 +48,19 @@ author:
   avatar           : /images/logo_sq.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Learning and Sleeping"
   location         : "Gujarat, India"
-  email            : "tirthasheshpatel@gmail.com"
   links:
-    - label: "Email"
+    - label: "Email: tirthasheshpatel@email.com"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:tirthasheshpatel@email.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      url: "https://tirthasheshpatel.github.io"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/__tirthap__"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/tirthasheshpatel"
+    - label: "GitLab"
+      icon: "fab fa-fw fa-gitlab"
+      url: "https://gitlab.com/tirthasheshpatel"
 
 # Site Footer
 footer:

@@ -1,4 +1,5 @@
 ---
+layout: archive
 title: About Me!
 subtitle: Tirth Patel
 permalink: /about
