@@ -59,6 +59,9 @@ author:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/tirthasheshpatel"
     - label: "tirthasheshpatel"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://gitlab.com/tirthasheshpatel"
+    - label: "tirthasheshpatel"
       icon: "fab fa-fw fa-gitlab"
       url: "https://gitlab.com/tirthasheshpatel"
 
