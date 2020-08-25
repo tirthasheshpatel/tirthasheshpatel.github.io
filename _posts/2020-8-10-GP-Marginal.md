@@ -1,10 +1,13 @@
 ---
-layout: post
 title: Marginal GP model in PyMC4
-subtitle: An example of GP-LVm (Linear and non-linear) using Marginal GP model in PyMC4
-gsoc_post: true
-tags: [GSoC 2020, Machine Learning, Gaussian Processes]
-comments: true
+categories:
+  - GSoC 2020
+  - Machine Learning
+  - Gaussian Processes
+tags:
+  - GSoC 2020
+  - Machine Learning
+  - Gaussian Processes
 permalink: /gsoc2020/marginal-gp-model-in-pymc4
 ---
 

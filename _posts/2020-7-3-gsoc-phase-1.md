@@ -1,10 +1,9 @@
 ---
-layout: post
 title: GSoC'20 Phase 1 Report
-subtitle: A detailed report of the work done during Phase 1 of GSoC 2020
-gsoc_post: true
-tags: [GSoC 2020]
-comments: true
+categories:
+  - GSoC 2020
+tags:
+  - GSoC 2020
 permalink: /gsoc2020/gsoc-phase-1-summary
 ---
 
@@ -12,78 +11,78 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 **Week 1**: [#235: [MRG] ENH: Add Basic Gaussian Process Interface](https://github.com/pymc-devs/pymc4/pull/235)
 
-{: .box-warning}
+
 **Blog**: [GSoC Week 1 - Latent GP model and Covariance functions!](https://tirthasheshpatel.github.io/gsoc2020/latent-gp-model-and-covariance-functions)
 
-  - [x] &nbsp;&nbsp; Create a base class for kernel/covariance functions.
-  - [x] &nbsp;&nbsp; Create an API for combining covariance functions.
-  - [x] &nbsp;&nbsp; Create a base class for mean functions.
-  - [x] &nbsp;&nbsp; Create an API for combining mean functions.
-  - [x] &nbsp;&nbsp; Create a base class for GP Models.
-  - [x] &nbsp;&nbsp; Implement `ExponentiatedQuadratic` kernel function.
-  - [x] &nbsp;&nbsp; Implement `Zero` and `Constant` mean functions.
-  - [x] &nbsp;&nbsp; Implement `LatentGP` model using the mean and covariance functions.
-  - [x] &nbsp;&nbsp; Create a notebook explaining the design and working of the basic API.
-  - [x] &nbsp;&nbsp; Add duck typing for easy maintenance.
-  - [x] &nbsp;&nbsp; Add a documentation suite for the subpackage.
-  - [x] &nbsp;&nbsp; Add a test suite for GP Models, Mean functions, and Kernel functions.
+  - [x] Create a base class for kernel/covariance functions.
+  - [x] Create an API for combining covariance functions.
+  - [x] Create a base class for mean functions.
+  - [x] Create an API for combining mean functions.
+  - [x] Create a base class for GP Models.
+  - [x] Implement `ExponentiatedQuadratic` kernel function.
+  - [x] Implement `Zero` and `Constant` mean functions.
+  - [x] Implement `LatentGP` model using the mean and covariance functions.
+  - [x] Create a notebook explaining the design and working of the basic API.
+  - [x] Add duck typing for easy maintenance.
+  - [x] Add a documentation suite for the subpackage.
+  - [x] Add a test suite for GP Models, Mean functions, and Kernel functions.
 
 **Week 2**: [#272: ENH: add constant and white noise kernel, fix docs and tests](https://github.com/pymc-devs/pymc4/pull/272)
 
-{: .box-warning}
+
 **Blog**: [GSoC Week 2 and Week 3 - Implementing GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
 
-  - [x] &nbsp;&nbsp; Add `Constant` kernel with batched input support.
-  - [x] &nbsp;&nbsp; Add `WhiteNoise` kernel with batched input support.
-  - [x] &nbsp;&nbsp; Add `diag` parameter to only evaluate the diagonal of the full covariance matrix.
-  - [x] &nbsp;&nbsp; Add `feature_ndims` parameter to the covariance base class to allow tensors with multiple feature dimensions as inputs.
-  - [x] &nbsp;&nbsp; Optimize the base class for faster combination of kernel functions.
-  - [x] &nbsp;&nbsp; Refactor the test suite of the entire submodule.
-    - [x] &nbsp;&nbsp; Better tests for covariance functions.
-    - [x] &nbsp;&nbsp; Create a template for testing of new covariance functions.
-    - [x] &nbsp;&nbsp; Create a template for testing of new mean functions.
-  - [x] &nbsp;&nbsp; Refactor the documentation suite according to the `pydocstyle` linting rules.
+  - [x] Add `Constant` kernel with batched input support.
+  - [x] Add `WhiteNoise` kernel with batched input support.
+  - [x] Add `diag` parameter to only evaluate the diagonal of the full covariance matrix.
+  - [x] Add `feature_ndims` parameter to the covariance base class to allow tensors with multiple feature dimensions as inputs.
+  - [x] Optimize the base class for faster combination of kernel functions.
+  - [x] Refactor the test suite of the entire submodule.
+    - [x] Better tests for covariance functions.
+    - [x] Create a template for testing of new covariance functions.
+    - [x] Create a template for testing of new mean functions.
+  - [x] Refactor the documentation suite according to the `pydocstyle` linting rules.
 
 **Week 3**: [#285 ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
 
-{: .box-warning}
+
 **Blog**: [GSoC Week 2 and Week 3 - Implementing GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
 
-  - [x] &nbsp;&nbsp; Create following Kernel functions with tests and documentation for each of them:
-    - [x] &nbsp;&nbsp; `RatQuad`
-    - [x] &nbsp;&nbsp; `Exponential`
-    - [x] &nbsp;&nbsp; `Matern52`
-    - [x] &nbsp;&nbsp; `Matern32`
-    - [x] &nbsp;&nbsp; `Matern12`
-    - [x] &nbsp;&nbsp; `Linear`
-    - [x] &nbsp;&nbsp; `Polynomial`
-    - [x] &nbsp;&nbsp; `Cosine`
-    - [x] &nbsp;&nbsp; `Periodic`
-    - [x] &nbsp;&nbsp; `Gibbs`
-    - [x] &nbsp;&nbsp; `WarpedInput`
-    - [x] &nbsp;&nbsp; ~~`Coregion`~~
-    - [x] &nbsp;&nbsp; `ScaledCov`
-    - [x] &nbsp;&nbsp; ~~`Kron`~~
+  - [x] Create following Kernel functions with tests and documentation for each of them:
+    - [x] `RatQuad`
+    - [x] `Exponential`
+    - [x] `Matern52`
+    - [x] `Matern32`
+    - [x] `Matern12`
+    - [x] `Linear`
+    - [x] `Polynomial`
+    - [x] `Cosine`
+    - [x] `Periodic`
+    - [x] `Gibbs`
+    - [x] `WarpedInput`
+    - [x] ~~`Coregion`~~
+    - [x] `ScaledCov`
+    - [x] ~~`Kron`~~
 
 **Week 4**: [#285 ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
 
-{: .box-warning}
+
 **Blog**: [GSoC Week 4 - Writing Notebooks on GP Kernels!](https://tirthasheshpatel.github.io/gsoc2020/writing-notebooks-on-gp-kernels)
 
   - Add notebook for the following Kernel Functions:
-    - [x] &nbsp;&nbsp; Basic Kernel API.
-    - [x] &nbsp;&nbsp; `RatQuad` kernel.
-    - [x] &nbsp;&nbsp; `Exponential` kernel.
-    - [x] &nbsp;&nbsp; `Matern52` kernel.
-    - [x] &nbsp;&nbsp; `Matern32` kernel.
-    - [x] &nbsp;&nbsp; `Matern12` kernel.
-    - [x] &nbsp;&nbsp; `Linear` kernel.
-    - [x] &nbsp;&nbsp; `Polynomial` kernel.
-    - [x] &nbsp;&nbsp; `Cosine` kernel.
-    - [x] &nbsp;&nbsp; `Periodic` kernel.
-    - [x] &nbsp;&nbsp; `Gibbs` kernel.
-    - [x] &nbsp;&nbsp; `WarpedInput` kernel.
-    - [x] &nbsp;&nbsp; `ScaledCov` kernel.
+    - [x] Basic Kernel API.
+    - [x] `RatQuad` kernel.
+    - [x] `Exponential` kernel.
+    - [x] `Matern52` kernel.
+    - [x] `Matern32` kernel.
+    - [x] `Matern12` kernel.
+    - [x] `Linear` kernel.
+    - [x] `Polynomial` kernel.
+    - [x] `Cosine` kernel.
+    - [x] `Periodic` kernel.
+    - [x] `Gibbs` kernel.
+    - [x] `WarpedInput` kernel.
+    - [x] `ScaledCov` kernel.
 
 ### Week 1
 
@@ -91,12 +90,12 @@ permalink: /gsoc2020/gsoc-phase-1-summary
 
 I laid down some of the most basic aspects of the API I was going to develop throughout the GSoC period in this pull request. It was well received by the PyMC team. The internals are quite different but the overall usage of the API is very similar to PyMC3. This has its own set of advantages and disadvantages. Some of which I list here:
 
-{: .box-warning}
+
 Pros:
   - Easy to port from PyMC3 to PyMC4.
   - TFP computational backend for speed.
 
-{: .box-error}
+
 Cons:
   - Prior needs to be explicitly passed in the conditional method (though there is a workaround!)
   - Custom covariance functions are not straight-forward to make because the base class relies on TFP. So, the user has to first implement a TFP kernel and then wrap it using PyMC4's base class (though there is also a workaround for this).
@@ -126,5 +125,5 @@ Week 4 was spent writing a notebook on the Kernel functions API. It was fun to w
 
 ![Alto's adventure Picture](/images/random/alto1.png)
 
-{: .box-warning}
+
 **Wow! This month went by very fast and we already are in the second phase of GSoC! Good luck to other GSoC students with their projects! And thank you mentors for your continuous support!**
