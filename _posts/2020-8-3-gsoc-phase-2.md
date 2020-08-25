@@ -1,10 +1,9 @@
 ---
-layout: post
 title: GSoC'20 Phase 2 Report
-subtitle: A detailed report of the work done during Phase 2 of GSoC 2020
-gsoc_post: true
-tags: [GSoC 2020]
-comments: true
+categories:
+  - GSoC 2020
+tags:
+  - GSoC 2020
 permalink: /gsoc2020/gsoc-phase-2-summary
 ---
 

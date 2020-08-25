@@ -1,10 +1,9 @@
 ---
-layout: post
 title: GSoC Week 4 - Writing Notebooks on GP Kernels!
-subtitle: Work done on my GSoC project by the end of Phase 1!!
-gsoc_post: true
-tags: [GSoC 2020]
-comments: true
+categories:
+  - GSoC 2020
+tags:
+  - GSoC 2020
 permalink: /gsoc2020/writing-notebooks-on-gp-kernels
 ---
 
@@ -18,7 +17,7 @@ The other task that I have completed (on my local branch) is to implement ARD on
 
 ![Week 4 Amazing Plot](/images/gaussian_process_files/week_4_work.png)
 
-{: .box-warning}
+
 [#285: ENH: add all covariance functions for gp from PyMC3](https://github.com/pymc-devs/pymc4/pull/285)
 
 This was a WIP in week 3 because it was missing a notebook explaining the kernel functions API implemented so far. So, I continued and completed almost all my work on this PR. I was able to write a very robust and helpful notebook with the help of [Bill Engels](https://github.com/bwengals) and [Alex Andorra][https://github.com/AlexAndorra]. After going through multiple reviews, it has matured enough to be merged. The current implementation doesn't support ARD. I aim to complete it by the end of this week.

@@ -1,28 +1,29 @@
-_site
-.DS_Store
-.jekyll
-.jekyll-metadata
+# Vim
+*~
+*.sw[p_]
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Ruby Gem
+*.gem
 .bundle
-*.sh
-.sass-cache
-Gemfile
 Gemfile.lock
+**/vendor/bundle
+
+# Node.js and NPM
 node_modules
-package.json
-.jekyll-cache/
-# project
-_site
-.sass-cache
-.vagrant
+npm-debug.log*
+package-lock.json
+codekit-config.json
 
-# general
+# macOS
 .DS_Store
-Thumbs.db
-ehthumbs.db
 
-Gemfile.lock
-
-beautiful-jekyll-theme-*.gem
-
-.vscode/
-*.py
+# Jekyll generated files
+.jekyll-cache
+.jekyll-metadata
+.sass-cache
+_asset_bundler_cache
+_site
