@@ -35,12 +35,12 @@ analytics:
 # Site Author
 author:
   name             : "Tirth Patel"
-  avatar           : "images/logo_sq.jpg"
+  avatar           : "logo_sq.jpg"
   bio              : "Undergrad student interested in Machine Learning"
   location         : "Gujarat, India"
   employer         :
   pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  # googlescholar    : "http://yourfullgooglescholarurl.com"
   email            : "tirthasheshpatel@gmail.com"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
