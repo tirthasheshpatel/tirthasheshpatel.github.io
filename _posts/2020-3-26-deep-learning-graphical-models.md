@@ -1,5 +1,6 @@
 ---
 title: Graphical Models for Deep Learning
+excerpt: ""
 date: 2020-3-28
 categories:
   - Machine Learning

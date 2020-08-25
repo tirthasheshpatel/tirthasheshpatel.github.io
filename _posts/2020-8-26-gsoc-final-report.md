@@ -1,5 +1,6 @@
 ---
 title: GSoC'20 Final Report
+excerpt: ""
 date: 2020-8-26
 categories:
   - GSoC 2020

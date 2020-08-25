@@ -1,5 +1,6 @@
 ---
 title: Getting started with Gaussian Process in PyMC4
+excerpt: ""
 date: 2020-3-16
 categories:
   - Machine Learning

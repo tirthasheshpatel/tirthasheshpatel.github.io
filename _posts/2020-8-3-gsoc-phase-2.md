@@ -1,5 +1,6 @@
 ---
 title: GSoC'20 Phase 2 Report
+excerpt: ""
 date: 2020-8-3
 categories:
   - GSoC 2020

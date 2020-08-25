@@ -1,5 +1,6 @@
 ---
 title: Pre-GSoC Period - I am excited to get started!
+excerpt: ""
 date: 2020-5-8
 categories:
   - GSoC 2020
