@@ -35,7 +35,7 @@ analytics:
 # Site Author
 author:
   name             : "Tirth Patel"
-  avatar           : "/images/logo_sq.jpg"
+  avatar           : "images/logo_sq.jpg"
   bio              : "Undergrad student interested in Machine Learning"
   location         : "Gujarat, India"
   employer         :
