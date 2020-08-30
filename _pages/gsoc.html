@@ -1,0 +1,22 @@
+---
+layout: archive
+title: My work during GSoC 2020 with the PyMC Project
+author_profile: true
+permalink: /gsoc2020/
+---
+
+{% include base_path %}
+
+{{ content }}
+
+{% assign posts = site.posts %}
+
+{% assign entries_layout = page.entries_layout | default: 'list' %}
+<div class="entries-{{ entries_layout }}">
+  {% for post in posts %}
+  {% if "GSoC 2020" in post.categories %}
+    {% include archive-single.html type=entries_layout %}
+  {% endfor %}
+</div>
+
+{% include paginator.html %}
