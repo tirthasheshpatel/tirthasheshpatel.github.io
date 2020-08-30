@@ -14,6 +14,9 @@ main:
     
   # - title: "Portfolio"
   #   url: /portfolio/
+
+  - title: "GSoC 2020"
+    url: /gsoc2020/
     
   - title: "CV"
     url: /cv/
