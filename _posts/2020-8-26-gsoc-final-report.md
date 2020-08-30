@@ -31,6 +31,27 @@ During Phase 3, I started working on the Marginal GP Model in [pymc-devs/pymc4#3
 - [pymc-devs/pymc4#304][7]: Fix docs in kernel functions API.
 - [pymc-devs/pymc4#305][8]: Add `jitter` argument to GP models.
 
+### Blogs Written
+
+Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpatel.github.io/gsoc2020/)
+
+- [Marginal GP model in PyMC4 (August 10, 2020)](https://tirthasheshpatel.github.io/gsoc2020/marginal-gp-model-in-pymc4)
+- [GSoC'20 Phase 2 Report (August 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/gsoc-phase-2-summary)
+- [GSoC'20 Phase 1 Report (July 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/gsoc-phase-1-summary)
+- [Kernels for GP Modelling in PyMC4. (July 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/kernels-for-gp-modelling-in-pymc4)
+- [GSoC Week 4 - Writing Notebooks on GP Kernels! (July 1, 2020)](https://tirthasheshpatel.github.io/gsoc2020/writing-notebooks-on-gp-kernels)
+- [GSoC Week 2 and Week 3 - Implementing GP Kernels! (June 21, 2020)](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
+- [GSoC Week 1 - Latent GP model and Covariance functions! (June 4, 2020)](https://tirthasheshpatel.github.io/gsoc2020/latent-gp-model-and-covariance-functions)
+- [Pre-GSoC Period - I am excited to get started! (May 8, 2020)](https://tirthasheshpatel.github.io/gsoc2020/pre-gsoc-period-i-am-excited-to-get-started)
+- [Getting started with Gaussian Process in PyMC4 (March 16, 2020)](https://tirthasheshpatel.github.io/gsoc2020/getting-started-with-gaussian-process-in-pymc4)
+
+### Some things I noticed
+
+- GPs work best with Variational Inference.
+- **Always** use float64 datatype!
+- Sampling fails on large datasets and large models! (probably because tensorflow probability doesn't do mass matrix adaptation)
+- Marginal GP is hard to infer using sampling...
+
 # Kernel Functions API
 
 ### What's implemented
@@ -78,32 +99,11 @@ During Phase 3, I started working on the Marginal GP Model in [pymc-devs/pymc4#3
 - Some more GP examples as in PyMC3
 - Kronecker GPs
 
-### Blogs Written
-
-Blog Page : https://tirthasheshpatel.github.io/gsoc2020/
-
-- Marginal GP model in PyMC4 (August 10, 2020)
-- GSoC'20 Phase 2 Report (August 3, 2020)
-- GSoC'20 Phase 1 Report (July 3, 2020)
-- Kernels for GP Modelling in PyMC4. (July 3, 2020)
-- GSoC Week 4 - Writing Notebooks on GP Kernels! (July 1, 2020)
-- GSoC Week 2 and Week 3 - Implementing GP Kernels! (June 21, 2020)
-- GSoC Week 1 - Latent GP model and Covariance functions! (June 4, 2020)
-- Pre-GSoC Period - I am excited to get started! (May 8, 2020)
-- Getting started with Gaussian Process in PyMC4 (March 16, 2020)
-
-### Potential Post GSoC Projects
+### Some Potential Post GSoC Projects
 
 - Multi-Output GPs
 - Bayes Optimization Example Notebook
 - Black Box Matrix Multiplication GP
-
-### Some things I noticed
-
-- GPs work best with Variational Inference.
-- **Always** use float64 datatype!
-- Sampling fails on large datasets and large models! (probably because tensorflow probability doesn't do mass matrix adaptation)
-- Marginal GP is hard to infer using sampling...
 
 [1]: https://github.com/pymc-devs/pymc4/pull/235
 [2]: https://github.com/pymc-devs/pymc4/pull/272
