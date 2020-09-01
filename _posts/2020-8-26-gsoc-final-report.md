@@ -55,7 +55,7 @@ Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpa
 - Sampling fails on large datasets and large models! (probably because tensorflow probability doesn't do mass matrix adaptation)
 - Marginal GP is hard to infer using sampling...
 
-# Kernel Functions API
+# Goals accomplished (as per proposal)
 
 ### What's implemented
 
@@ -77,26 +77,17 @@ Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpa
 - Kernels are Multiplicative
 - Docs and Tests for all the Kernels
 - Notebook explaining all the Kernel functions
-- Robust docs and tests
-
-### What's left
-
-- Kronecker Kernels
-- ARD API for Kernel functions
-- Co-region Kernels (for Multi-Output GPs)
-
-# GP API
-
-### What is implemented
-
 - Latent GP
 - Marginal GP
 - Latent GP notebook
 - Marginal GP notebook
 - Docs and Tests
 
-### What left
+### What's left
 
+- Kronecker Kernels
+- ARD API for Kernel functions
+- Co-region Kernels (for Multi-Output GPs)
 - Student's T Process (WIP)
 - Sparse Marginal GP
 - Some more GP examples as in PyMC3
