@@ -109,7 +109,7 @@ Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpa
 [2]: https://github.com/pymc-devs/pymc4/pull/272
 [3]: https://github.com/pymc-devs/pymc4/pull/285
 [4]: https://github.com/pymc-devs/pymc4/pull/309
-[5]: https://github.com/pymc-devs/pymc4/pull/
+[5]: https://github.com/pymc-devs/pymc4/pull/296
 [6]: https://github.com/pymc-devs/pymc4/pull/303
 [7]: https://github.com/pymc-devs/pymc4/pull/304
 [8]: https://github.com/pymc-devs/pymc4/pull/305
