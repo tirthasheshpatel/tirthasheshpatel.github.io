@@ -35,14 +35,17 @@ During Phase 3, I started working on the Marginal GP Model in [pymc-devs/pymc4#3
 
 Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpatel.github.io/gsoc2020/)
 
-- [Marginal GP model in PyMC4 (August 10, 2020)](https://tirthasheshpatel.github.io/gsoc2020/marginal-gp-model-in-pymc4)
 - [GSoC'20 Phase 2 Report (August 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/gsoc-phase-2-summary)
 - [GSoC'20 Phase 1 Report (July 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/gsoc-phase-1-summary)
-- [Kernels for GP Modelling in PyMC4. (July 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/kernels-for-gp-modelling-in-pymc4)
 - [GSoC Week 4 - Writing Notebooks on GP Kernels! (July 1, 2020)](https://tirthasheshpatel.github.io/gsoc2020/writing-notebooks-on-gp-kernels)
 - [GSoC Week 2 and Week 3 - Implementing GP Kernels! (June 21, 2020)](https://tirthasheshpatel.github.io/gsoc2020/implementing-gp-kernels)
 - [GSoC Week 1 - Latent GP model and Covariance functions! (June 4, 2020)](https://tirthasheshpatel.github.io/gsoc2020/latent-gp-model-and-covariance-functions)
 - [Pre-GSoC Period - I am excited to get started! (May 8, 2020)](https://tirthasheshpatel.github.io/gsoc2020/pre-gsoc-period-i-am-excited-to-get-started)
+
+### Tutorials Written
+
+- [Marginal GP model in PyMC4 (August 10, 2020)](https://tirthasheshpatel.github.io/gsoc2020/marginal-gp-model-in-pymc4)
+- [Kernels for GP Modelling in PyMC4. (July 3, 2020)](https://tirthasheshpatel.github.io/gsoc2020/kernels-for-gp-modelling-in-pymc4)
 - [Getting started with Gaussian Process in PyMC4 (March 16, 2020)](https://tirthasheshpatel.github.io/gsoc2020/getting-started-with-gaussian-process-in-pymc4)
 
 ### Some things I noticed
