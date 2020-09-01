@@ -73,15 +73,15 @@ Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpa
 - Scaled Covariance Kernel
 - Gibbs Kernel
 - Warped Input Kernel
-- Kernels are Additive
-- Kernels are Multiplicative
+- Additive Kernels
+- Multiplicative Kernels
 - Docs and Tests for all the Kernels
 - Notebook explaining all the Kernel functions
-- Latent GP
-- Marginal GP
-- Latent GP notebook
-- Marginal GP notebook
-- Docs and Tests
+- Latent GP Model
+- Latent GP example notebook
+- Marginal GP Model
+- Marginal GP example notebook
+- Docs and Tests for GP Models
 
 ### What's left
 
@@ -90,8 +90,8 @@ Blog Page : [https://tirthasheshpatel.github.io/gsoc2020/](https://tirthasheshpa
 - Co-region Kernels (for Multi-Output GPs)
 - Student's T Process (WIP)
 - Sparse Marginal GP
-- Some more GP examples as in PyMC3
 - Kronecker GPs
+- Some more GP examples present in PyMC3
 
 ### Some Potential Post GSoC Projects
 
