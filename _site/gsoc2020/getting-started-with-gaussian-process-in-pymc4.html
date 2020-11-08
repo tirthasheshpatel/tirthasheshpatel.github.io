@@ -1,0 +1,741 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>Getting started with Gaussian Process in PyMC4 - Tirth Patel</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Tirth Patel">
+<meta property="og:title" content="Getting started with Gaussian Process in PyMC4">
+
+
+  <link rel="canonical" href="http://localhost:4000/gsoc2020/getting-started-with-gaussian-process-in-pymc4">
+  <meta property="og:url" content="http://localhost:4000/gsoc2020/getting-started-with-gaussian-process-in-pymc4">
+
+
+
+  <meta property="og:description" content="Ungergrad student at Nirma University. GSoC’20 @NumFOCUS with PyMC3">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2020-03-16T00:00:00-07:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Tirth Patel",
+      "url" : "http://localhost:4000",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Tirth Patel Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="http://localhost:4000/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="http://localhost:4000/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="http://localhost:4000/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="http://localhost:4000/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="http://localhost:4000/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:4000/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="http://localhost:4000/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="http://localhost:4000/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="http://localhost:4000/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="http://localhost:4000/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="http://localhost:4000/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/academicons.css"/>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="http://localhost:4000/">Tirth Patel</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/year-archive/">Blog Posts</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/gsoc2020/">GSoC 2020</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="http://localhost:4000/cv/">CV</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Getting started with Gaussian Process in PyMC4">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="March 16, 2020">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">Getting started with Gaussian Process in PyMC4
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+  
+	  11 minute read
+	
+</p>
+          
+        
+        
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Published:</strong> <time datetime="2020-03-16T00:00:00-07:00">March 16, 2020</time></p>
+        
+        
+             
+        
+    
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <h3 id="theory">Theory</h3>
+
+<p>Gaussian processes are non-parametric models that define a distribution over a function where the function itself is a random variable of some inputs $X$. They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a GP prior can be defined as</p>
+
+\[f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)\]
+
+<p>Given a prior and some new data $X^\prime$, the conditional $P(f(X^\prime); f(X))$ can be evaluated as</p>
+
+\[P(f(X^\prime); f(X)) = \frac{P(f(X^\prime), f(X))}{P(f(X))}\]
+
+<p>This conditional can then be used to sample new points from the inferred function.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>The implementation of Gaussian Process model is divided into three parts:</p>
+
+<ol>
+  <li>Creating a mean function.</li>
+  <li>Creating a covariance function.</li>
+  <li>Creating a GP Model.</li>
+</ol>
+
+<p>The following tutorial shows how to create a GP Model in PyMC4 step-by-step.</p>
+
+<h3 id="importing-the-libraries">Importing the libraries</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Importing our libraries
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># print(sys.path)
+</span><span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">tirth</span><span class="se">\\</span><span class="s">Desktop</span><span class="se">\\</span><span class="s">INTERESTS</span><span class="se">\\</span><span class="s">PyMC4"</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pymc4</span> <span class="k">as</span> <span class="n">pm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="n">az</span>
+</code></pre></div></div>
+
+<h3 id="mean-functions">Mean functions</h3>
+
+<p>The mean functions in PyMC4 are implemented using the following base class</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Mean</span><span class="p">:</span>
+    <span class="s">r"""Base Class for all the mean functions in GP."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">feature_ndims</span> <span class="o">=</span> <span class="n">feature_ndims</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="nb">NotImplementedError</span><span class="p">(</span><span class="s">"Your mean function should override this method"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MeanAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MeanProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">feature_ndims</code> are the rightmost dimensions of the input that will be absorbed during the computation. The <code class="language-plaintext highlighter-rouge">__call__</code> method is used to evaluate the mean function at some point $X$. The $X$ (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean functions to yield a new mean function that is an instance of <code class="language-plaintext highlighter-rouge">MeanAdd</code> (or <code class="language-plaintext highlighter-rouge">MeanProd</code>). You can create your mean function just by inheriting the base class and implementing the method <code class="language-plaintext highlighter-rouge">__call__</code>.</p>
+
+<p>The most common mean function used in GP models is the zero mean function that returns zero irrespective of the inputs. It can be implemented as</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">mean</span><span class="p">.</span><span class="n">Zero</span><span class="p">(</span><span class="n">feature_ndims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="covariance-functions">Covariance Functions</h3>
+
+<p>Covariance function tries to approximate the covariance matrix of the modelled function. The base class used to implement covariance functions in PyMC4 is given below</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Covariance</span><span class="p">:</span>
+    <span class="s">r"""Base class of all Covariance functions for Gaussian Process"""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement the `diag` parameter as in PyMC3.
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_feature_ndims</span> <span class="o">=</span> <span class="n">feature_ndims</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_init_kernel</span><span class="p">(</span><span class="n">feature_ndims</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">feature_ndims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c1"># wrap the kernel in FeatureScaled kernel for ARD
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">_scale_diag</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">"scale_diag"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span> <span class="o">=</span> <span class="n">tfp</span><span class="p">.</span><span class="n">math</span><span class="p">.</span><span class="n">psd_kernels</span><span class="p">.</span><span class="n">FeatureScaled</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span><span class="p">,</span> <span class="n">scale_diag</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">_scale_diag</span>
+            <span class="p">)</span>
+
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_init_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="nb">NotImplementedError</span><span class="p">(</span><span class="s">"Your Covariance class should override this method"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span><span class="p">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">evaluate_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s">"""Evaluate kernel at certain points
+
+        Parameters
+        ----------
+        X1 : tensor, array-like
+            First point(s)
+        X2 : tensor, array-like
+            Second point(s)
+        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_kernel</span><span class="p">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__array_wrap__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="c1"># we retain the original shape to reshape the result later
+</span>        <span class="n">original_shape</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">shape</span>
+        <span class="c1"># we flatten the array and re-build the left array
+</span>        <span class="c1"># using the ``.cov2`` attribute of combined kernels.
+</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">left_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">left_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cov2</span>
+        <span class="c1"># reshape the array to its original shape
+</span>        <span class="n">left_array</span> <span class="o">=</span> <span class="n">left_array</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span>
+        <span class="c1"># now, we can put the left array on the right side
+</span>        <span class="c1"># to create the final combination.
+</span>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">CovarianceAdd</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">left_array</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">CovarianceProd</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">left_array</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">feature_ndims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_feature_ndims</span>
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">_init_kernel</code> is a method used to initialize the covariance function. This method should return an instance of a covariance function that has <code class="language-plaintext highlighter-rouge">matrix</code> method to evaluate the covariance function and return a covariance matrix. Specifically, this method takes as input two tensors (or numpy arrays) of shape <code class="language-plaintext highlighter-rouge">(batch_shape, n, features)</code> and <code class="language-plaintext highlighter-rouge">(batch_shape, m, features)</code> and returns a covariance matrix of shape <code class="language-plaintext highlighter-rouge">(batch_shape, n, m)</code>. This matrix <strong>must</strong> be positive semi-definite. You can optionally override <code class="language-plaintext highlighter-rouge">evaluate_kernel</code> method to evaluate the function at two specific points.</p>
+
+<p>Many covariance functions can be used to infer different functions but the most common one is the Radial Basis Function. This function can be implemented using the <code class="language-plaintext highlighter-rouge">ExpQuad</code> covariance function in PyMC4.</p>
+
+\[k(x, x') = \sigma^2 \mathrm{exp}\left[ -\frac{(x - x')^2}{2 l^2} \right]\]
+
+<p>where $\sigma$ = <code class="language-plaintext highlighter-rouge">amplitude</code> and $l$ = <code class="language-plaintext highlighter-rouge">length_scale</code> i.e. the inputs that RBF kernel in PyMC4 takes.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cov_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">cov</span><span class="p">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">length_scale</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="latent-gaussian-process">Latent Gaussian Process</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">gp.LatentGP</code> class is a direct implementation of a GP.  No additive noise is assumed.  It is called “Latent” because the underlying function values are treated as latent variables.  It has a <code class="language-plaintext highlighter-rouge">prior</code> method and a <code class="language-plaintext highlighter-rouge">conditional</code> method.  Given a mean and covariance function the function $f(x)$ is modeled as,</p>
+
+\[f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)\]
+
+<p>Use the <code class="language-plaintext highlighter-rouge">prior</code> and <code class="language-plaintext highlighter-rouge">conditional</code> methods to construct random variables representing the unknown, or latent, the function whose distribution is the GP prior or GP conditional.  This GP implementation can be used to implement regression on data that is not normally distributed. For more information on the <code class="language-plaintext highlighter-rouge">prior</code> and <code class="language-plaintext highlighter-rouge">conditional</code> methods, see their docstrings.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gp</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">LatentGP</span><span class="p">(</span><span class="n">cov_fn</span><span class="o">=</span><span class="n">cov_fn</span><span class="p">,</span> <span class="n">mean_fn</span><span class="o">=</span><span class="n">mean_fn</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="sampling">Sampling</h3>
+
+<p>Having defined the mean function, covariance function and the GP model, <code class="language-plaintext highlighter-rouge">prior</code> and <code class="language-plaintext highlighter-rouge">conditional</code> methods can be used to sample new points from the prior and conditional respectively by creating a <code class="language-plaintext highlighter-rouge">pm.model</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pm</span><span class="p">.</span><span class="n">model</span>
+<span class="k">def</span> <span class="nf">gpmodel</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">):</span>
+    <span class="c1"># Define a prior
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">gp</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="s">'f'</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="c1"># Define a conditional oven new data points. Unlike PyMC3, the
+</span>    <span class="c1"># `given` dictionary is NOT optional.
+</span>    <span class="n">cond</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">gp</span><span class="p">.</span><span class="n">conditional</span><span class="p">(</span><span class="s">'cond'</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">,</span> <span class="n">given</span><span class="o">=</span><span class="p">{</span><span class="s">'X'</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s">'f'</span><span class="p">:</span> <span class="n">f</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">cond</span>
+</code></pre></div></div>
+
+<h3 id="inputs-to-the-gp-model">Inputs to the GP model</h3>
+
+<p>Now, we are left with creating the inputs for our GP model. We will create random inputs <code class="language-plaintext highlighter-rouge">X</code> and <code class="language-plaintext highlighter-rouge">Xnew</code> with <code class="language-plaintext highlighter-rouge">batch_shape=(2, 2)</code>, <code class="language-plaintext highlighter-rouge">num_samples=10</code> and <code class="language-plaintext highlighter-rouge">feature_ndims=2</code> of shape <code class="language-plaintext highlighter-rouge">(2, 2)</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The leftmost (2, 2) is the batch_shape. In the middle are the
+# actual data points and rightmost (2, 2) are the feature_ndims
+# that are going to be absorbed during the computation.
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Create new data points with 5 samples
+</span><span class="n">Xnew</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># We can now create a final function from which we can sample
+</span><span class="n">gp_model</span> <span class="o">=</span> <span class="n">gpmodel</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samples</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">gp_model</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">num_chains</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<pre><code class="language-none">WARNING:tensorflow:From C:\Users\tirth\Desktop\INTERESTS\PyMC4\env\lib\site-packages\tensorflow\python\ops\linalg\linear_operator_lower_triangular.py:158: calling LinearOperator.__init__ (from tensorflow.python.ops.linalg.linear_operator) with graph_parents is deprecated and will be removed in a future version.
+Instructions for updating:
+Do not pass `graph_parents`.  They will no longer be used.
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">samples</span><span class="p">.</span><span class="n">posterior</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">samples</span><span class="p">.</span><span class="n">posterior</span><span class="p">[</span><span class="s">"gpmodel/f"</span><span class="p">].</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">samples</span><span class="p">.</span><span class="n">posterior</span><span class="p">[</span><span class="s">"gpmodel/cond"</span><span class="p">].</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<pre><code class="language-none">&lt;xarray.Dataset&gt;
+Dimensions:             (chain: 3, draw: 100, gpmodel/cond_dim_0: 2, gpmodel/cond_dim_1: 2, gpmodel/cond_dim_2: 5, gpmodel/f_dim_0: 2, gpmodel/f_dim_1: 2, gpmodel/f_dim_2: 10)
+Coordinates:
+    * chain               (chain) int32 0 1 2
+    * draw                (draw) int32 0 1 2 3 4 5 6 7 ... 92 93 94 95 96 97 98 99
+    * gpmodel/f_dim_0     (gpmodel/f_dim_0) int32 0 1
+    * gpmodel/f_dim_1     (gpmodel/f_dim_1) int32 0 1
+    * gpmodel/f_dim_2     (gpmodel/f_dim_2) int32 0 1 2 3 4 5 6 7 8 9
+    * gpmodel/cond_dim_0  (gpmodel/cond_dim_0) int32 0 1
+    * gpmodel/cond_dim_1  (gpmodel/cond_dim_1) int32 0 1
+    * gpmodel/cond_dim_2  (gpmodel/cond_dim_2) int32 0 1 2 3 4
+Data variables:
+    gpmodel/f           (chain, draw, gpmodel/f_dim_0, gpmodel/f_dim_1, gpmodel/f_dim_2) float32 -1.0377142 ... -0.46950334
+    gpmodel/cond        (chain, draw, gpmodel/cond_dim_0, gpmodel/cond_dim_1, gpmodel/cond_dim_2) float32 0.26633048 ... 0.71039367
+Attributes:
+    created_at:  2020-03-15T07:47:20.672883
+(3, 100, 2, 2, 10)
+(3, 100, 2, 2, 5)
+</code></pre>
+
+<h3 id="example-1--regression-with-student-t-distributed-noise">Example 1 : Regression with Student-t distributed noise</h3>
+
+<p>In this example, we try to find a continuous interpolant through our data that is distributed as a <code class="language-plaintext highlighter-rouge">multivariate_normal</code> distribution with some <code class="language-plaintext highlighter-rouge">student-t</code> noise.</p>
+
+<p>In our model, we treat <code class="language-plaintext highlighter-rouge">length_scale</code> of the RBF kernel and the degrees of freedom of <code class="language-plaintext highlighter-rouge">student-t</code> unknown and try to infer them using <code class="language-plaintext highlighter-rouge">HalfCauchy</code> and <code class="language-plaintext highlighter-rouge">Gamma</code> distribution respectively.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="c1"># set the seed
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># The number of data points
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="c1"># The inputs to the GP, they must be arranged as a column vector
+</span><span class="n">n_new</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">X_new</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">n_new</span><span class="p">)[:,</span><span class="bp">None</span><span class="p">]</span>
+
+<span class="c1"># Define the true covariance function and its parameters
+</span><span class="n">l_true</span> <span class="o">=</span> <span class="mf">3.</span>
+<span class="n">cov_func</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">cov</span><span class="p">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">length_scale</span><span class="o">=</span><span class="n">l_true</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># A mean function that is zero everywhere
+</span><span class="n">mean_func</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">mean</span><span class="p">.</span><span class="n">Zero</span><span class="p">()</span>
+
+<span class="c1"># The latent function values are one sample from a multivariate normal
+</span><span class="n">f_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean_func</span><span class="p">(</span><span class="n">X</span><span class="p">).</span><span class="n">numpy</span><span class="p">(),</span>
+                                       <span class="n">cov_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">).</span><span class="n">numpy</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">1</span><span class="p">).</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># The observed data is the latent function plus a small amount of T distributed noise
+# The degrees of freedom is `nu`
+</span><span class="n">ν_true</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">standard_t</span><span class="p">(</span><span class="n">ν_true</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1">## Plot the data and the unobserved latent function
+</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s">"dodgerblue"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"True f"</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">'ok'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Data"</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">"X"</span><span class="p">);</span> <span class="n">ax</span><span class="p">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"y"</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="/images/gaussian_process_files/gaussian_process_16_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pm</span><span class="p">.</span><span class="n">model</span>
+<span class="k">def</span> <span class="nf">latent_gp_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_new</span><span class="p">):</span>
+    <span class="s">"""A latent GP model with unknown length_scale and student-t noise
+
+    Parameters
+    ----------
+    X: np.ndarray, tensor
+        The prior data
+    y: np.ndarray, tensor
+        The function corresponding to the prior data
+    X_new: np.ndarray, tensor
+        The new data points to evaluate the conditional
+
+    Returns
+    -------
+    y_: tensor
+        Random sample from inferred function and its noise.
+    """</span>
+    <span class="c1"># We define length_scale of RBF kernel as a random variable
+</span>    <span class="n">l</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="p">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s">"l"</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+    <span class="c1"># We can now define a GP with mean as zeros and covariance function
+</span>    <span class="c1"># as RBF kernel with ``length_scale=l`` and ``amplitude=1``
+</span>    <span class="n">cov_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">cov</span><span class="p">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">latent_gp</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">gp</span><span class="p">.</span><span class="n">LatentGP</span><span class="p">(</span><span class="n">cov_fn</span><span class="o">=</span><span class="n">cov_fn</span><span class="p">)</span>
+    <span class="c1"># f is the prior and f_pred is the conditional which we discussed in theory section
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">latent_gp</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">f_pred</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">latent_gp</span><span class="p">.</span><span class="n">conditional</span><span class="p">(</span><span class="s">"f_pred"</span><span class="p">,</span> <span class="n">X_new</span><span class="p">,</span> <span class="n">given</span><span class="o">=</span><span class="p">{</span><span class="s">'X'</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s">'f'</span><span class="p">:</span> <span class="n">f</span><span class="p">})</span>
+    <span class="c1"># finally, we model the noise and our outputs.
+</span>    <span class="n">ν</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="p">.</span><span class="n">Gamma</span><span class="p">(</span><span class="s">"ν"</span><span class="p">,</span> <span class="n">concentration</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="p">.</span><span class="n">StudentT</span><span class="p">(</span><span class="s">"y"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">ν</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_</span>
+
+
+<span class="n">gp</span> <span class="o">=</span> <span class="n">latent_gp_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_new</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_chains</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trace</span><span class="p">.</span><span class="n">posterior</span>
+</code></pre></div></div>
+
+<pre><code class="language-none">&lt;pre&gt;&amp;lt;xarray.Dataset&amp;gt;
+Dimensions:                       (chain: 1, draw: 1000, latent_gp_model/f_dim_0: 100, latent_gp_model/f_pred_dim_0: 200)
+Coordinates:
+  * chain                         (chain) int32 0
+  * draw                          (draw) int32 0 1 2 3 4 ... 995 996 997 998 999
+  * latent_gp_model/f_dim_0       (latent_gp_model/f_dim_0) int32 0 1 ... 98 99
+  * latent_gp_model/f_pred_dim_0  (latent_gp_model/f_pred_dim_0) int32 0 ... 199
+Data variables:
+    latent_gp_model/f             (chain, draw, latent_gp_model/f_dim_0) float32 -0.50917363 ... -1.3819383
+    latent_gp_model/f_pred        (chain, draw, latent_gp_model/f_pred_dim_0) float32 -0.48531333 ... 0.4299915
+    latent_gp_model/__log_l       (chain, draw) float32 1.1554403 ... 1.0889233
+    latent_gp_model/__log_ν       (chain, draw) float32 2.1579044 ... 2.1388285
+    latent_gp_model/l             (chain, draw) float32 3.1754212 ... 2.9710734
+    latent_gp_model/ν             (chain, draw) float32 8.652986 ... 8.489487
+Attributes:
+    created_at:  2020-03-15T07:50:30.568276&lt;/pre&gt;
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s">"l"</span><span class="p">,</span> <span class="p">{},</span> <span class="n">l_true</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">"ν"</span><span class="p">,</span> <span class="p">{},</span> <span class="n">ν_true</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">az</span><span class="p">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s">"latent_gp_model/l"</span><span class="p">,</span> <span class="s">"latent_gp_model/ν"</span><span class="p">])</span>
+</code></pre></div></div>
+
+<pre><code class="language-none">array([[&lt;matplotlib.axes._subplots.AxesSubplot object at 0x000001BCCCF73780&gt;,
+        &lt;matplotlib.axes._subplots.AxesSubplot object at 0x000001BCC6764438&gt;],
+        [&lt;matplotlib.axes._subplots.AxesSubplot object at 0x000001BCC567FEB8&gt;,
+        &lt;matplotlib.axes._subplots.AxesSubplot object at 0x000001BCC9BB0128&gt;]],
+        dtype=object)
+</code></pre>
+
+<p><img src="/images/gaussian_process_files/gaussian_process_20_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pymc4.gp.util</span> <span class="kn">import</span> <span class="n">plot_gp_dist</span>
+<span class="c1"># plot the results
+</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">gca</span><span class="p">()</span>
+
+<span class="c1"># plot the samples from the gp posterior with samples and shading
+</span><span class="n">plot_gp_dist</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">trace</span><span class="p">.</span><span class="n">posterior</span><span class="p">[</span><span class="s">"latent_gp_model/f"</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># plot the data and the true latent function
+</span><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s">"dodgerblue"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"True f"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">'ok'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Observed data"</span><span class="p">)</span>
+
+<span class="c1"># axis labels and title
+</span><span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"X"</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"True f(x)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Posterior distribution over $f(x)$ at the observed values"</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="/images/gaussian_process_files/gaussian_process_21_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pred_samples</span> <span class="o">=</span> <span class="n">pm</span><span class="p">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s">"latent_gp_model/f_pred"</span><span class="p">])</span>
+<span class="n">pred_samples</span><span class="p">.</span><span class="n">posterior_predictive</span>
+</code></pre></div></div>
+
+<pre><code class="language-none">&lt;pre&gt;&amp;lt;xarray.Dataset&amp;gt;
+Dimensions:                       (chain: 1, draw: 1000, latent_gp_model/f_pred_dim_0: 200)
+Coordinates:
+  * chain                         (chain) int32 0
+  * draw                          (draw) int32 0 1 2 3 4 ... 995 996 997 998 999
+  * latent_gp_model/f_pred_dim_0  (latent_gp_model/f_pred_dim_0) int32 0 ... 199
+Data variables:
+    latent_gp_model/f_pred        (chain, draw, latent_gp_model/f_pred_dim_0) float32 -0.48531333 ... 0.4299915
+Attributes:
+    created_at:  2020-03-15T07:51:00.033659&lt;/pre&gt;
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">plot_gp_dist</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pred_samples</span><span class="p">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s">"latent_gp_model/f_pred"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_new</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s">"dodgerblue"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"True f"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">'ok'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"Observed data"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"$X$"</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"True $f(x)$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Conditional distribution of $f_*$, given $f$"</span><span class="p">);</span> <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="/images/gaussian_process_files/gaussian_process_24_1.png" alt="png" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/tags/#gsoc-2020" class="page__taxonomy-item" rel="tag">GSoC 2020</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/tags/#machine-learning" class="page__taxonomy-item" rel="tag">Machine Learning</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://localhost:4000/categories/#gsoc-2020" class="page__taxonomy-item" rel="tag">GSoC 2020</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://localhost:4000/categories/#machine-learning" class="page__taxonomy-item" rel="tag">Machine Learning</a>
+    
+    </span>
+  </p>
+
+
+      </footer>
+
+      
+
+      
+
+
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="http://localhost:4000/gsoc2020/pre-gsoc-period-i-am-excited-to-get-started" class="pagination--pager" title="Pre-GSoC Period - I am excited to get started!
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      
+
+<div class="page__comments">
+  
+  
+</div>
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+<a href="/sitemap/">Sitemap</a>
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/tirthasheshpatel"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Tirth Patel. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
+
+
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-161186729-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
+
