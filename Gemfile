@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# frozen_string_literal: true
-
-source "https://rubygems.org"
-
-gemspec
-
-=======
-source "https://rubygems.org"
-gemspec
->>>>>>> b7144931c7163f0cd55b9da1f30f5676c4825001
-=======
 source "https://rubygems.org"
 
 # Hello! This is where you manage which Jekyll version is used to run.
@@ -23,6 +10,7 @@ source "https://rubygems.org"
 # Happy Jekylling!
 
 gem "github-pages", group: :jekyll_plugins
+gem "rdiscount"
 
 # If you want to use Jekyll native, uncomment the line below.
 # To upgrade, run `bundle update`.
@@ -38,4 +26,3 @@ group :jekyll_plugins do
   gem 'jekyll-sitemap'
   gem 'hawkins'
 end
->>>>>>> 25c30de2b4ce3e3f23559384699bb4b9865d6473

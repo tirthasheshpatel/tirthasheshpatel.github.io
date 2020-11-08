@@ -1,14 +1,17 @@
 ---
-layout: archive
+permalink: /
+title: "About me"
+excerpt: "About me"
 author_profile: true
-title: About Me!
-permalink: /about
+redirect_from: 
+  - /about/
+  - /about.html
 ---
 
-### My Resume
+Ungergrad student at Nirma University. GSoC'20 @NumFOCUS with PyMC3.
 
-![Resume](/images/resume.svg)
+Bayesian machine learning and AI practitioner. I mostly work on machine learning in Python. I love to contribute to open source projects on GitHub in my free time.
 
-### Contact me
+You can see my Resume/CV here: [https://tirthasheshpatel.github.io/cv/](https://tirthasheshpatel.github.io/cv/)
 
-[tirthasheshpatel@gmail.com](mailto:tirthasheshpatel@gmail.com)
+Blog Page: [https://tirthasheshpatel.github.io/year-archive/](https://tirthasheshpatel.github.io/year-archive/)

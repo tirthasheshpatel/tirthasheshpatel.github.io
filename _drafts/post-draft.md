@@ -1,1 +1,1 @@
-deped!
+deprecated!
