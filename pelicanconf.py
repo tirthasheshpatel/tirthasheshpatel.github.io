@@ -35,7 +35,9 @@ AUTHOR_FEED_RSS = None
 #          ('Floor gang', 'https://tirthasheshpatel.github.io'),)
 #SOCIAL_WIDGET_NAME = "follow"
 
-GITHUB_URL = 'https://www.github.com/tirthasheshpatel/tirthasheshpatel.github.io'
+# Uncomment to generate a "Fork on GitHub" widget at the top of website
+# Disabled because it's wierd in mobile web
+#GITHUB_URL = 'https://www.github.com/tirthasheshpatel/tirthasheshpatel.github.io'
 
 # WARNING: support for pagination removed. Don't set to true!
 DEFAULT_PAGINATION = False
