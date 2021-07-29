@@ -1,0 +1,4 @@
+pelican
+pelican-alias
+pelican-render-math
+typogrify

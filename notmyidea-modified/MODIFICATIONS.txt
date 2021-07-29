@@ -1,0 +1,3 @@
+- `main.css` file has been modified
+- support for pagination removed
+- featured article section removed
