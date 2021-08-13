@@ -6,7 +6,7 @@
 
 AUTHOR = 'Tirth Patel'
 SITENAME = 'Tirth Patel'
-SITESUBTITLE = 'Blogs and More!'
+SITESUBTITLE = 'Blogs on programming and my work'
 SITEURL = ''
 
 PATH = 'content'
