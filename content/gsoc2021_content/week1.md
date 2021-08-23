@@ -3,7 +3,7 @@ Author: Tirth Patel
 Date: 2021-06-12
 Category: GSoC 2021
 Tags: gsoc2021
-Alias: /gsoc2021/week1.html /gsoc2021/week1/index.html
+Alias: /gsoc2021/week1.html, /gsoc2021/week1/index.html
 
 <h2>What did you do this week?</h2>
 
