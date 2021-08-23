@@ -3,7 +3,7 @@ Author: Tirth Patel
 Date: 2021-07-06
 Category: GSoC 2021
 Tags: gsoc2021
-Alias: gsoc2021/week0.html gsoc2021/week0/index.html
+Alias: /gsoc2021/week0.html /gsoc2021/week0/index.html
 
 <h2>A little introduction</h2>
 
