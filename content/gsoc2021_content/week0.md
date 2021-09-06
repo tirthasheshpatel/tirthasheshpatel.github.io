@@ -1,6 +1,6 @@
 Title: Week #0: Polishing the Prototype
 Author: Tirth Patel
-Date: 2021-07-06
+Date: 2021-06-07
 Category: GSoC 2021
 Tags: gsoc2021
 Alias: /gsoc2021/week0.html, /gsoc2021/week0/index.html

@@ -6,7 +6,6 @@
 
 AUTHOR = 'Tirth Patel'
 SITENAME = 'Tirth Patel'
-SITESUBTITLE = 'Blogs on programming and my work'
 SITEURL = ''
 
 PATH = 'content'
@@ -15,7 +14,7 @@ TIMEZONE = 'Asia/Kolkata'
 
 DEFAULT_LANG = 'en'
 
-THEME = './notmyidea-modified'
+THEME = './bootstrap2'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -39,8 +38,8 @@ AUTHOR_FEED_RSS = None
 # Disabled because it's wierd in mobile web
 #GITHUB_URL = 'https://www.github.com/tirthasheshpatel/tirthasheshpatel.github.io'
 
-# WARNING: support for pagination removed. Don't set to true!
-DEFAULT_PAGINATION = False
+# # WARNING: support for pagination removed. Don't set to true!
+DEFAULT_PAGINATION = 5
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
