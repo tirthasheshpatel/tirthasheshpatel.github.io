@@ -6,13 +6,14 @@ Hi, I am Tirth. I am a final year computer science undergrad student at
 will be working on [DLPack](https://www.github.com/dmlc/dlpack) to contribute
 documentation, tests, bug-fixes, and features to DLPack and related projects
 (e.g. NumPy, CuPy). I am also a maintainer of [SciPy](https://www.github.com/scipy).
-I participated in GSoC 2020 with PyMC and GSoC 2021 with SciPy. Apart from
-programming, I like to play table tennis (but I am not good at sports in general :p).
+I have previously participated in GSoC 2020 with PyMC and GSoC 2021 with SciPy.
+Apart from programming, I like to play table tennis (but I am not good at sports
+in general :p).
 
 Please look at my [resume]({static}../pdfs/TirthPatelResume.pdf) if you want
 to know more about me!
 
-### Contact me
+## Contact me
 
 - E-Mail: [tirthasheshpatel@gmail.com](mailto:tirthasheshpatel@gmail.com)
 - Linkedin: [https://www.linkedin.com/in/tirthasheshpatel](https://www.linkedin.com/in/tirthasheshpatel)

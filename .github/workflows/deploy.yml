@@ -1,0 +1,39 @@
+name: Deploy docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test_linux:
+    name: GitHub Pages
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Configuring Test Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install ghp-import
+        python3 -m pip install -U pip wheel
+
+    - name: Installing dependencies
+      run: |
+        python3 -m pip install -r requirements.txt
+
+    - name: Generating Docs
+      run: |
+        make html
+
+    - name: Deploy on GitHub Pages
+      run: |
+        touch output/.nojekyll
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        git config --global user.email "tirth-gh-actions-bot@nomail"
+        git config --global user.name "tirth-gh-actions-bot"
+        ghp-import -m "Generate tirth website" -b gh-pages output/
+        git push origin gh-pages -f

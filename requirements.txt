@@ -1,4 +1,4 @@
-pelican
+pelican[markdown]
 pelican-alias
 pelican-render-math
 typogrify
