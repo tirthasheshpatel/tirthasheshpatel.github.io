@@ -224,7 +224,7 @@ python dev.py -j12 --build-only
 Or you can build by configuring Meson manually:
 
 ```shell
-meson setup builddir --prefix '$PWD/installdir'
+meson setup builddir --prefix $PWD/installdir
 cd builddir
 # If you have more/less CPUs, change the `-j12` option accordingly
 ninja install -j12
