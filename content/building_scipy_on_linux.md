@@ -3,6 +3,7 @@ Author: Tirth Patel
 Date: 2022-02-04 17:30
 Category: SciPy
 Tags: SciPy
+Alias: /blogs/building_scipy_ubuntu.html, /blogs/building_scipy_ubuntu/index.html
 <!-- Modified: 2022-02-04 17:30 -->
 
 ## Introduction
