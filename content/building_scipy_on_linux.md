@@ -120,13 +120,13 @@ The following Python packages are required to build SciPy and run tests:
 You can get all the required dependencies using:
 
 ```shell
-pip install Cython 'numpy>=1.18.5' pybind11 'pythran>=0.9.12' pytest pytest-xdist
+pip install -U Cython 'numpy>=1.18.5' pybind11 'pythran>=0.9.12' pytest pytest-xdist
 ```
 
 To install optional dependencies, do:
 
 ```shell
-pip install pytest-cov mpmath gmpy2 flake8
+pip install -U pytest-cov mpmath gmpy2 flake8
 pip install -r mypy_requirements.txt
 pip install -r doc_requirements.txt
 ```
@@ -153,7 +153,7 @@ SciPy allows building using Python's [distutils module](https://docs.python.org/
 To build using Python's distutils module, you will first need to downgrade setuptools to any version less than v60.0.0.
 
 ```shell
-pip install 'setuptools<60.0.0'
+pip install -U 'setuptools<60.0.0'
 ```
 
 Now, you can start building SciPy either using the `runtests.py` utility:
@@ -197,7 +197,7 @@ Meson is the recommended way to build SciPy as it allows having multiple builds 
 Make sure you have `setuptools>60.0.0` before running meson.
 
 ```shell
-pip install setuptools>60.0.0
+pip install -U 'setuptools>60.0.0'
 ```
 
 You will need to install Meson and Ninja build systems using either `pip` or `conda`.
@@ -205,7 +205,7 @@ You will need to install Meson and Ninja build systems using either `pip` or `co
 **Using `pip`**
 
 ```shell
-pip install meson ninja
+pip install -U meson ninja
 ```
 
 **Using `conda`**
