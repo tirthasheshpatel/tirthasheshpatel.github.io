@@ -66,7 +66,7 @@ Note that since SciPy 1.9.0, only Python >= 3.8 is supported.
 SciPy relies on gcc, g++, gfortran, ccache (optional), OpenBLAS, ATLAS, LAPACK, suitesparse, and some other arithmetic libraries. You can get all the dependencies by running:
 
 ```shell
-sudo apt-get install -y libopenblas-dev libatlas-base-dev liblapack-dev gfortran libgmp-dev libmpfr-dev libsuitesparse-dev ccache libmpc-dev
+sudo apt-get install -y build-essential libopenblas-dev libatlas-base-dev liblapack-dev gfortran libgmp-dev libmpfr-dev libsuitesparse-dev ccache libmpc-dev
 ```
 
 ### Step 3: Getting Python dependencies
