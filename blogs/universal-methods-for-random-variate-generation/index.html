@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Universal Methods for Random Variate&nbsp;Generation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Universal Methods for Random Variate Generation">
+                                        Universal Methods for Random Variate&nbsp;Generation
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2021-07-29T17:30:00+05:30">
+        <i class="icon-calendar"></i>Thu 29 July 2021
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/rng/"><i class="icon-folder-open"></i>RNG</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/rng/"><i class="icon-tag"></i>rng</a>
+	<a href="/tag/maths/"><i class="icon-tag"></i>maths</a>
+	<a href="/tag/proabability-theory/"><i class="icon-tag"></i>proabability theory</a>
+</footer><!-- /.post-info -->                </div>
+                <h1>Rejection&nbsp;Methods</h1>
+
+<h2>Transformed Density&nbsp;Rejection</h2>
+
+<ul>
+<li>Most universal algorithms are <strong>very slow</strong> compared to algorithms that are specialized to that distribution. Algorithms that are fast have a <strong>slow setup</strong> and <strong>large tables</strong>.</li>
+<li>The aim is to provide a universal method which is <strong>not too slow</strong> and needs only a <strong>short    setup</strong>.</li>
+<li>This method can be applied to <strong>continuous unimodal</strong> distributions with <strong>bounded densities</strong> which need to be <strong>T-concave</strong>.    </li>
+<li><strong>Algorithm (in words)</strong>:<ul>
+<li>Transform the density using a suitable function <span class="math">\(T(x)\)</span> defined for <span class="math">\(x &gt; 0\)</span>.</li>
+<li>Define <span class="math">\(h(x) = T(f(x))\)</span> and a piecewise linear function <span class="math">\(l(x)\)</span> such that <span class="math">\(l(x) \ge h(x)\)</span> for all <span class="math">\(x\)</span> in the support of <span class="math">\(f\)</span>. <span class="math">\(T^{-1}l(x)\)</span> is then a dominating function for f(x) and rejection can be used to sample from the desired&nbsp;distribution.</li>
+<li>Restrict <span class="math">\(h(x) = T(f(x))\)</span> to be&nbsp;concave.</li>
+<li>Define <span class="math">\(l(x)\)</span> as a minimum of three lines touching <span class="math">\(h(x)\)</span> in the mode <span class="math">\(m\)</span>, in <span class="math">\(x_l &lt; m\)</span>, and <span class="math">\(x_r &gt; m\)</span>. It is given by:<ul>
+<li><span class="math">\(l(x) = \min{(h(x_l) + h^{\prime}(x_l)(x - x_l), h(m), h(x_r) + h^{\prime}(x_l)(x -&nbsp;x_r))}\)</span></li>
+</ul>
+</li>
+<li><strong>Constraints:</strong><ul>
+<li><strong><span class="math">\(\lim_{x \to 0} T(x) =&nbsp;-\infty\)</span></strong></li>
+<li><span class="math">\(T(x)\)</span> is differential and <span class="math">\(T^{\prime}(x) &gt; 0\)</span> which implies that <span class="math">\(T^{-1}\)</span>&nbsp;exists</li>
+<li><span class="math">\(\int_{0}^{\infty} T^{-1}(h(m)-x)dx &lt;&nbsp;\infty\)</span></li>
+<li><span class="math">\(h(x) = T(f(x))\)</span> must be&nbsp;concave</li>
+</ul>
+</li>
+<li><strong>Assumptions</strong> (in practice but not in theory):<ul>
+<li>Define <span class="math">\(F(x) =&nbsp;\int{T^{-1}(x)dx}\)</span></li>
+<li><span class="math">\(F^{-1}\)</span>&nbsp;exists.</li>
+<li><span class="math">\(\lim_{x \to \infty}F(x) =&nbsp;0\)</span></li>
+</ul>
+</li>
+<li>Now to use rejection, we need to compute two intersection points <span class="math">\(b_l\)</span> and <span class="math">\(b_r\)</span> of the three parts of <span class="math">\(l(x)\)</span> and we also need to compute the areas between x-axis and <span class="math">\(T^{-1}(l(x))\)</span> (i.e. <span class="caps">CDF</span>) for the three intervals <span class="math">\(v_l, v_c, v_r\)</span>. </li>
+<li>Sampling from the density <span class="math">\(T^{-1}(l(x))\)</span> is done by inverting the <span class="caps">CDF</span> of the left and right tail of the distribution. The middle part remains&nbsp;constant.</li>
+<li>For many distributions, evaluation of <span class="caps">PDF</span> is expensive. So, we create a squeeze function that can be used as a proxy to the <span class="caps">PDF</span>. The squeeze function is defined piecewise as the line joining <span class="math">\(x_l\)</span> to <span class="math">\(m\)</span> and <span class="math">\(m\)</span> to <span class="math">\(x_r\)</span> (dashed lines in the figure). As the <span class="caps">PDF</span> is T-concave, the squeeze will always lie below the <span class="caps">PDF</span>.</li>
+</ul>
+</li>
+<li>The figure shows:<ul>
+<li><span class="math">\(h(x)\)</span> (left curve, thick&nbsp;line)</li>
+<li><span class="math">\(l(x)\)</span> (left curve, thin&nbsp;line)</li>
+<li><span class="math">\(f(x)\)</span> (right curve, think&nbsp;line)</li>
+<li><span class="math">\(T^{-1}(l(x))\)</span> (right curve, thin&nbsp;line)</li>
+<li>Squeezes in dashed&nbsp;lines</li>
+</ul>
+</li>
+</ul>
+<p><img alt="alt_text" src="/images/rng/image1.png"></p>
+<ul>
+<li><strong>Algorithm (mathematical):</strong><ul>
+<li><strong>Input</strong>: <span class="math">\(f(x)\)</span> (<span style="text-decoration:underline;">density function</span> of the distribution. It doesn’t need to be normalized), <span class="math">\(f^{\prime}(x)\)</span> (<span style="text-decoration:underline;">derivative of the density function</span> w.r.t <span class="math">\(x\)</span>), <span class="math">\(T(x)\)</span> (<span style="text-decoration:underline;">transformation function</span>)</li>
+<li><strong>Step 1: Setup</strong><ul>
+<li><strong><span class="math">\(h(x) \leftarrow T(f(x))\)</span></strong> and <span class="math">\(h^{\prime}(x) \leftarrow&nbsp;T^{\prime}(f(x))f^{\prime}(x)\)</span></li>
+<li><span class="math">\(F(x) \leftarrow&nbsp;\int{T^{-1}(x)dx}\)</span></li>
+<li><span class="math">\(m \leftarrow \text{ mode of the&nbsp;distribution}\)</span></li>
+<li><span class="math">\(i_l \leftarrow \inf\{x\mid f(x)&gt;0\}, i_r\leftarrow \sup\{x\mid&nbsp;f(x)&gt;0\}\)</span></li>
+<li>Choose <span class="math">\(x_l \in (i_l,m)\)</span> and <span class="math">\(x_r \in (m,&nbsp;i_r)\)</span></li>
+<li><span class="math">\(b_l \leftarrow x_l + \frac{h(m) -&nbsp;h(x_l)}{h^{\prime}(x_l)}\)</span></li>
+<li><span class="math">\(b_r \leftarrow x_r + \frac{h(m) -&nbsp;h(x_r)}{h^{\prime}(x_r)}\)</span></li>
+<li><span class="math">\(v_l \leftarrow&nbsp;\frac{F(h(m))-F(h^{\prime}(x_l)(i_l-x_l)+h(x_l))}{h^{\prime}(x_l)}\)</span></li>
+<li><span class="math">\(v_c \leftarrow&nbsp;f(m)(b_r-b_l)\)</span></li>
+<li><span class="math">\(v_r \leftarrow&nbsp;\frac{F(h^{\prime}(x_r)(i_r-x_r)+h(x_r))-F(h(m))}{h^{\prime}(x_r)}\)</span></li>
+<li><span class="math">\(s_l \leftarrow&nbsp;\frac{h(m)-h(x_l)}{m-x_l}\)</span></li>
+<li><span class="math">\(s_r \leftarrow&nbsp;\frac{h(m)-h(x_r)}{m-x_r}\)</span></li>
+</ul>
+</li>
+<li><strong>Step 2: Sampling</strong><ul>
+<li>Generate a uniform random number <span class="math">\(U\)</span></li>
+<li><span class="math">\(U \leftarrow U(v_l + v_c +&nbsp;v_r)\)</span></li>
+<li>if <span class="math">\(U \le v_l\)</span><ul>
+<li><span class="math">\(l_x\leftarrow&nbsp;F^{-1}(F(h(m))-Uh^{\prime}(x_l))\)</span></li>
+<li><span class="math">\(X\leftarrow\frac{l_x-h(x_l)}{h^{\prime}(x_l)}+x_l\)</span></li>
+</ul>
+</li>
+<li>elif <span class="math">\(U \le v_l + v_c\)</span>:<ul>
+<li><span class="math">\(l_x\leftarrow&nbsp;h(m)\)</span></li>
+<li><span class="math">\(X\leftarrow&nbsp;\frac{U-v_l}{v_c}(b_r-b_l)+b_l\)</span></li>
+</ul>
+</li>
+<li>else:<ul>
+<li><span class="math">\(l_x\leftarrow&nbsp;F^{-1}((U-(v_l+v_c))h^{\prime}(x_r)-F(h(m)))\)</span></li>
+<li><span class="math">\(X\leftarrow\frac{l_x-h(x_r)}{h^{\prime}(x_r)}+x_r\)</span></li>
+</ul>
+</li>
+<li><span class="math">\(l_x\leftarrow&nbsp;T^{-1}(l_x)\)</span></li>
+<li>Generate a uniform random number <span class="math">\(V\)</span></li>
+<li><span class="math">\(V \leftarrow&nbsp;Vl_x\)</span></li>
+<li>if <span class="math">\(X &lt; m\)</span><ul>
+<li>if <span class="math">\(X &gt; x_l \text{ and } V \le T^{-1}(h(m)-(m-x)s_l)\)</span>:<ul>
+<li><strong>return&nbsp;X</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>elif <span class="math">\(X&lt;x_r \text{ and } V \le T^{-1}(h(m)-(m-x)s_r)\)</span>:<ul>
+<li><strong>return&nbsp;X</strong></li>
+</ul>
+</li>
+<li>if <span class="math">\(V&gt;f(X)\)</span>:<ul>
+<li>reject the sample and restart <strong>Step 2</strong>.</li>
+</ul>
+</li>
+<li>else <strong>return&nbsp;X</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The algorithm is left with choosing <span class="math">\(x_l\)</span> and <span class="math">\(x_r\)</span>. </li>
+<li>Define <span class="math">\(t_o =&nbsp;-\frac{F(T(1))}{F(T(1)-F(T(1)))-F(T(1))}\)</span></li>
+<li><strong>Theorem</strong>: With the choice of <span class="math">\(x_l=m-\frac{t_o}{f(m)}\)</span> and <span class="math">\(x_r=m+\frac{t_o}{f(m)}\)</span>, the number of iterations of the <span class="caps">TDR</span> algorithm is lower or equal to <span class="math">\(2t_o\)</span> for <strong>arbitrary</strong> T-concave distributions. (<em>Theorem 2 in the paper</em>)</li>
+<li>As the <strong>number of iterations of <span class="caps">TDR</span> are bounded uniformly over the class of all T-concave distributions with arbitrary support</strong>, <strong>it makes <span class="caps">TDR</span> a good candidate for automatic generation</strong>.</li>
+<li><strong>Choice of the Transformation Function</strong>:<ul>
+<li>The two most important choices for implementation are:<ul>
+<li><span class="math">\(T_0(x) =&nbsp;\log(x)\)</span></li>
+<li><span class="math">\(T_{-0.5}(x) =&nbsp;-\frac{1}{\sqrt{x}}\)</span></li>
+</ul>
+</li>
+<li>In general, <span class="math">\(T_c(x) = -x^{c}\)</span> defines a family of such transformation functions that satisfy all our&nbsp;constraints.</li>
+<li><span class="math">\(T_0\)</span> and <span class="math">\(T_{-0.5}\)</span> are used because <span class="math">\(T^{-1}, F, F^{-1}\)</span> are very simple to obtain and&nbsp;compute.</li>
+<li>Any <span class="caps">PDF</span> that is <span class="math">\(T_{c_1}\)</span> concave is always <span class="math">\(T_{c_2}\)</span> concave for all <span class="math">\(c_2 \le c_1\)</span>. The table below shows the maximum T-concavity of some standard&nbsp;distributions.</li>
+</ul>
+</li>
+</ul>
+<p><img alt="alt_text" src="/images/rng/image2.png"></p>
+<ul>
+<li>Also, it is enough for <span class="caps">TDR</span> algorithm to know the densities upto proportionalities i.e. <span style="text-decoration:underline;">the <span class="caps">PDF</span> need not integrate to 1</span>. <strong>Hence, we can ignore the normalization constant while computing the <span class="caps">PDF</span>.</strong></li>
+<li>As compared to the Ratio-Of-Uniform methods, <strong><span class="caps">TDR</span> leads to fewer iterations per sample</strong> with optimal points of contact. For example, expected iterations per sample for sampling from the Cauchy distribution using RoU method is around 1.27 while it is just around 1.1 for <span class="caps">TDR</span> (with optimal points of&nbsp;contact).</li>
+</ul>
+<h2>Universal Transformed Density&nbsp;Rejection</h2>
+
+<ul>
+<li>Universal Transformed Density Rejection addresses the following points which aren’t addressed by Transformed Density&nbsp;Rejection:</li>
+<li>Choice of <span class="math">\(x_l\)</span> and <span class="math">\(x_r\)</span> is sometimes <strong>much too far away from the mode</strong> and leads to a higher number of iterations per&nbsp;sample.</li>
+<li>The <strong>derivative can be inconvenient/slow</strong> to compute. So, we should try to approximate the tangent at <span class="math">\(x_l\)</span> and <span class="math">\(x_r\)</span> without the need to compute the exact&nbsp;derivatives.</li>
+<li>Using equations of <strong>Theorem 2</strong>, <span class="math">\(x_l\)</span> and <span class="math">\(x_r\)</span> can lie outside the support of the distribution, in which case, we will have to set the areas of the tails to 0 i.e. <span class="math">\(v_l \leftarrow 0\)</span> and <span class="math">\(v_r \leftarrow 0\)</span> and set the intersection points <span class="math">\(b_l \leftarrow i_l\)</span> and <span class="math">\(b_r \leftarrow i_r\)</span>. This way, <strong>we lose the squeeze function</strong> and need to perform expensive <span class="caps">PDF</span> evaluation at each iteration which slows down the&nbsp;algorithm. </li>
+</ul>
+<p><img alt="alt_text" src="/images/rng/image3.png"></p>
+<p><img alt="alt_text" src="/images/rng/image4.png"></p>
+<ul>
+<li>Universal <span class="caps">TDR</span> (<span class="caps">UTDR</span>) <strong>fixes the transformation function</strong> to <span class="math">\(T_{-0.5}(x)\)</span> which is <span class="math">\(-\frac{1}{\sqrt{x}}\)</span> and addresses the above points using the following&nbsp;method:</li>
+<li>We start with a choice of <span class="math">\(t_o = 0.664\)</span> (which is the optimal value for the normal distribution as shown in the table above) and calculate the area under the dominating curve. If the area is less than 4, we continue with the choices of <span class="math">\(x_l = m - \frac{t_o}{f(m)}\)</span> and <span class="math">\(x_r = m - \frac{t_o}{f(m)}\)</span>. But if the area is greater than 4, we fall back to the original constant <span class="math">\(t_o\)</span> for <span class="math">\(T_{-0.5}(x)\)</span>, which is <span class="math">\(2\)</span> (see the table&nbsp;above).</li>
+<li>We can approximate the derivative as <span class="math">\(\frac{h(x_l+\Delta)-h(x_l)}{\Delta}\)</span>. The same can be done for <span class="math">\(x_r\)</span> with <span class="math">\(-\Delta\)</span>. The choice of <span class="math">\(\Delta\)</span> is made in such a way that the precision is only lost upto maximum 5 decimal&nbsp;digits.</li>
+<li>We just define the missing point for the squeeze function as a point whose distance from <span class="math">\(m\)</span> is 60% of the distance between <span class="math">\(m\)</span> and the border of the&nbsp;distribution.</li>
+<li><strong>Algorithm</strong>:<ul>
+<li><strong>Step 1: Setup</strong><ul>
+<li><strong><span class="math">\(m \leftarrow \text{mode of the&nbsp;distribution}\)</span></strong></li>
+<li><span class="math">\(f_m \leftarrow f(m), h_m \leftarrow&nbsp;-\frac{1}{\sqrt{f_m}}\)</span></li>
+<li><span class="math">\(i_l \leftarrow \inf\{ x \mid f(x)&gt;0&nbsp;\}\)</span></li>
+<li><span class="math">\(i_r \leftarrow \sup\{ x \mid f(x)&gt;0&nbsp;\}\)</span></li>
+<li>if <span class="math">\(i_l = \infty\)</span>, <span class="math">\(t_l \leftarrow 0\)</span> else <span class="math">\(t_l \leftarrow&nbsp;1\)</span></li>
+<li>if <span class="math">\(i_r= \infty\)</span>, <span class="math">\(t_r \leftarrow 0\)</span> else <span class="math">\(t_r \leftarrow&nbsp;1\)</span></li>
+<li><span class="math">\(c \leftarrow&nbsp;0.664\)</span></li>
+</ul>
+</li>
+<li><strong>Step 1.1: Extra Setup</strong><ul>
+<li><strong><span class="math">\(c\leftarrow \frac{c}{f_m}\)</span></strong>, <span class="math">\(x_l \leftarrow m-c\)</span>, <span class="math">\(x_r\leftarrow&nbsp;m+c\)</span></li>
+<li>if <span class="math">\(t_l=1 \text{ and } x_l &lt; i_l\)</span>:<ul>
+<li><span class="math">\(b_l \leftarrow i_l, v_l \leftarrow&nbsp;0\)</span></li>
+<li>if <span class="math">\(i_l &lt; m \text{ then } x_l \leftarrow&nbsp;m-(m-i_l)0.6\)</span></li>
+<li><span class="math">\(s_l \leftarrow&nbsp;\frac{h_m+\frac{1}{\sqrt{f(x_l)}}}{m-x_l}\)</span></li>
+</ul>
+</li>
+<li>else:<ul>
+<li><span class="math">\(\tilde{y_l} \leftarrow&nbsp;-\frac{1}{\sqrt{f(x_l)}}\)</span></li>
+<li><span class="math">\(s_l \leftarrow&nbsp;\frac{h_m-\tilde{y_l}}{m-x_l}\)</span></li>
+<li><span class="math">\(\Delta \leftarrow \max(|x_l|, -\frac{\tilde{y_l}}{s_l}) \dot&nbsp;10^{-5}\)</span></li>
+<li><span class="math">\(y_l \leftarrow&nbsp;-\frac{1}{\sqrt{f(x_l+\Delta)}}\)</span></li>
+<li><span class="math">\(a_l \leftarrow&nbsp;\frac{y_l-\tilde{y_l}}{\Delta}\)</span></li>
+<li><span class="math">\(b_l \leftarrow&nbsp;x_l\frac{h_m-y_l}{a_l}\)</span></li>
+<li><span class="math">\(d_l \leftarrow&nbsp;y_l-a_lx_l\)</span></li>
+<li><span class="math">\(v_l \leftarrow -\frac{1}{a_lh_m}, c_l \leftarrow&nbsp;v_l\)</span></li>
+<li>if <span class="math">\(t_l=1 \text{ then } v_l \leftarrow&nbsp;v_l+\frac{1}{a_l(a_li_l+d_l)}\)</span></li>
+</ul>
+</li>
+<li>Symmetric if&#8230;else statement for calculation of <span class="math">\(x_r\)</span>, <span class="math">\(b_r\)</span>, <span class="math">\(a_r\)</span>, <span class="math">\(d_r\)</span>, <span class="math">\(v_r\)</span>, and <span class="math">\(y_r\)</span>.</li>
+<li><span class="math">\(v_c \leftarrow&nbsp;(b_r-b_l)f_m\)</span></li>
+<li><span class="math">\(v_{lc} \leftarrow&nbsp;v_l+v_c\)</span></li>
+<li><span class="math">\(v_t \leftarrow&nbsp;v_{lc}+v_r\)</span></li>
+<li>if <span class="math">\(v_t &gt; 4 \text{ then } c\leftarrow 2\)</span> and <strong>goto</strong> <strong>Step&nbsp;1.1</strong></li>
+</ul>
+</li>
+<li><strong>Step 2: Sampling</strong><ul>
+<li>Generate a random uniform number <span class="math">\(U\)</span></li>
+<li><span class="math">\(U \leftarrow&nbsp;Uv_t\)</span></li>
+<li>if <span class="math">\(U &lt; v_l\)</span>:<ul>
+<li><span class="math">\(X \leftarrow&nbsp;-\frac{d_l}{a_l}+\frac{1}{a_l^2(U-c_l)}\)</span></li>
+<li><span class="math">\(l_x \leftarrow&nbsp;(a_l(U-c_l))^2\)</span></li>
+</ul>
+</li>
+<li>elif <span class="math">\(U &lt; v_{lc}\)</span>:<ul>
+<li><span class="math">\(X \leftarrow&nbsp;\frac{(U-v_l)(b_r-b_l)}{v_c}+b_l\)</span></li>
+<li><span class="math">\(l_x \leftarrow&nbsp;f_m\)</span></li>
+</ul>
+</li>
+<li>else:<ul>
+<li><span class="math">\(X\leftarrow&nbsp;-\frac{d_r}{a_r}-\frac{1}{a_r^2(U-v_{lc}-c_r)}\)</span></li>
+<li><span class="math">\(l_x \leftarrow&nbsp;(a_r(U-v_{lc}-c_r))^2\)</span></li>
+</ul>
+</li>
+<li>Generate a uniform random number <span class="math">\(V\)</span></li>
+<li><span class="math">\(V \leftarrow&nbsp;Vl_x\)</span></li>
+<li>if <span class="math">\(X &lt; m\)</span>:<ul>
+<li>if <span class="math">\(X \ge x_l \text{ and } V(h_m-(m-X)s_l)^2 \le 1\)</span> <strong>return&nbsp;X</strong></li>
+</ul>
+</li>
+<li>elif <span class="math">\(X \le x_r \text{ and } V(h_m-(m-X)s_r)^2 \le 1\)</span> <strong>return&nbsp;X</strong></li>
+<li>if <span class="math">\(V \le f(X)\)</span> <strong>return&nbsp;X</strong></li>
+<li>else <strong>goto Step&nbsp;2</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Inverse Transformed Density&nbsp;Rejection</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Adaptive Rejection&nbsp;Sampling</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Simple Setup&nbsp;Rejection</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h1>Ratio-of-Uniforms&nbsp;Methods</h1>
+
+<h2>Automatic&nbsp;Ratio-of-Uniforms</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Naive&nbsp;Ratio-of-Uniforms</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Simple&nbsp;Ratio-of-Uniforms</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h1><span class="caps">CDF</span> Inversion&nbsp;Methods</h1>
+
+<h2>Fast Inversion using Hermite&nbsp;Interpolation</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Fast Inversion using Polynomial&nbsp;Interpolation</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<h2>Numerical&nbsp;Inversion</h2>
+
+<ul>
+<li><span class="caps">TODO</span></li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

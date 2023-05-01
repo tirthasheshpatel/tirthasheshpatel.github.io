@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Getting started with Gaussian Process in&nbsp;PyMC4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>Note</strong>: This article has been migrated from my previous website without modification; some
+                        images might be missing or be disproportionately large.
+                </div>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Getting started with Gaussian Process in PyMC4">
+                                        Getting started with Gaussian Process in&nbsp;PyMC4
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2020-03-16T00:00:00+05:30">
+        <i class="icon-calendar"></i>Mon 16 March 2020
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/gsoc-2020/"><i class="icon-folder-open"></i>GSoC 2020</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/machine-learning/"><i class="icon-tag"></i>machine learning</a>
+	<a href="/tag/gsoc-2020/"><i class="icon-tag"></i>gsoc 2020</a>
+</footer><!-- /.post-info -->                </div>
+                <h3>Theory</h3>
+<p>Gaussian processes are non-parametric models that define a distribution over a function where the function itself is a random variable of some inputs <span class="math">\(X\)</span>. They can be thought of as a distribution over infinite dimensions but computation can be done using finite resources. This property makes them useful for many spacial and temporal prediction tasks. A Gaussian Process prior is parameterized by a mean function and a covariance function. Given these parameters, a <span class="caps">GP</span> prior can be defined&nbsp;as</p>
+<div class="math">$$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$</div>
+<p>Given a prior and some new data <span class="math">\(X^\prime\)</span>, the conditional <span class="math">\(P(f(X^\prime); f(X))\)</span> can be evaluated&nbsp;as</p>
+<div class="math">$$P(f(X^\prime); f(X)) = \frac{P(f(X^\prime), f(X))}{P(f(X))}$$</div>
+<p>This conditional can then be used to sample new points from the inferred&nbsp;function.</p>
+<h3>Implementation</h3>
+<p>The implementation of Gaussian Process model is divided into three&nbsp;parts:</p>
+<ol>
+<li>Creating a mean&nbsp;function.</li>
+<li>Creating a covariance&nbsp;function.</li>
+<li>Creating a <span class="caps">GP</span>&nbsp;Model.</li>
+</ol>
+<p>The following tutorial shows how to create a <span class="caps">GP</span> Model in PyMC4&nbsp;step-by-step.</p>
+<h3>Importing the&nbsp;libraries</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Importing our libraries</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># print(sys.path)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">tirth</span><span class="se">\\</span><span class="s2">Desktop</span><span class="se">\\</span><span class="s2">INTERESTS</span><span class="se">\\</span><span class="s2">PyMC4&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pymc4</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</code></pre></div>
+
+<h3>Mean&nbsp;functions</h3>
+<p>The mean functions in PyMC4 are implemented using the following base&nbsp;class</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Mean</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Base Class for all the mean functions in GP.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_ndims</span> <span class="o">=</span> <span class="n">feature_ndims</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Your mean function should override this method&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MeanAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MeanProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean2</span><span class="p">)</span>
+</code></pre></div>
+
+<p>where <code>feature_ndims</code> are the rightmost dimensions of the input that will be absorbed during the computation. The <code>__call__</code> method is used to evaluate the mean function at some point <span class="math">\(X\)</span>. The <span class="math">\(X\)</span> (input) can be a TensorFlow Tensor or a NumPy array. PyMC4 allows addition (or multiplication) of two mean functions to yield a new mean function that is an instance of <code>MeanAdd</code> (or <code>MeanProd</code>). You can create your mean function just by inheriting the base class and implementing the method <code>__call__</code>.</p>
+<p>The most common mean function used in <span class="caps">GP</span> models is the zero mean function that returns zero irrespective of the inputs. It can be implemented&nbsp;as</p>
+<div class="highlight"><pre><span></span><code><span class="n">mean_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">Zero</span><span class="p">(</span><span class="n">feature_ndims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Covariance&nbsp;Functions</h3>
+<p>Covariance function tries to approximate the covariance matrix of the modelled function. The base class used to implement covariance functions in PyMC4 is given&nbsp;below</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Covariance</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Base class of all Covariance functions for Gaussian Process&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># TODO: Implement the `diag` parameter as in PyMC3.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_feature_ndims</span> <span class="o">=</span> <span class="n">feature_ndims</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kernel</span><span class="p">(</span><span class="n">feature_ndims</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_ndims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># wrap the kernel in FeatureScaled kernel for ARD</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scale_diag</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scale_diag&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="o">=</span> <span class="n">tfp</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">psd_kernels</span><span class="o">.</span><span class="n">FeatureScaled</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span><span class="p">,</span> <span class="n">scale_diag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale_diag</span>
+            <span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_init_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Your Covariance class should override this method&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">evaluate_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate kernel at certain points</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X1 : tensor, array-like</span>
+<span class="sd">            First point(s)</span>
+<span class="sd">        X2 : tensor, array-like</span>
+<span class="sd">            Second point(s)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cov2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CovarianceProd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__array_wrap__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="c1"># we retain the original shape to reshape the result later</span>
+        <span class="n">original_shape</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span>
+        <span class="c1"># we flatten the array and re-build the left array</span>
+        <span class="c1"># using the ``.cov2`` attribute of combined kernels.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">left_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">left_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cov2</span>
+        <span class="c1"># reshape the array to its original shape</span>
+        <span class="n">left_array</span> <span class="o">=</span> <span class="n">left_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span>
+        <span class="c1"># now, we can put the left array on the right side</span>
+        <span class="c1"># to create the final combination.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">CovarianceAdd</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">left_array</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">CovarianceProd</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">left_array</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">feature_ndims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feature_ndims</span>
+</code></pre></div>
+
+<p>where <code>_init_kernel</code> is a method used to initialize the covariance function. This method should return an instance of a covariance function that has <code>matrix</code> method to evaluate the covariance function and return a covariance matrix. Specifically, this method takes as input two tensors (or numpy arrays) of shape <code>(batch_shape, n, features)</code> and <code>(batch_shape, m, features)</code> and returns a covariance matrix of shape <code>(batch_shape, n, m)</code>. This matrix <strong>must</strong> be positive semi-definite. You can optionally override <code>evaluate_kernel</code> method to evaluate the function at two specific&nbsp;points.</p>
+<p>Many covariance functions can be used to infer different functions but the most common one is the Radial Basis Function. This function can be implemented using the <code>ExpQuad</code> covariance function in&nbsp;PyMC4.</p>
+<div class="math">$$k(x, x') = \sigma^2 \mathrm{exp}\left[ -\frac{(x - x')^2}{2 l^2} \right]$$</div>
+<p>where <span class="math">\(\sigma\)</span> = <code>amplitude</code> and <span class="math">\(l\)</span> = <code>length_scale</code> i.e. the inputs that <span class="caps">RBF</span> kernel in PyMC4&nbsp;takes.</p>
+<div class="highlight"><pre><span></span><code><span class="n">cov_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">length_scale</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Latent Gaussian&nbsp;Process</h3>
+<p>The <code>gp.LatentGP</code> class is a direct implementation of a <span class="caps">GP</span>.  No additive noise is assumed.  It is called &#8220;Latent&#8221; because the underlying function values are treated as latent variables.  It has a <code>prior</code> method and a <code>conditional</code> method.  Given a mean and covariance function the function <span class="math">\(f(x)\)</span> is modeled&nbsp;as,</p>
+<div class="math">$$f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)$$</div>
+<p>Use the <code>prior</code> and <code>conditional</code> methods to construct random variables representing the unknown, or latent, the function whose distribution is the <span class="caps">GP</span> prior or <span class="caps">GP</span> conditional.  This <span class="caps">GP</span> implementation can be used to implement regression on data that is not normally distributed. For more information on the <code>prior</code> and <code>conditional</code> methods, see their&nbsp;docstrings.</p>
+<div class="highlight"><pre><span></span><code><span class="n">gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">LatentGP</span><span class="p">(</span><span class="n">cov_fn</span><span class="o">=</span><span class="n">cov_fn</span><span class="p">,</span> <span class="n">mean_fn</span><span class="o">=</span><span class="n">mean_fn</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Sampling</h3>
+<p>Having defined the mean function, covariance function and the <span class="caps">GP</span> model, <code>prior</code> and <code>conditional</code> methods can be used to sample new points from the prior and conditional respectively by creating a <code>pm.model</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pm</span><span class="o">.</span><span class="n">model</span>
+<span class="k">def</span> <span class="nf">gpmodel</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">):</span>
+    <span class="c1"># Define a prior</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">gp</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="c1"># Define a conditional oven new data points. Unlike PyMC3, the</span>
+    <span class="c1"># `given` dictionary is NOT optional.</span>
+    <span class="n">cond</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">gp</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="s1">&#39;cond&#39;</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">,</span> <span class="n">given</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">f</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">cond</span>
+</code></pre></div>
+
+<h3>Inputs to the <span class="caps">GP</span>&nbsp;model</h3>
+<p>Now, we are left with creating the inputs for our <span class="caps">GP</span> model. We will create random inputs <code>X</code> and <code>Xnew</code> with <code>batch_shape=(2, 2)</code>, <code>num_samples=10</code> and <code>feature_ndims=2</code> of shape <code>(2, 2)</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># The leftmost (2, 2) is the batch_shape. In the middle are the</span>
+<span class="c1"># actual data points and rightmost (2, 2) are the feature_ndims</span>
+<span class="c1"># that are going to be absorbed during the computation.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Create new data points with 5 samples</span>
+<span class="n">Xnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># We can now create a final function from which we can sample</span>
+<span class="n">gp_model</span> <span class="o">=</span> <span class="n">gpmodel</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Xnew</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">gp_model</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">num_chains</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">WARNING</span><span class="o">:</span><span class="n">tensorflow</span><span class="o">:</span><span class="k">From</span><span class="w"> </span><span class="n">C</span><span class="o">:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">tirth</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">INTERESTS</span><span class="err">\</span><span class="n">PyMC4</span><span class="err">\</span><span class="n">env</span><span class="err">\</span><span class="n">lib</span><span class="err">\</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="err">\</span><span class="n">tensorflow</span><span class="err">\</span><span class="n">python</span><span class="err">\</span><span class="n">ops</span><span class="err">\</span><span class="n">linalg</span><span class="err">\</span><span class="n">linear_operator_lower_triangular</span><span class="p">.</span><span class="n">py</span><span class="o">:</span><span class="mi">158</span><span class="o">:</span><span class="w"> </span><span class="n">calling</span><span class="w"> </span><span class="n">LinearOperator</span><span class="p">.</span><span class="n">__init__</span><span class="w"> </span><span class="p">(</span><span class="k">from</span><span class="w"> </span><span class="n">tensorflow</span><span class="p">.</span><span class="n">python</span><span class="p">.</span><span class="n">ops</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">linear_operator</span><span class="p">)</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">graph_parents</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">deprecated</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">removed</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">future</span><span class="w"> </span><span class="n">version</span><span class="p">.</span>
+<span class="n">Instructions</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">updating</span><span class="o">:</span>
+<span class="k">Do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">pass</span><span class="w"> </span><span class="n n-Quoted">`graph_parents`</span><span class="p">.</span><span class="w">  </span><span class="n">They</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="n">longer</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="p">.</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">posterior</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;gpmodel/f&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;gpmodel/cond&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">Dataset</span><span class="o">&gt;</span>
+<span class="n">Dimensions</span><span class="p">:</span><span class="w">             </span><span class="p">(</span><span class="n">chain</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_0</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_1</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_2</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_1</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_2</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">chain</span><span class="w">               </span><span class="p">(</span><span class="n">chain</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">draw</span><span class="w">                </span><span class="p">(</span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mi">92</span><span class="w"> </span><span class="mi">93</span><span class="w"> </span><span class="mi">94</span><span class="w"> </span><span class="mi">95</span><span class="w"> </span><span class="mi">96</span><span class="w"> </span><span class="mi">97</span><span class="w"> </span><span class="mi">98</span><span class="w"> </span><span class="mi">99</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_0</span><span class="w">     </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_1</span><span class="w">     </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_1</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_2</span><span class="w">     </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_2</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="mi">9</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_0</span><span class="w">  </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_1</span><span class="w">  </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_1</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_2</span><span class="w">  </span><span class="p">(</span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_2</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">variables</span><span class="p">:</span>
+<span class="w">    </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f</span><span class="w">           </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_1</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">f_dim_2</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0377142</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="o">-</span><span class="mf">0.46950334</span>
+<span class="w">    </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond</span><span class="w">        </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_0</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_1</span><span class="p">,</span><span class="w"> </span><span class="n">gpmodel</span><span class="o">/</span><span class="n">cond_dim_2</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="mf">0.26633048</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">0.71039367</span>
+<span class="n">Attributes</span><span class="p">:</span>
+<span class="w">    </span><span class="n">created_at</span><span class="p">:</span><span class="w">  </span><span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">15</span><span class="n">T07</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mf">20.672883</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<h3>Example 1 : Regression with Student-t distributed&nbsp;noise</h3>
+<p>In this example, we try to find a continuous interpolant through our data that is distributed as a <code>multivariate_normal</code> distribution with some <code>student-t</code> noise.</p>
+<p>In our model, we treat <code>length_scale</code> of the <span class="caps">RBF</span> kernel and the degrees of freedom of <code>student-t</code> unknown and try to infer them using <code>HalfCauchy</code> and <code>Gamma</code> distribution&nbsp;respectively.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="c1"># set the seed</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># The number of data points</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="c1"># The inputs to the GP, they must be arranged as a column vector</span>
+<span class="n">n_new</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">X_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">n_new</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+
+<span class="c1"># Define the true covariance function and its parameters</span>
+<span class="n">l_true</span> <span class="o">=</span> <span class="mf">3.</span>
+<span class="n">cov_func</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">length_scale</span><span class="o">=</span><span class="n">l_true</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># A mean function that is zero everywhere</span>
+<span class="n">mean_func</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">Zero</span><span class="p">()</span>
+
+<span class="c1"># The latent function values are one sample from a multivariate normal</span>
+<span class="n">f_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean_func</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                                       <span class="n">cov_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># The observed data is the latent function plus a small amount of T distributed noise</span>
+<span class="c1"># The degrees of freedom is `nu`</span>
+<span class="n">ν_true</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_t</span><span class="p">(</span><span class="n">ν_true</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1">## Plot the data and the unobserved latent function</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True f&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div>
+
+<p><img alt="png" src="/images/gaussian_process_files/gaussian_process_16_1.png"></p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pm</span><span class="o">.</span><span class="n">model</span>
+<span class="k">def</span> <span class="nf">latent_gp_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_new</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A latent GP model with unknown length_scale and student-t noise</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X: np.ndarray, tensor</span>
+<span class="sd">        The prior data</span>
+<span class="sd">    y: np.ndarray, tensor</span>
+<span class="sd">        The function corresponding to the prior data</span>
+<span class="sd">    X_new: np.ndarray, tensor</span>
+<span class="sd">        The new data points to evaluate the conditional</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    y_: tensor</span>
+<span class="sd">        Random sample from inferred function and its noise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We define length_scale of RBF kernel as a random variable</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+    <span class="c1"># We can now define a GP with mean as zeros and covariance function</span>
+    <span class="c1"># as RBF kernel with ``length_scale=l`` and ``amplitude=1``</span>
+    <span class="n">cov_fn</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">feature_ndims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">latent_gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">LatentGP</span><span class="p">(</span><span class="n">cov_fn</span><span class="o">=</span><span class="n">cov_fn</span><span class="p">)</span>
+    <span class="c1"># f is the prior and f_pred is the conditional which we discussed in theory section</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">latent_gp</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">f_pred</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">latent_gp</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="s2">&quot;f_pred&quot;</span><span class="p">,</span> <span class="n">X_new</span><span class="p">,</span> <span class="n">given</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">f</span><span class="p">})</span>
+    <span class="c1"># finally, we model the noise and our outputs.</span>
+    <span class="n">ν</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="o">.</span><span class="n">Gamma</span><span class="p">(</span><span class="s2">&quot;ν&quot;</span><span class="p">,</span> <span class="n">concentration</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">pm</span><span class="o">.</span><span class="n">StudentT</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">ν</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_</span>
+
+
+<span class="n">gp</span> <span class="o">=</span> <span class="n">latent_gp_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_new</span><span class="p">)</span>
+<span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_chains</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trace</span><span class="o">.</span><span class="n">posterior</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">xarray</span><span class="o">.</span><span class="n">Dataset</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span>
+<span class="n">Dimensions</span><span class="p">:</span><span class="w">                       </span><span class="p">(</span><span class="n">chain</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_pred_dim_0</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">)</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+<span class="w">  </span><span class="o">*</span><span class="w"> </span><span class="n">chain</span><span class="w">                         </span><span class="p">(</span><span class="n">chain</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="o">*</span><span class="w"> </span><span class="n">draw</span><span class="w">                          </span><span class="p">(</span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mi">995</span><span class="w"> </span><span class="mi">996</span><span class="w"> </span><span class="mi">997</span><span class="w"> </span><span class="mi">998</span><span class="w"> </span><span class="mi">999</span>
+<span class="w">  </span><span class="o">*</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_dim_0</span><span class="w">       </span><span class="p">(</span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mi">98</span><span class="w"> </span><span class="mi">99</span>
+<span class="w">  </span><span class="o">*</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_pred_dim_0</span><span class="w">  </span><span class="p">(</span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_pred_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">int32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mi">199</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">variables</span><span class="p">:</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f</span><span class="w">             </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">,</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="o">-</span><span class="mf">0.50917363</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="o">-</span><span class="mf">1.3819383</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_pred</span><span class="w">        </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">,</span><span class="w"> </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">f_pred_dim_0</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="o">-</span><span class="mf">0.48531333</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">0.4299915</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">__log_l</span><span class="w">       </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="mf">1.1554403</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">1.0889233</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">__log_ν</span><span class="w">       </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="mf">2.1579044</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">2.1388285</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="n">l</span><span class="w">             </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="mf">3.1754212</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">2.9710734</span>
+<span class="w">    </span><span class="n">latent_gp_model</span><span class="o">/</span><span class="err">ν</span><span class="w">             </span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="w"> </span><span class="n">draw</span><span class="p">)</span><span class="w"> </span><span class="n">float32</span><span class="w"> </span><span class="mf">8.652986</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="mf">8.489487</span>
+<span class="n">Attributes</span><span class="p">:</span>
+<span class="w">    </span><span class="n">created_at</span><span class="p">:</span><span class="w">  </span><span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">15</span><span class="n">T07</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mf">30.568276</span><span class="o">&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">l_true</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;ν&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">ν_true</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latent_gp_model/l&quot;</span><span class="p">,</span> <span class="s2">&quot;latent_gp_model/ν&quot;</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nx">array</span><span class="p">([[&lt;</span><span class="nx">matplotlib</span><span class="p">.</span><span class="nx">axes</span><span class="p">.</span><span class="nx">_subplots</span><span class="p">.</span><span class="nx">AxesSubplot</span><span class="w"> </span><span class="nx">object</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mh">0x0</span><span class="mi">00001</span><span class="nx">BCCCF73780</span><span class="p">&gt;,</span>
+<span class="w">        </span><span class="p">&lt;</span><span class="nx">matplotlib</span><span class="p">.</span><span class="nx">axes</span><span class="p">.</span><span class="nx">_subplots</span><span class="p">.</span><span class="nx">AxesSubplot</span><span class="w"> </span><span class="nx">object</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mh">0x0</span><span class="mi">00001</span><span class="nx">BCC6764438</span><span class="p">&gt;],</span>
+<span class="w">        </span><span class="p">[&lt;</span><span class="nx">matplotlib</span><span class="p">.</span><span class="nx">axes</span><span class="p">.</span><span class="nx">_subplots</span><span class="p">.</span><span class="nx">AxesSubplot</span><span class="w"> </span><span class="nx">object</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mh">0x0</span><span class="mi">00001</span><span class="nx">BCC567FEB8</span><span class="p">&gt;,</span>
+<span class="w">        </span><span class="p">&lt;</span><span class="nx">matplotlib</span><span class="p">.</span><span class="nx">axes</span><span class="p">.</span><span class="nx">_subplots</span><span class="p">.</span><span class="nx">AxesSubplot</span><span class="w"> </span><span class="nx">object</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mh">0x0</span><span class="mi">00001</span><span class="nx">BCC9BB0128</span><span class="p">&gt;]],</span>
+<span class="w">        </span><span class="nx">dtype</span><span class="p">=</span><span class="nx">object</span><span class="p">)</span>
+</code></pre></div>
+
+<p><img alt="png" src="/images/gaussian_process_files/gaussian_process_20_1.png"></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymc4.gp.util</span> <span class="kn">import</span> <span class="n">plot_gp_dist</span>
+<span class="c1"># plot the results</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+<span class="c1"># plot the samples from the gp posterior with samples and shading</span>
+<span class="n">plot_gp_dist</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;latent_gp_model/f&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># plot the data and the true latent function</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True f&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed data&quot;</span><span class="p">)</span>
+
+<span class="c1"># axis labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True f(x)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Posterior distribution over $f(x)$ at the observed values&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div>
+
+<p><img alt="png" src="/images/gaussian_process_files/gaussian_process_21_1.png"></p>
+<div class="highlight"><pre><span></span><code><span class="n">pred_samples</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latent_gp_model/f_pred&quot;</span><span class="p">])</span>
+<span class="n">pred_samples</span><span class="o">.</span><span class="n">posterior_predictive</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;pre&gt;</span><span class="ni">&amp;lt;</span>xarray.Dataset<span class="ni">&amp;gt;</span>
+Dimensions:<span class="w">                       </span>(chain:<span class="w"> </span>1,<span class="w"> </span>draw:<span class="w"> </span>1000,<span class="w"> </span>latent_gp_model/f_pred_dim_0:<span class="w"> </span>200)
+Coordinates:
+<span class="w">  </span>*<span class="w"> </span>chain<span class="w">                         </span>(chain)<span class="w"> </span>int32<span class="w"> </span>0
+<span class="w">  </span>*<span class="w"> </span>draw<span class="w">                          </span>(draw)<span class="w"> </span>int32<span class="w"> </span>0<span class="w"> </span>1<span class="w"> </span>2<span class="w"> </span>3<span class="w"> </span>4<span class="w"> </span>...<span class="w"> </span>995<span class="w"> </span>996<span class="w"> </span>997<span class="w"> </span>998<span class="w"> </span>999
+<span class="w">  </span>*<span class="w"> </span>latent_gp_model/f_pred_dim_0<span class="w">  </span>(latent_gp_model/f_pred_dim_0)<span class="w"> </span>int32<span class="w"> </span>0<span class="w"> </span>...<span class="w"> </span>199
+Data<span class="w"> </span>variables:
+<span class="w">    </span>latent_gp_model/f_pred<span class="w">        </span>(chain,<span class="w"> </span>draw,<span class="w"> </span>latent_gp_model/f_pred_dim_0)<span class="w"> </span>float32<span class="w"> </span>-0.48531333<span class="w"> </span>...<span class="w"> </span>0.4299915
+Attributes:
+<span class="w">    </span>created_at:<span class="w">  </span>2020-03-15T07:51:00.033659<span class="nt">&lt;/pre&gt;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">plot_gp_dist</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pred_samples</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;latent_gp_model/f_pred&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_new</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True f&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$X$&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True $f(x)$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Conditional distribution of $f_*$, given $f$&quot;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</code></pre></div>
+
+<p><img alt="png" src="/images/gaussian_process_files/gaussian_process_24_1.png"></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

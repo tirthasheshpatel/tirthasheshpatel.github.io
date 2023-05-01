@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Building SciPy from source on Ubuntu&nbsp;20.04/18.04</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Building SciPy from source on Ubuntu 20.04/18.04">
+                                        Building SciPy from source on Ubuntu&nbsp;20.04/18.04
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2022-02-04T17:30:00+05:30">
+        <i class="icon-calendar"></i>Fri 04 February 2022
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/scipy/"><i class="icon-folder-open"></i>SciPy</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/scipy/"><i class="icon-tag"></i>SciPy</a>
+</footer><!-- /.post-info -->                </div>
+                <!-- Modified: 2022-02-04 17:30 -->
+
+<h2>Introduction</h2>
+<p>In this post, I will go through two ways to build <a href="https://github.com/scipy/scipy">SciPy</a> on Ubuntu 20.04 which hopefully also work on other distros! SciPy has a lot of build-time dependencies and there is no proper guide on the documentation pages that explicitly lists all them and how to get them. This makes it harder for new devs to get used to the development environment. The primary focus of this post is to guide you step-by-step from installation of dependencies to building SciPy from source and running tests on a Debian&nbsp;distro.</p>
+<p>At the time of writing this, SciPy 1.9.0 is in development and instructions are written accordingly. I will try to keep this up-to-date with the latest release of SciPy. In the future, you will find an edit log&nbsp;below.</p>
+<h3>Step 0: Getting&nbsp;SciPy.</h3>
+<p>Clone SciPy using either&nbsp;this:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:scipy/scipy.git<span class="w"> </span><span class="c1"># if you are using HTTPS, use &quot;git clone https://github.com/scipy/scipy.git&quot; instead</span>
+<span class="nb">cd</span><span class="w"> </span>scipy
+git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
+</code></pre></div>
+
+<p>or&nbsp;this:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>scipy
+<span class="nb">cd</span><span class="w"> </span>scipy
+git<span class="w"> </span>init
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>git@github.com:scipy/scipy.git
+<span class="c1"># if you have a fork, set up a remote accordingly: git remote add origin &lt;link_to_your_remote&gt;</span>
+git<span class="w"> </span>fetch<span class="w"> </span>upstream
+git<span class="w"> </span>checkout<span class="w"> </span>--track<span class="w"> </span>-b<span class="w"> </span>main<span class="w"> </span>upstream/main
+git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
+</code></pre></div>
+
+<p>If you already have SciPy cloned and you tried to make a build but failed, just clean the&nbsp;environment:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/path/to/your/scipy/clone
+git<span class="w"> </span>clean<span class="w"> </span>-xdf
+git<span class="w"> </span>pull<span class="w">  </span><span class="c1"># make sure you have latest SciPy source code</span>
+</code></pre></div>
+
+<h3>Step 1: Setting up&nbsp;Python</h3>
+<p>SciPy uses the Python C <span class="caps">API</span> heavily. So you will need Python header files to build it. If you want to use relatively newer versions of Python, you can add the <code>deadsnakes</code> <span class="caps">PPA</span> repo to your apt&nbsp;sources:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>ppa:deadsnakes/ppa
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+</code></pre></div>
+
+<p>Now, you can get your desired version of Python and its header files by running the following&nbsp;command:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># replace the 3.9 suffix with the version you want. Python &gt;= 3.8 is required for SciPy 1.9.0.</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3.9<span class="w"> </span>python3.9-dev
+</code></pre></div>
+
+<p>Note that since SciPy 1.9.0, only Python &gt;= 3.8 is&nbsp;supported.</p>
+<h3>Step 2: Getting Ubuntu&nbsp;Dependencies</h3>
+<p>SciPy relies on gcc, g++, gfortran, ccache (optional), OpenBLAS, <span class="caps">ATLAS</span>, <span class="caps">LAPACK</span>, suitesparse, and some other arithmetic libraries. You can get all the dependencies by&nbsp;running:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>build-essential<span class="w"> </span>libopenblas-dev<span class="w"> </span>libatlas-base-dev<span class="w"> </span>liblapack-dev<span class="w"> </span>gfortran<span class="w"> </span>libgmp-dev<span class="w"> </span>libmpfr-dev<span class="w"> </span>libsuitesparse-dev<span class="w"> </span>ccache<span class="w"> </span>libmpc-dev
+</code></pre></div>
+
+<h3>Step 3: Getting Python&nbsp;dependencies</h3>
+<p>To install Python dependencies, you will need either pip or&nbsp;(ana)conda.</p>
+<h4>Step 3.1: Using <code>pip</code></h4>
+<p>Usually, on Ubuntu, Python doesn&#8217;t come with <code>pip</code> preinstalled, so you will have to get it&nbsp;using:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://bootstrap.pypa.io/get-pip.py<span class="w"> </span>-o<span class="w"> </span>get-pip.py
+python3.9<span class="w"> </span>get-pip.py
+</code></pre></div>
+
+<p>Once you have <code>pip</code>, you will need a package to create and manage virtual environments. I use <code>virtualenv</code>:</p>
+<div class="highlight"><pre><span></span><code>python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip
+python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>virtualenv
+</code></pre></div>
+
+<p>You can also get and use <code>venv</code> using <code>sudo apt install python3.9-venv</code> (replace <code>python3.9</code> with your version of&nbsp;Python).</p>
+<p>It&#8217;s good practice to install Python dependencies in a virtual environment. So, first, create and activate an&nbsp;environment:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.virtualenvs
+python3.9<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>~/.virtualenvs/scipy-dev
+<span class="nb">source</span><span class="w"> </span>~/.virtualenvs/scipy-dev/bin/activate
+python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pip<span class="w"> </span>wheel
+</code></pre></div>
+
+<p>Note that you should not create a virtual environment in the same directory where the SciPy source exists. This creates some problems when building with Meson (See <a href="#step-42-getting-build-time-dependencies-for-meson-build">Step 4.2</a>).</p>
+<p>The following Python packages are required to build SciPy and run&nbsp;tests:</p>
+<ul>
+<li><code>Cython</code>: SciPy heavily relies on Cython to accelarate Python&nbsp;code.</li>
+<li><code>numpy&gt;=1.18.5</code>: SciPy relies on NumPy for array representation and array&nbsp;operations.</li>
+<li><code>pybind11</code>: To create Python bindings for C++&nbsp;code.</li>
+<li><code>pythran&gt;=0.9.12</code>: Another dependency to accelarate Python&nbsp;code.</li>
+<li><code>pytest</code>: To run Python&nbsp;tests.</li>
+<li><code>pytest-xdist</code>: For some pytest&nbsp;utilities.</li>
+<li><code>pytest-cov</code> (optional): To generate coverage reports with&nbsp;pytest.</li>
+<li><code>mpmath</code> (optional): To run some tests against <code>mpmath</code></li>
+<li><code>gmpy2</code> (optional): To run some tests against <code>gmpy2</code></li>
+<li><code>flake8</code> (optional): For static&nbsp;analysis</li>
+<li>Dependencies listed in <code>mypy_requirements.txt</code> for static analysis.&nbsp;(optional)</li>
+<li>Dependencies listed in <code>doc_requirements.txt</code> to build docs.&nbsp;(optional)</li>
+</ul>
+<p>You can get all the required dependencies&nbsp;using:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>Cython<span class="w"> </span><span class="s1">&#39;numpy&gt;=1.18.5&#39;</span><span class="w"> </span>pybind11<span class="w"> </span><span class="s1">&#39;pythran&gt;=0.9.12&#39;</span><span class="w"> </span>pytest<span class="w"> </span>pytest-xdist
+</code></pre></div>
+
+<p>To install optional dependencies,&nbsp;do:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pytest-cov<span class="w"> </span>mpmath<span class="w"> </span>gmpy2<span class="w"> </span>flake8
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>mypy_requirements.txt
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>doc_requirements.txt
+</code></pre></div>
+
+<h4>Step 3.2: Using <code>conda</code></h4>
+<p>Download Anaconda or Miniconda from <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html">this guide</a>.</p>
+<p>Once you have anaconda or miniconda installled, you can build an environment and install all the dependencies by running the following command from SciPy&#8217;s root&nbsp;directory:</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>environment.yml
+conda<span class="w"> </span>activate<span class="w"> </span>scipy-dev
+</code></pre></div>
+
+<p>You are now all set to build and test&nbsp;SciPy!</p>
+<h3>Step 4: Building and Testing&nbsp;SciPy</h3>
+<p>SciPy allows building using Python&#8217;s <a href="https://docs.python.org/3/library/distutils.html">distutils module</a> or using the <a href="https://mesonbuild.com/Manual.html">Meson build system</a>. It is recommended to use Meson since distutils is a candidate for deprecation starting Python&nbsp;3.10.</p>
+<h4>Step 4.1: Using&nbsp;disutils</h4>
+<p>To build using Python&#8217;s distutils module, you will first need to downgrade setuptools to any version less than&nbsp;v60.0.0.</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;setuptools&lt;60.0.0&#39;</span>
+</code></pre></div>
+
+<p>Now, you can start building SciPy either using the <code>runtests.py</code> utility:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>runtests.py<span class="w"> </span>--build-only
+</code></pre></div>
+
+<p>Or you can create an inplace build (recommended if you are going to change SciPy source&nbsp;code):</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>-i
+</code></pre></div>
+
+<p>To verify the inplace build, run <code>python -c 'import scipy; print(scipy.__version__)'</code>. This should exit normally and print something like <code>1.9.0dev...</code> if the build&nbsp;succeeded.</p>
+<p>That&#8217;s it! You have now built SciPy from source and can start testing&nbsp;it.</p>
+<p><strong>Running&nbsp;Tests</strong></p>
+<p>If you used <code>runtests.py</code> to build SciPy, run the following command to start&nbsp;testing:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># change the `--tests` option according to the tests you want to run.</span>
+python<span class="w"> </span>runtests.py<span class="w"> </span>--tests<span class="w"> </span>scipy/stats<span class="w">  </span><span class="c1"># tests scipy.stats submodule</span>
+python<span class="w"> </span>runtests.py<span class="w"> </span>--submodule<span class="w"> </span>special<span class="w">  </span><span class="c1"># tests scipy.special submodule</span>
+python<span class="w"> </span>runtests.py<span class="w">  </span><span class="c1"># runs full test suite</span>
+</code></pre></div>
+
+<p>If you created an inplace build, use <code>pytest</code> to run&nbsp;tests</p>
+<div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>scipy/stats<span class="w">  </span><span class="c1"># runs tests in the scipy.stats submodule</span>
+pytest<span class="w"> </span>scipy/stats/tests/test_sampling.py<span class="w">  </span><span class="c1"># runs all the tests in the file `test_sampling.py`</span>
+</code></pre></div>
+
+<h4>Step 4.2: Using Meson&nbsp;(recommended)</h4>
+<p>Meson is the recommended way to build SciPy as it allows having multiple builds in parallel and is much faster (~8-10 times) than distutils. Also, as distutils is being deprecated in Python 3.10 and will be removed in Python 3.12, SciPy will only support Meson as the primary build system in the&nbsp;future.</p>
+<p>Make sure you have <code>setuptools&gt;60.0.0</code> before running&nbsp;meson.</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;setuptools&gt;60.0.0&#39;</span>
+</code></pre></div>
+
+<p>You will need to install Meson and Ninja build systems using either <code>pip</code> or <code>conda</code>.</p>
+<p><strong>Using <code>pip</code></strong></p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>meson<span class="w"> </span>ninja
+</code></pre></div>
+
+<p><strong>Using <code>conda</code></strong></p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>install<span class="w"> </span>meson<span class="w"> </span>ninja
+</code></pre></div>
+
+<p>Now, you can build SciPy with Meson either using either the <code>dev.py</code> utility&nbsp;(recommended):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># If you have more/less CPUs change the `-j12` option accordingly</span>
+python<span class="w"> </span>dev.py<span class="w"> </span>-j12<span class="w"> </span>--build-only
+</code></pre></div>
+
+<p>Or you can build by configuring Meson&nbsp;manually:</p>
+<div class="highlight"><pre><span></span><code>meson<span class="w"> </span>setup<span class="w"> </span>builddir<span class="w"> </span>--prefix<span class="w"> </span><span class="nv">$PWD</span>/installdir
+<span class="nb">cd</span><span class="w"> </span>builddir
+<span class="c1"># If you have more/less CPUs, change the `-j12` option accordingly</span>
+ninja<span class="w"> </span>install<span class="w"> </span>-j12
+<span class="c1"># Replace `python3.9` below with the version of Python you are using</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PWD</span>/installdir/lib/python3.9/site-packages
+</code></pre></div>
+
+<p>Note that if you configure Meson manually, you will need to correctly set the <code>PYTHONPATH</code> environment variable to be able to import SciPy.
+If you configured Meson manually, you can test if the build was successful by trying to import scipy from a non-root&nbsp;directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>builddir
+mkdir<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span><span class="nb">test</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import scipy; print(scipy.__version__)&#39;</span>
+</code></pre></div>
+
+<p>This should print a single line with a version like <code>1.9.0dev...</code> if the build&nbsp;succeeded.</p>
+<p>That&#8217;s it! You have now built SciPy from source and can start testing&nbsp;it.</p>
+<p><strong>Running&nbsp;Tests</strong></p>
+<p>If you used <code>dev.py</code> to build SciPy, run the following command to start&nbsp;testing:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># change the `--tests` option according to the tests you want to run.</span>
+python<span class="w"> </span>dev.py<span class="w"> </span>--tests<span class="w"> </span>scipy/stats<span class="w">  </span><span class="c1"># tests scipy.stats submodule</span>
+python<span class="w"> </span>dev.py<span class="w"> </span>--submodule<span class="w"> </span>special<span class="w">  </span><span class="c1"># tests scipy.special submodule</span>
+python<span class="w"> </span>dev.py<span class="w">  </span><span class="c1"># runs full test suite</span>
+</code></pre></div>
+
+<p>If you manually configured Meson, import <code>pytest</code> in a Python shell from a non-root directory to run&nbsp;tests:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">scipy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">scipy</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>  <span class="c1"># runs full test suite.</span>
+</code></pre></div>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

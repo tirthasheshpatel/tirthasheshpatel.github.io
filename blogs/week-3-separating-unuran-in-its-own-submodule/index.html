@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Week #3: Separating <span class="caps">UNU</span>.<span class="caps">RAN</span> in its own&nbsp;submodule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Week #3: Separating UNU.RAN in its own submodule">
+                                        Week #3: Separating <span class="caps">UNU</span>.<span class="caps">RAN</span> in its own&nbsp;submodule
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2021-06-27T00:00:00+05:30">
+        <i class="icon-calendar"></i>Sun 27 June 2021
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/gsoc-2021/"><i class="icon-folder-open"></i>GSoC 2021</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/gsoc2021/"><i class="icon-tag"></i>gsoc2021</a>
+</footer><!-- /.post-info -->                </div>
+                <h2>What did you do this&nbsp;week?</h2>
+
+<p>This week went by addressing last week&#8217;s blockers and bifurcating <span class="caps">UNU</span>.<span class="caps">RAN</span> in its own submodule. I put the <span class="caps">UNU</span>.<span class="caps">RAN</span> source code in my <span class="caps">PR</span> which made that patch size over 100,000 <span class="caps">LOC</span> making it very difficult to review. So, I spent a couple of days creating a <a href="https://github.com/tirthasheshpatel/unuran">separate repository</a> for the <span class="caps">UNU</span>.<span class="caps">RAN</span> source code and using <code>git submodule</code> to clone it into SciPy. I also wrote a Python script to download and clean <span class="caps">UNU</span>.<span class="caps">RAN</span> for use in SciPy. This reduced the size of the patch from over 100,000 <span class="caps">LOC</span> to only about 4000 <span class="caps">LOC</span>. There were also some comments on the tutorial and benchmarks which I addressed this&nbsp;week.</p>
+<h2>What is coming up&nbsp;next?</h2>
+
+<p>Last week, I also noticed a memory leak so I decided to write a Python script to find more. The script reports 40 to 50 memory leaks throughout the source code but the part of the source code used by SciPy has only about 9 to 10 memory leaks. In the last meeting, we came up with two potential ways to get rid of them: (i) patch up <span class="caps">UNU</span>.<span class="caps">RAN</span> and reverse the order of frees and error, (ii) Instead of jumping out of the C function, use the return code of <span class="caps">UNU</span>.<span class="caps">RAN</span> functions to set and raise the error. The problem with approach (ii) is that some functions don&#8217;t return an error code. So, I plan to test the first approach out this week and hopefully address all the memory leaks. We also decided to try out writing a higher-level <span class="caps">API</span> for the String <span class="caps">API</span> and get other devs opinions on it on the mailing&nbsp;list.</p>
+<h2>Did you get stuck&nbsp;anywhere?</h2>
+
+<p>No blockers this&nbsp;week!</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

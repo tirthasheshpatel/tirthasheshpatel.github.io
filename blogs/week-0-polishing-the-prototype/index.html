@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Week #0: Polishing the&nbsp;Prototype</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Week #0: Polishing the Prototype">
+                                        Week #0: Polishing the&nbsp;Prototype
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2021-06-07T00:00:00+05:30">
+        <i class="icon-calendar"></i>Mon 07 June 2021
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/gsoc-2021/"><i class="icon-folder-open"></i>GSoC 2021</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/gsoc2021/"><i class="icon-tag"></i>gsoc2021</a>
+</footer><!-- /.post-info -->                </div>
+                <h2>A little&nbsp;introduction</h2>
+
+<p>Hello everyone! I am Tirth, a last year computer science undergraduate student at Nirma University in India. I have been using NumPy and SciPy since I started doing scientific computing in my first year of college. I have been contributing to SciPy since last year and hope to continue to do so :). I will we working this summer to integrate <span class="caps">UNU</span>.<span class="caps">RAN</span> library in the <code>scipy.stats</code> submodule. <span class="caps">UNU</span>.<span class="caps">RAN</span> is a C library for Universal Non-Uniform RANdom number generation. It has been used in the <span class="caps">ROOT</span> project by <span class="caps">CERN</span> and R bindings for the library (<code>Runuran</code>) have also been created. My goal would be to integrate methods for sampling from univariate continuous and discrete&nbsp;distributions.</p>
+<h2>What did you do this&nbsp;week?</h2>
+
+<p>I got to know my mentors, Christoph and Nicholas, in the first week of the community bonding period. Since then, we have been meeting regularly to discuss the <span class="caps">API</span> and have been exchanging a lot of design ideas. Over the span of last three weeks, I have been able to significantly enhance my prototype to the point where I feel confident enough to propose a <span class="caps">PR</span> on SciPy. I started out with <a href="https://github.com/tirthasheshpatel/scipy/pull/5">tirthasheshpatel/scipy#5</a> on my fork which was thread-unsafe and made my way up to <a href="https://github.com/tirthasheshpatel/scipy/pull/6">tirthasheshpatel/scipy#6</a> which seems in a very good shape. It builds with <span class="caps">UNU</span>.<span class="caps">RAN</span> on all the required platforms and tests pass with an exception of a flaky failure. During the last week, I have created <a href="https://docs.google.com/spreadsheets/d/1r36HypXwpit7sHt9YAe3K7yPL7HNNuQjTkbVYQIJ4xI/edit?usp=sharing">this excel sheet</a> with some information on the methods I propose to add in SciPy. It also contains the information about the methods to add and parameters to keep, etc. It will help me with coding those methods in the coming weeks and also document the decisions&nbsp;properly.</p>
+<h2>What is coming up&nbsp;next?</h2>
+
+<p>As the <span class="caps">PR</span> on my fork builds and tests pass, I hope to create a <span class="caps">PR</span> on SciPy by next week. I also aim to circulate a mail in the Mailing List regarding the imminent <span class="caps">PR</span> and try to get feedback from other devs on the design of the <span class="caps">API</span>. Nevertheless, the coming weeks are critical to the work I aim to finish during GSoC so I hope to get things done without much&nbsp;contention!</p>
+<h2>Did you get stuck&nbsp;anywhere?</h2>
+
+<p>There have not been any serious blockers during the community bonding period but the Windows <span class="caps">CI</span> failed due to some unrelated Pythran errors. After a few abortive attempts to resolve them, the discussion on <a href="https://github.com/scipy/scipy/issues/13717">#13717</a> helped me fix the failing builds. As pointed out in <a href="https://github.com/scipy/scipy/issues/13717#issuecomment-852388251">this comment</a>, I was missing <span class="caps">LLVM</span> and MinGW binaries in the <code>PATH</code> which caused some weird linking problems for 64-bit builds. It was moment of relief to see builds passing on windows, since windows failures worried me the most. Hopefully, everything passes on the SciPy <span class="caps">PR</span> that I aim to create by the end of this week :). Fingers&nbsp;crossed!</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

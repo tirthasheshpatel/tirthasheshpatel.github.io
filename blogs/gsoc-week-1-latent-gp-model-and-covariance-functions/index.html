@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GSoC Week 1 - Latent <span class="caps">GP</span> model and Covariance&nbsp;functions!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>Note</strong>: This article has been migrated from my previous website without modification; some
+                        images might be missing or be disproportionately large.
+                </div>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to GSoC Week 1 - Latent GP model and Covariance functions!">
+                                        GSoC Week 1 - Latent <span class="caps">GP</span> model and Covariance&nbsp;functions!
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2020-06-04T00:00:00+05:30">
+        <i class="icon-calendar"></i>Thu 04 June 2020
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/gsoc-2020/"><i class="icon-folder-open"></i>GSoC 2020</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/gsoc-2020/"><i class="icon-tag"></i>gsoc 2020</a>
+</footer><!-- /.post-info -->                </div>
+                <h2>Week 1 with&nbsp;PyMC4!</h2>
+<p>This has been a really good week for me! A major pull request I proposed, implementing a basic Gaussian Process Interface on March 1, got merged onto master this June. It gave me the essence of the development environment I was working in and time to complete my tasks. It also helped me make some design changes for my next&nbsp;PRs.</p>
+<p>This week I was able to do some doc fixes that I introduced in the former PRs and refactored the covariance class to introduce several new features. I summarize them in the below&nbsp;sections.</p>
+<h2><span class="caps">ENH</span>: Add Basic Gaussian Process&nbsp;Interface</h2>
+<p><a href="https://github.com/pymc-devs/pymc4/pull/235">#235: <span class="caps">ENH</span>: Add Basic Gaussian Process&nbsp;Interface</a></p>
+<p>It was nice to see this get merged in. This was a very basic proposal, hence, not matured enough to use. I dedicated this week to identify and fix all the bugs or flaws shipped onto master with this <span class="caps">PR</span>.</p>
+<p>Specifically, I fixed all the documentation errors and rewrote the covariance function base class, making it easier to build on it and porting in new features for arbitrarily shaped tensors. I also added loads of tests and assure everything works on&nbsp;point.</p>
+<p>I was successfully able to complete my goals I listed in the proposal for Week&nbsp;1!</p>
+<ul>
+<li>Week 1: June 1 - June&nbsp;7</li>
+<li>[x] Create a few mean and covariance functions with their base&nbsp;classes.</li>
+<li>[x] Implement a fully functional Latent Gaussian Process Model and a base for other&nbsp;models.</li>
+</ul>
+<h2><span class="caps">ENH</span>: add constant and white noise kernel, fix docs and&nbsp;tests</h2>
+<p><a href="https://github.com/pymc-devs/pymc4/pull/272">#272: <span class="caps">ENH</span>: add constant and white noise kernel, fix docs and&nbsp;tests</a></p>
+<p>This <span class="caps">PR</span> implements all the new features I mentioned in the above section. Specifically, I rewrote the <code>Covariance</code> base class and added more covariance functions on that base. The new features&nbsp;include:</p>
+<ul>
+<li><strong>Changes in the <code>Covariance</code> base class</strong>:</li>
+<li>add <code>diag</code> parameter: If true, only evaluates the diagonal of the full covariance&nbsp;matrix.</li>
+<li>add <code>active_dims</code> parameter in the covariance function base class: A list of (list of) numbers of dimensions in each <code>feature_ndims</code> columns to operate on. If <code>None</code>, defaults to using all the dimensions of each <code>feature_ndims</code> column. If a single integer is present at <code>i'th</code> entry of the list, the leftmost <code>len(active_dims[i])</code> are considered for evaluation and not the rightmost&nbsp;dims.</li>
+<li>add <code>scale_diag</code> parameter: Scaling parameter of the <code>lenght_scale</code> parameter of stationary kernels for performing Automatic Relevence Detection (<span class="caps">ARD</span>). Ignored if keyword argument <code>ARD=False</code>.</li>
+<li><strong>Add <code>Constant</code> kernel</strong>: Constant kernel just evaluates to a constant value in each entry of the covariance matrix and point evaluations irrespective of the input. It is very useful as a lightweight kernel when speed and performance is a primary goal. It doesn&#8217;t evaluate a complex function and so its gradients are faster and easier to&nbsp;compute.</li>
+<li><strong>Add <code>WhiteNoise</code> kernel</strong>: This kernel adds some noise to the covariance functions and is mostly used to stabilize other <span class="caps">PSD</span> kernels. This helps them become non-singular and makes Cholesky decomposition possible for sampling from the <code>MvNormalCholesky</code> distribution with high numerical accuracy. It is recommended to use this kernel in combination with other covariance/kernel function when working with <span class="caps">GP</span> on large&nbsp;data.</li>
+<li><strong>Changes in the covariance combination class (<code>_Sum</code> and <code>_Prod</code>)</strong>:</li>
+<li>These are all private changes not visible to the user. Previously, nested function calls were made to evaluate the kernel which made it in-efficient to combine multiple covariance functions. I refactored the class to efficiently combine covariance&nbsp;functions.</li>
+<li><strong>Tests</strong>:</li>
+<li>Add a test suite for mean and covariance&nbsp;functions.</li>
+<li>Add a test suite for <span class="caps">GP</span> models implemented till&nbsp;now.</li>
+<li><strong>Benchmarking</strong>:</li>
+<li>Benchmarking is not officially done by the PyMC team and so I made some unofficial (my own) benchmarks. They are available on <a href="https://colab.research.google.com/drive/1JQ17NyiFCopbiMjfMmoFVXDtoQr4S-qG?usp=sharing">this colab notebook</a> or <a href="https://github.com/tirthasheshpatel/OOP-in-Python/blob/master/Performance_Review_PyMC3%2C_PyMC4.ipynb">this notebook on github</a>.</li>
+</ul>
+<h2><span class="caps">MAINT</span>: add reparameterize to gp and fix&nbsp;mvnormal</h2>
+<p><a href="https://github.com/pymc-devs/pymc4/pull/269">#269: <span class="caps">MAINT</span>: add reparameterize to gp and fix&nbsp;mvnormal</a></p>
+<p>This is a small <span class="caps">PR</span> adding the functionality to reparameterize the <span class="caps">GP</span> prior and conditional distributions for better numerical accuracy. I will work more on Gaussian Processes in Week 3. I want to finish up with the mean and covariance functions in Week 2 before I proceed to <span class="caps">GP</span> Models in Week&nbsp;3.</p>
+<h2>Goals for Week&nbsp;2</h2>
+<p>I want to increase some of my goals for week 2 and complete my work on as many covariance (kernel) functions and mean functions as much as I can. This way, I will be able to start working on more interesting <span class="caps">GP</span> Models by Week 3, or at least I hope&nbsp;so!</p>
+<ul>
+<li>[x] Implement all the covariance&nbsp;functions.</li>
+<li>[x] Exponential Quadratic&nbsp;kernel.</li>
+<li>[x] Constant&nbsp;kernel.</li>
+<li>[x] WhiteNoise&nbsp;kernel.</li>
+<li>[x] Matern 1/2&nbsp;kernel.</li>
+<li>[x] Matern 3/2&nbsp;kernel.</li>
+<li>[x] Matern 5/2&nbsp;kernel.</li>
+<li>[x] Rational Quadratic&nbsp;kernel.</li>
+<li>[x] Polynomial&nbsp;kernel.</li>
+<li>[x] Linear&nbsp;kernel.</li>
+<li>[x] Gibbs&nbsp;kernel.</li>
+<li>[x] Coregion&nbsp;kernel.</li>
+<li>[x] Kronecker&nbsp;kernel.</li>
+<li>[x] Cosine&nbsp;kernel.</li>
+<li>[x] Implement all the mean&nbsp;functions.</li>
+<li>[x] Zero Mean&nbsp;function.</li>
+<li>[x] Constant Mean&nbsp;function.</li>
+<li>[x] Linear mean&nbsp;function.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>This week has been a successful and enjoyable for me. I was also able to go for a small road trip after about a 3 month of quaruntine and still able to deliver my goals. Pretty good start for me, I&nbsp;guess!</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GSoC Week 2 and Week 3 - Implementing <span class="caps">GP</span>&nbsp;Kernels!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Tirth Patel">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Tirth Patel ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Tirth Patel </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                <li><a href="/about/">About</a></li>
+                <li><a href="/gsoc-2020/">GSoC&nbsp;2020</a></li>
+                <li><a href="/gsoc-2021/">GSoC&nbsp;2021</a></li>
+                          <li class="divider-vertical"></li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>Note</strong>: This article has been migrated from my previous website without modification; some
+                        images might be missing or be disproportionately large.
+                </div>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to GSoC Week 2 and Week 3 - Implementing GP Kernels!">
+                                        GSoC Week 2 and Week 3 - Implementing <span class="caps">GP</span>&nbsp;Kernels!
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2020-06-21T00:00:00+05:30">
+        <i class="icon-calendar"></i>Sun 21 June 2020
+</abbr>
+<span class="label">By</span>
+<a href="/author/tirth-patel/"><i class="icon-user"></i>Tirth Patel</a>
+<span class="label">Category</span>
+<a href="/category/gsoc-2020/"><i class="icon-folder-open"></i>GSoC 2020</a>.
+
+
+<span class="label">Tags</span>
+	<a href="/tag/gsoc-2020/"><i class="icon-tag"></i>gsoc 2020</a>
+</footer><!-- /.post-info -->                </div>
+                <h2>How two weeks just flew&nbsp;by!</h2>
+<p>These two weeks into GSoC have been intense! I implemented all the kernel functions present in PyMC3 using Tensorflow and TensorFlow Probability. I also wrote a full walkthrough through the <code>Covariance</code> <span class="caps">API</span> in PyMC4 that explains all the kernel functions implemented and their features. I also noticed that TensorFlow Probability doesn&#8217;t perform <strong>A</strong>utomatic <strong>R</strong>elevence <strong>D</strong>etermination on its kernels which is a problem and I will have to subclass those kernels and implement methods to perform <span class="caps">ARD</span> myself. It isn&#8217;t difficult, but it will make the <span class="caps">API</span> look much complex. I will dedicate the next week to wrap that up so I can get started with <span class="caps">GP</span>&nbsp;models.</p>
+<h2><span class="caps">ENH</span>: add all covariance functions for gp from&nbsp;PyMC3</h2>
+<p><a href="https://github.com/pymc-devs/pymc4/pull/285">#285: <span class="caps">ENH</span>: add all covariance functions for gp from&nbsp;PyMC3</a></p>
+<p>This is the <span class="caps">PR</span> I have been working on from the past two weeks. It implements all the covariance functions and explains their usage in a quickstart notebook. Here are the tasks I have completed in this <span class="caps">PR</span>.</p>
+<p>Covariance functions added:
+- <code>RatQuad</code>
+- <code>Exponential</code>
+- <code>Matern52</code>
+- <code>Matern32</code>
+- <code>Matern12</code>
+- <code>Linear</code>
+- <code>Polynomial</code>
+- <code>Cosine</code>
+- <code>Periodic</code>
+- <code>Gibbs</code>
+- <code>WarpedInput</code>
+- ~~Coregion~~
+- <code>ScaledCov</code>
+-&nbsp;~~Kron~~</p>
+<p>Tests added:
+- <code>RatQuad</code>
+- <code>Exponential</code>
+- <code>Matern52</code>
+- <code>Matern32</code>
+- <code>Matern12</code>
+- <code>Linear</code>
+- <code>Polynomial</code>
+- <code>Cosine</code>
+- <code>Periodic</code>
+- <code>Gibbs</code>
+- <code>WarpedInput</code>
+- ~~Coregion~~
+- <code>ScaledCov</code>
+-&nbsp;~~Kron~~</p>
+<p>Docs added:
+- <code>RatQuad</code>
+- <code>Exponential</code>
+- <code>Matern52</code>
+- <code>Matern32</code>
+- <code>Matern12</code>
+- <code>Linear</code>
+- <code>Polynomial</code>
+- <code>Cosine</code>
+- <code>Periodic</code>
+- <code>Gibbs</code>
+- <code>WarpedInput</code>
+- ~~Coregion~~
+- <code>ScaledCov</code>
+-&nbsp;~~Kron~~</p>
+<p>Other Tasks:
+- Add Notebook for mean and covariance functions.
+- Fix docs such that the <code>pydocstyle</code> lint&nbsp;pass.</p>
+<p>One of the challenges I faced was with <code>Coregion</code> kernel, which needs indexing with arrays and tensors (advanced indexing) which is not supported by TensorFlow. This makes it difficult to implement the kernel efficiently. I will try to complete this next week as soon as&nbsp;possible.</p>
+<h2>A call with the&nbsp;mentors!</h2>
+<p>I also had a video call with my mentors (<a href="https://github.com/fonnesbeck">Christopher Fonnesbeck</a> and <a href="https://github.com/aloctavodia">Osvaldo Martin</a>) this week, which was very exciting, and gave me valuable insights of my work. The whole PyMC team has alse been very welcoming and helpful! Thanks to all their&nbsp;help!</p>
+<h2>Wrapping it&nbsp;up&#8230;</h2>
+<p>More or less, I was able to complete all the tasks I listed for these two weeks. Two more successful weeks and I am quite happy about it. The best thing is that I am not lagging behind, which makes it possible for me to work on sota <span class="caps">GP</span> models which are not listed in my proposal (which would be&nbsp;amazing)!</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/gsoc-2020/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2020
+</a>
+</li>
+<li>
+<a href="/category/gsoc-2021/">
+    <i class="icon-folder-open icon-large"></i>GSoC 2021
+</a>
+</li>
+<li>
+<a href="/category/rng/">
+    <i class="icon-folder-open icon-large"></i>RNG
+</a>
+</li>
+<li>
+<a href="/category/scipy/">
+    <i class="icon-folder-open icon-large"></i>SciPy
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
